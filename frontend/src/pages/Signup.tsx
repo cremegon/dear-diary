@@ -19,7 +19,7 @@ export const Signup = () => {
     // ------------- Verify Password via Helper Function
     const validPassword = verifyPassword(password);
     if (!validPassword) {
-      console.log("Password is not hi valid");
+      console.log("Password is not valid");
     }
 
     const response = await fetch("http://localhost:5000/signup", {
