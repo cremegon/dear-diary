@@ -1,19 +1,38 @@
-import React from "react";
-import logo from "./assets/akko.jpg";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import "./styles/App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Signup } from "./pages/Signup.tsx";
+import { AuthProvider } from "./util/contextProvider.tsx";
+import { Homepage } from "./pages/Homepage.tsx";
+import { Login } from "./pages/Login.tsx";
+import { ProtectedRoute, PublicRoute } from "./util/RouteAuth.tsx";
 
 function App() {
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      const user: { isAuthenticated: boolean; loggedIn: boolean } = {
+        isAuthenticated: false,
+        loggedIn: false,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Link to="/login"> Login Here </Link>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthProvider />}>
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route index path="/signup" element={<Signup />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Homepage />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
