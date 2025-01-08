@@ -5,13 +5,15 @@ export function verifyUsername(username: string) {
     const userLength = username.slice(0, atIndex);
 
     if (userLength.length < 8) {
-      console.log("username before @ is shorter than 8 characters");
-      return false;
+      return {
+        error: true,
+        message: "Email is shorter than 8 characters",
+      };
+    } else {
+      return { error: false, message: "username verified" };
     }
-    return true;
   } else {
-    console.log("username does not include @/.com");
-    return false;
+    return { error: true, message: "Invalid Email" };
   }
 }
 
@@ -34,9 +36,38 @@ export function verifyPassword(password: string) {
       arr[3] += 1;
     }
   }
-  if (arr[0] + arr[1] >= 8 && arr[2] >= 1 && arr[3] >= 1) {
-    console.log("Password Successful");
-    return true;
+  if (arr[0] + arr[1] >= 8 && arr[0] >= 1 && arr[2] >= 1 && arr[3] >= 1) {
+    return { error: false, message: "Password Successful" };
   }
-  return false;
+  if (arr[0] < 1) {
+    return {
+      error: true,
+      message: "Password must contain atleast 1 uppercase character",
+    };
+  } else if (arr[2] < 1) {
+    return {
+      error: true,
+      message: "Password must contain atleast 1 numeric value",
+    };
+  } else if (arr[3] < 1) {
+    return {
+      error: true,
+      message: "Password must contain atleast 1 special character",
+    };
+  } else {
+    return {
+      error: true,
+      message: "Please enter a valid Password of 8 characters",
+    };
+  }
+}
+export function getName(name: string) {
+  let space = 0;
+  for (let i = 0; i < name.length; i++) {
+    if (name[i] === " ") {
+      space = i;
+      break;
+    }
+  }
+  return name.slice(0, space);
 }

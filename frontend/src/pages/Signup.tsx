@@ -1,29 +1,51 @@
-import React, { useState } from "react";
-import { verifyPassword, verifyUsername } from "../util/client.ts";
+import React, { useEffect, useRef, useState } from "react";
+import { getName, verifyPassword, verifyUsername } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 import { Link } from "react-router-dom";
 
 export const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuth } = useAuth();
+  const [error, setError] = useState<string[]>([]);
+
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const { setAuth, setUsername } = useAuth();
+
+  useEffect(() => {
+    if (error) {
+      if (error[0] === "email") {
+        emailRef.current?.focus();
+      } else {
+        passwordRef.current?.focus();
+      }
+    }
+  }, [error]);
 
   // --------------- Form Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
+    console.log(name, email, password);
 
     // ------------- Verify Username via Helper Function
-    const validUsername = verifyUsername(email);
-    if (!validUsername) {
-      console.log("Email is not valid");
+    const validUsername: { error: boolean; message: string } =
+      verifyUsername(email);
+    if (validUsername.error) {
+      setError(["email", validUsername.message]);
+      return;
     }
+    setError([]);
 
     // ------------- Verify Password via Helper Function
-    const validPassword = verifyPassword(password);
-    if (!validPassword) {
-      console.log("Password is not valid");
+    const validPassword: { error: boolean; message: string } =
+      verifyPassword(password);
+    if (validPassword.error) {
+      setError(["password", validPassword.message]);
+      return;
     }
+    setError([]);
 
     const response = await fetch("http://localhost:5000/signup", {
       method: "POST",
@@ -31,6 +53,7 @@ export const Signup = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        name,
         email,
         password,
       }),
@@ -46,9 +69,13 @@ export const Signup = () => {
         parsedUser.isAuthenticated = true;
         localStorage.setItem("user", JSON.stringify(parsedUser));
         setAuth(true);
+
+        const title_name = getName(data.content);
+        console.log(title_name);
+        setUsername(title_name);
       }
     } else {
-      console.log(data.message);
+      setError(["email", data.message]);
     }
   };
 
@@ -58,12 +85,22 @@ export const Signup = () => {
         <div className="flex flex-col w-1/3 align-middle justify-center">
           <h3 className="text-7xl font-extrabold text-center">Sign Up</h3>
           <input
+            type="name"
+            name="name"
+            id="name"
+            onChange={(e) => setName(e.target.value)}
+            placeholder="enter name"
+            className="border-black border-2 mt-8"
+          />
+
+          <input
             type="email"
             name="email"
             id="email"
             onChange={(e) => setEmail(e.target.value)}
             placeholder="enter email"
-            className="border-black border-2 mt-8"
+            ref={emailRef}
+            className="border-black border-2 mt-4"
           />
           <input
             type="password"
@@ -71,8 +108,10 @@ export const Signup = () => {
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder="enter password"
+            ref={passwordRef}
             className="border-black border-2 mt-4"
           />
+          {error ? <div>{error[1]}</div> : null}
           <button
             type="submit"
             className="mt-6 border-black border-2 bg-pink-400"

@@ -1,29 +1,49 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { verifyPassword, verifyUsername } from "../util/client.ts";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { getName, verifyPassword, verifyUsername } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuth } = useAuth();
-  const navigate = useNavigate();
+  const [error, setError] = useState<string[]>([]);
+
+  const { setAuth, setUsername } = useAuth();
+
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (error) {
+      if (error[0] === "email") {
+        emailRef.current?.focus();
+      } else {
+        passwordRef.current?.focus();
+      }
+    }
+  }, [error]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(email, password);
 
     // ------------- Verify Username via Helper Function
-    const validUsername = verifyUsername(email);
-    if (!validUsername) {
-      console.log("Email is not valid");
+    const validUsername: { error: boolean; message: string } =
+      verifyUsername(email);
+    if (validUsername.error) {
+      setError(["email", validUsername.message]);
+      return;
     }
+    setError([]);
 
     // ------------- Verify Password via Helper Function
-    const validPassword = verifyPassword(password);
-    if (!validPassword) {
-      console.log("Password is not valid");
+    const validPassword: { error: boolean; message: string } =
+      verifyPassword(password);
+    if (validPassword.error) {
+      setError(["password", validPassword.message]);
+      return;
     }
+    setError([]);
 
     const response = await fetch("http://localhost:5000/login", {
       method: "POST",
@@ -45,11 +65,13 @@ export const Login = () => {
         localStorage.setItem("user", JSON.stringify(parsedUser));
 
         setAuth(true);
+
+        const titleName = getName(data.content);
+        setUsername(titleName);
         console.log("Login Successful");
       }
     } else {
-      console.log("Login Failed");
-      navigate(`${data.redirect}`);
+      setError(["password", data.message]);
     }
   };
   return (
@@ -63,6 +85,7 @@ export const Login = () => {
             placeholder="enter email"
             required
             onChange={(e) => setEmail(e.target.value)}
+            ref={emailRef}
             className="border-black border-2 mt-8"
           />
           <input
@@ -70,8 +93,10 @@ export const Login = () => {
             placeholder="enter password"
             required
             onChange={(e) => setPassword(e.target.value)}
+            ref={passwordRef}
             className="border-black border-2 mt-4"
           />
+          {error ? <div>{error[1]}</div> : null}
           <button
             className="mt-6 border-black border-2 bg-pink-400"
             type="submit"

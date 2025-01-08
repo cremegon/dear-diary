@@ -4,6 +4,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 interface AuthContextType {
   auth: boolean;
   setAuth: (token: boolean) => void;
+  username: string | null;
+  setUsername: (name: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType>(null!);
@@ -14,6 +16,7 @@ export const AuthProvider = () => {
   const [auth, setAuth] = useState<boolean>(() => {
     return user ? JSON.parse(user).isAuthenticated === true : false;
   });
+  const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -52,7 +55,7 @@ export const AuthProvider = () => {
   }, [auth, navigate, user]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, username, setUsername }}>
       <Outlet />
     </AuthContext.Provider>
   );
