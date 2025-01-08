@@ -11,9 +11,16 @@ function App() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      const user: { isAuthenticated: boolean; loggedIn: boolean } = {
+      const user: {
+        isAuthenticated: boolean;
+        loggedIn: boolean;
+        theme: string;
+        username: string;
+      } = {
         isAuthenticated: false,
         loggedIn: false,
+        theme: "light",
+        username: "",
       };
       localStorage.setItem("user", JSON.stringify(user));
     }

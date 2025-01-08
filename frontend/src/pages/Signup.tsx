@@ -12,7 +12,7 @@ export const Signup = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const { setAuth, setUsername } = useAuth();
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     if (error) {
@@ -64,15 +64,13 @@ export const Signup = () => {
     if (response.ok) {
       const user = localStorage.getItem("user");
       if (user) {
+        const title_name = getName(data.content);
         const parsedUser = JSON.parse(user);
-
+        parsedUser.username = title_name;
         parsedUser.isAuthenticated = true;
         localStorage.setItem("user", JSON.stringify(parsedUser));
-        setAuth(true);
 
-        const title_name = getName(data.content);
-        console.log(title_name);
-        setUsername(title_name);
+        setAuth(true);
       }
     } else {
       setError(["email", data.message]);

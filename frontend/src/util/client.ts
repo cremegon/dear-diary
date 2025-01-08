@@ -69,5 +69,8 @@ export function getName(name: string) {
       break;
     }
   }
-  return name.slice(0, space);
+  if (space > 0) {
+    return name.slice(0, space);
+  }
+  return name;
 }

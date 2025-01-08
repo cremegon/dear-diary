@@ -5,11 +5,13 @@ import jwt from "jsonwebtoken";
 import { config } from "../config";
 
 const pool = new Pool(config.db);
+console.log(pool);
 
 const JWT_SECRET = config.jwtSecret;
 
 export const loginUser = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
+  console.log(email, password);
 
   // select the user that is tied to the token from the database
   const selectedUser = await pool.query(

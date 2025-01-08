@@ -8,7 +8,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string[]>([]);
 
-  const { setAuth, setUsername } = useAuth();
+  const { setAuth } = useAuth();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -59,15 +59,14 @@ export const Login = () => {
     if (response.ok) {
       const user = localStorage.getItem("user");
       if (user) {
+        const titleName = getName(data.content);
         const parsedUser = JSON.parse(user);
         parsedUser.isAuthenticated = true;
         parsedUser.loggedIn = true;
+        parsedUser.username = titleName;
         localStorage.setItem("user", JSON.stringify(parsedUser));
 
         setAuth(true);
-
-        const titleName = getName(data.content);
-        setUsername(titleName);
         console.log("Login Successful");
       }
     } else {

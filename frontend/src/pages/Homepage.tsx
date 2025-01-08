@@ -3,7 +3,14 @@ import { useAuth } from "../util/contextProvider.tsx";
 
 export const Homepage = () => {
   const user = localStorage.getItem("user");
-  const { setUsername, username, setAuth } = useAuth();
+  const { setAuth } = useAuth();
+
+  let usernameTitle = "Guest";
+
+  if (user) {
+    const parsedData = JSON.parse(user);
+    usernameTitle = parsedData.username;
+  }
 
   const handleLogout = async () => {
     const response = await fetch("http://localhost:5000/logout", {
@@ -17,17 +24,19 @@ export const Homepage = () => {
         const parsedUser = JSON.parse(user);
         parsedUser.isAuthenticated = false;
         parsedUser.loggedIn = false;
+        parsedUser.username = "";
         localStorage.setItem("user", JSON.stringify(parsedUser));
       }
 
-      setUsername("");
       setAuth(false);
     }
   };
   return (
     <div>
       <div className="flex flex-col justify-center">
-        <h1 className="text-7xl text-center font-extrabold">Hi, {username}!</h1>
+        <h1 className="text-7xl text-center font-extrabold">
+          Hi, {usernameTitle}!
+        </h1>
         <button
           className="mt-6 border-black border-2 bg-pink-400"
           onClick={handleLogout}
