@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Splash = () => {
+export const ProfilePage = () => {
   return (
     <div>
       <div>
-        <h1>This is the SPLASH PAGE!!!</h1>
+        <h1>This is the PROFILE PAGE!!!</h1>
       </div>
     </div>
   );

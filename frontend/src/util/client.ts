@@ -1,3 +1,4 @@
+// ============================ Verify Valid Username
 export function verifyUsername(username: string) {
   const trueInclude = username.includes("@") && username.includes(".com");
   if (trueInclude) {
@@ -17,6 +18,7 @@ export function verifyUsername(username: string) {
   }
 }
 
+// ============================ Verify Valid Password
 export function verifyPassword(password: string) {
   // upper,char,int,special
   const arr: number[] = [0, 0, 0, 0];
@@ -61,6 +63,8 @@ export function verifyPassword(password: string) {
     };
   }
 }
+
+// ============================ Slice First Name from Username
 export function getName(name: string) {
   let space = 0;
   for (let i = 0; i < name.length; i++) {
@@ -74,3 +78,76 @@ export function getName(name: string) {
   }
   return name;
 }
+
+// ============================ Login Function
+export const LoginUser = async (
+  email: string,
+  password: string,
+  setAuth: (auth: boolean) => void
+) => {
+  console.log(email, password);
+
+  // ------------- Verify Username via Helper Function
+  const validUsername: { error: boolean; message: string } =
+    verifyUsername(email);
+  if (validUsername.error) {
+    return ["email", validUsername.message];
+  }
+  // ------------- Verify Password via Helper Function
+  const validPassword: { error: boolean; message: string } =
+    verifyPassword(password);
+  if (validPassword.error) {
+    return ["password", validPassword.message];
+  }
+
+  const response = await fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const titleName = getName(data.content);
+      const parsedUser = JSON.parse(user);
+      parsedUser.isAuthenticated = true;
+      parsedUser.loggedIn = true;
+      parsedUser.username = titleName;
+      localStorage.setItem("user", JSON.stringify(parsedUser));
+
+      setAuth(true);
+      console.log("Login Successful");
+      return;
+    }
+  } else {
+    return ["password", data.message];
+  }
+};
+
+// ============================ Logout Function
+export const handleLogout = async (setAuth: (auth: boolean) => void) => {
+  const user = localStorage.getItem("user");
+  const response = await fetch("http://localhost:5000/logout", {
+    method: "GET",
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (response.ok) {
+    if (user) {
+      console.log(data.message);
+      const parsedUser = JSON.parse(user);
+      parsedUser.isAuthenticated = false;
+      parsedUser.loggedIn = false;
+      parsedUser.username = "";
+      localStorage.setItem("user", JSON.stringify(parsedUser));
+    }
+
+    setAuth(false);
+  }
+};

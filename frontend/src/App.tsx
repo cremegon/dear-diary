@@ -6,6 +6,10 @@ import { AuthProvider } from "./util/contextProvider.tsx";
 import { Homepage } from "./pages/Homepage.tsx";
 import { Login } from "./pages/Login.tsx";
 import { ProtectedRoute, PublicRoute } from "./util/RouteAuth.tsx";
+import HomePageLayout from "./pages/HomeLayout.tsx";
+import { ProfilePage } from "./pages/Profile.tsx";
+import SettingsPage from "./pages/Settings.tsx";
+import AboutPage from "./pages/About.tsx";
 
 function App() {
   useEffect(() => {
@@ -35,7 +39,12 @@ function App() {
             <Route index path="/signup" element={<Signup />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Homepage />} />
+            <Route element={<HomePageLayout />}>
+              <Route index path="/" element={<Homepage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
