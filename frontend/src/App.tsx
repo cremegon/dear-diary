@@ -10,6 +10,7 @@ import HomePageLayout from "./pages/HomeLayout.tsx";
 import { ProfilePage } from "./pages/Profile.tsx";
 import SettingsPage from "./pages/Settings.tsx";
 import AboutPage from "./pages/About.tsx";
+import Drawing from "./pages/DrawCanvas.tsx";
 
 function App() {
   useEffect(() => {
@@ -35,6 +36,7 @@ function App() {
       <Routes>
         <Route element={<AuthProvider />}>
           <Route element={<PublicRoute />}>
+            <Route path="/draw" element={<Drawing />} />
             <Route path="/login" element={<Login />} />
             <Route index path="/signup" element={<Signup />} />
           </Route>
