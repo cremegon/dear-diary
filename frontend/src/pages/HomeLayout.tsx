@@ -8,7 +8,7 @@ export const HomePageLayout = () => {
     <>
       <Navbar />
 
-      <div className="w-full h-5/6">
+      <div className="w-full min-h-full">
         <Outlet />
       </div>
       <Footer />

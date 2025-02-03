@@ -12,7 +12,10 @@ code {
     monospace;
 } */
 
+.btn-writeUI {
+  @apply border-4 border-pink-700 bg-pink-400 w-[100px];
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-

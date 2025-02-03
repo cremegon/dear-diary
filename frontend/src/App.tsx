@@ -11,6 +11,7 @@ import { ProfilePage } from "./pages/Profile.tsx";
 import SettingsPage from "./pages/Settings.tsx";
 import AboutPage from "./pages/About.tsx";
 import Drawing from "./pages/DrawCanvas.tsx";
+import Editor from "./pages/Write.tsx";
 
 function App() {
   useEffect(() => {
@@ -43,6 +44,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<HomePageLayout />}>
               <Route index path="/" element={<Homepage />} />
+              <Route path="/write-session" element={<Editor />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
