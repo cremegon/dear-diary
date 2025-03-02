@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  findToggleState,
+  findToggleState2,
   findToggleVariation,
   treeWalkerSearch,
   unwrapAll,
@@ -8,7 +8,7 @@ import {
   unwrapEnd,
   unwrapStart,
   wrapAll,
-} from "../util/editor.ts";
+} from "../util/editor2.ts";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -22,31 +22,20 @@ export const Editor = () => {
     if (selection && selection.rangeCount > 0) {
       const currentRange = selection.getRangeAt(0);
 
-      console.log("BEFORE CHANGES = ", currentRange);
-      const [removeTag, targetElement] = findToggleState(format, currentRange);
-
-      let findParent = currentRange.startContainer;
-      while (findParent.parentNode && findParent.nodeName !== "SPAN") {
-        findParent = findParent.parentNode;
-      }
-      console.log("FINDING PARENT = ", findParent);
-
-      const variation = findToggleVariation(currentRange);
-
-      console.log(formatting[0]);
-      setFormatting((prev) => ({ ...prev, [format]: removeTag }));
-
       if (currentRange.collapsed) {
         return;
       }
 
+      const variation = findToggleVariation(currentRange, selection);
+
       const findTextNode = treeWalkerSearch(currentRange);
-      console.log(
-        "TREE WALKER!!!",
-        findTextNode,
-        findTextNode?.previousSibling,
-        findTextNode?.nextSibling
+
+      const [removeTag, targetElement] = findToggleState2(
+        findTextNode as Node,
+        format
       );
+      console.log(formatting[0]);
+      setFormatting((prev) => ({ ...prev, [format]: removeTag }));
 
       // ---- UNWRAP FROM TAG
       if (!variation && removeTag && targetElement) {
@@ -69,7 +58,6 @@ export const Editor = () => {
             format,
             selection,
             currentRange,
-            parent,
             setFormatting,
             removeTag
           );
@@ -128,8 +116,8 @@ export const Editor = () => {
       }
 
       // ---- WRAP INSIDE TAG
-      else if (!variation && !removeTag) {
-        wrapAll(currentRange, format, selection);
+      else if (!variation && !removeTag && targetElement) {
+        wrapAll(currentRange, format, selection, targetElement);
       }
     }
     console.log(document.getElementById("father")?.innerHTML);
@@ -159,8 +147,8 @@ export const Editor = () => {
         <span>Hello, World!</span> <br />
         <span>
           We are <em>testing</em> and <em>testing</em> and <strong>tes</strong>
-          ti<strong>ng</strong> and test<strong>in</strong>g this{" "}
-          <strong>BULLSHIT</strong>
+          ti<strong>ng</strong> and test<strong>in</strong>g this and that that
+          that that <strong>BULLSHIT</strong>
         </span>
       </div>
     </div>

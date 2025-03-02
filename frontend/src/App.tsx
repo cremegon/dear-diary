@@ -11,7 +11,7 @@ import { ProfilePage } from "./pages/Profile.tsx";
 import SettingsPage from "./pages/Settings.tsx";
 import AboutPage from "./pages/About.tsx";
 import Drawing from "./pages/DrawCanvas.tsx";
-import Editor from "./pages/Write.tsx";
+import Editor from "./pages/Write2.tsx";
 
 function App() {
   useEffect(() => {

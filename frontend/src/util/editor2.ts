@@ -18,8 +18,10 @@ export function treeWalkerSearch(currentRange: Range) {
   let closestDistance = Infinity;
   let closestTextNode: Text | null = null;
 
-  const actualTextSearch = currentRange.toString();
+  const actualTextSearch = currentRange.toString().normalize();
   const actualRect = currentRange.getBoundingClientRect();
+
+  console.log("Finding True Node = ", actualTextSearch);
 
   const editableFather = document.getElementById("father");
 
@@ -47,51 +49,92 @@ export function treeWalkerSearch(currentRange: Range) {
     if (distance < closestDistance) {
       closestDistance = distance;
       closestTextNode = textNode;
+    } else if (distance > closestDistance) {
+      break;
     }
   }
-
-  return closestTextNode;
+  console.log("True Returned Node = ", closestTextNode);
+  return closestTextNode as Node;
 }
 
-export function findToggleVariation(currentRange: Range) {
+export function findToggleVariation(currentRange: Range, selection: Selection) {
   const hashmap = {};
 
+  // ---- Create a Document Fragment from the Selection
   const content = currentRange.cloneContents();
   const selectionArray = content.childNodes;
+
+  // ---- Count the Highest and Lowest Frequency Element/Text Node
   for (const element of selectionArray) {
     const ele = element.nodeName.toLocaleLowerCase();
     hashmap[ele] = (hashmap[ele] || 0) + 1;
   }
-  console.log("hello:3");
+
   const maxValue = Math.max(...(Object.values(hashmap) as number[]));
   const minValue = Math.min(...(Object.values(hashmap) as number[]));
   const minKey = Object.keys(hashmap).find((key) => hashmap[key] === minValue);
 
+  // ---- If the Max Value === Fragment Length => No Variation
   if (maxValue === selectionArray.length) return false;
 
-  for (let i = 0; i < selectionArray.length; i++) {
-    const element = selectionArray[i];
-    console.log(element, minKey);
-    if (element.nodeType !== Node.TEXT_NODE) {
-      const newElement = document.createTextNode(
-        element.lastChild?.textContent as string
-      );
-      content.replaceChild(newElement, element);
-    }
+  // ---- Build a String of All ChildNode textContents
+  let textContent = "";
+  for (const element of selectionArray) {
+    textContent +=
+      element.lastChild !== null
+        ? element.lastChild.textContent
+        : element.textContent;
   }
-  if (minKey === "#text") {
-    const newContent = content;
-    currentRange.deleteContents();
-    currentRange.insertNode(newContent);
-    return true;
-  }
-  const newContent = document.createElement(`${minKey}`);
-  newContent.append(content);
 
-  console.log("final content = ", newContent);
-
+  // ---- Create the TextNode & Remove Data Inside Range
+  const newContent = document.createTextNode(textContent);
   currentRange.deleteContents();
-  currentRange.insertNode(newContent);
+
+  if (minKey === "#text") {
+    currentRange.insertNode(newContent);
+  } else {
+    const newElement = document.createElement(`${minKey}`);
+    newElement.appendChild(newContent);
+    currentRange.insertNode(newElement);
+  }
+
+  // ---- Incase Not All the Data was deleted, Manually set
+  // ---- the range to the new TextNode and check left & right
+  const startOffset = 0;
+  const endOffset = textContent.length;
+  const trueContainer = treeWalkerSearch(currentRange);
+
+  if (!trueContainer) return;
+
+  // ---- Find Span Parent
+  let current = trueContainer;
+  while (current?.parentNode && current.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+
+  // ---- Adjust the Range to the Selected Node
+  selection.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStart(trueContainer, startOffset);
+  newRange.setEnd(trueContainer, endOffset);
+  selection.addRange(newRange);
+
+  // ---- Check for Left & Right Empty Elements
+  const previousTarget = trueContainer.previousSibling;
+  const nextTarget = trueContainer.nextSibling;
+
+  if (
+    previousTarget?.ELEMENT_NODE &&
+    previousTarget.textContent?.trim() === ""
+  ) {
+    current?.removeChild(previousTarget);
+  }
+
+  if (nextTarget?.ELEMENT_NODE && nextTarget.textContent?.trim() === "") {
+    current?.removeChild(nextTarget);
+  }
+
+  console.log("final content = ", document.getElementById("father")?.innerHTML);
   return true;
 }
 
@@ -147,11 +190,10 @@ export function findToggleState(
   return [false, null];
 }
 
-export function fineToggleState2(
-  currentRange: Range,
+export function findToggleState2(
   textNode: Node,
   format: string
-) {
+): [boolean, Node | null] {
   const targetTagName = format.toUpperCase();
   let current = textNode;
   while (
@@ -162,63 +204,62 @@ export function fineToggleState2(
     current = current.parentNode;
   }
 
+  if (!current.parentNode) return [false, null];
+
   if (current.parentNode?.nodeName === "SPAN") {
     return [false, current];
-  } else if (current.parentNode?.nodeName === targetTagName) {
+  } else {
     return [true, current.parentNode];
   }
 }
 
-export function getTrueOffset(target: Node, parent: Node) {
+export function getTrueOffset(target: Node) {
   let offset = 0;
   let current = target;
-  console.log("SEARCHING FOR TRUE OFFSET PARENT: ", parent);
 
-  while (current && current !== parent) {
-    console.log("SEARCH FOR TRUEOFFSET child: ", current);
-    if (current.previousSibling) {
-      current = current.previousSibling;
-      if (current.previousSibling?.textContent) {
-        offset += current.previousSibling?.textContent.length;
-      }
-    }
-    current = current.parentNode ? current.parentNode : current;
+  while (
+    current.previousSibling?.textContent &&
+    current.previousSibling.nodeType === Node.TEXT_NODE
+  ) {
+    console.log("SEARCH FOR TRUEOFFSET child: ", current.previousSibling);
+
+    offset += current.previousSibling?.textContent.length;
+    current = current.previousSibling;
   }
+  console.log("returned offset = ", offset);
   return offset;
 }
 
 export function wrapAll(
   currentRange: Range,
   format: string,
-  selection: Selection
+  selection: Selection,
+  targetNode: Node
 ) {
   console.log("Adding Tag...");
+  console.log(targetNode);
   const endOffset = currentRange.endOffset - currentRange.startOffset;
-  if (currentRange) {
-    const wrappedNode = document.createElement(format);
-    const fragment = currentRange.extractContents();
+  const wrappedNode = document.createElement(format);
+  const fragment = currentRange.extractContents();
 
-    wrappedNode.appendChild(fragment);
+  wrappedNode.appendChild(fragment);
 
-    currentRange.insertNode(wrappedNode);
-    selection.removeAllRanges();
+  currentRange.insertNode(wrappedNode);
+  selection.removeAllRanges();
 
-    // ---- Define New Range
-    const newRange = document.createRange();
-    const trueContainer = wrappedNode.firstChild
-      ? wrappedNode.firstChild
-      : wrappedNode;
+  // ---- Define New Range
+  const newRange = document.createRange();
+  const trueContainer = wrappedNode.lastChild
+    ? wrappedNode.lastChild
+    : wrappedNode;
 
-    console.log("BITCH: ", 0, endOffset);
+  try {
+    newRange.setStart(trueContainer, 0);
+    newRange.setEnd(trueContainer, endOffset);
 
-    try {
-      newRange.setStart(trueContainer, 0);
-      newRange.setEnd(trueContainer, endOffset);
-
-      selection.addRange(newRange);
-    } catch (error) {
-      console.log(error);
-    }
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -227,7 +268,6 @@ export function unwrapAll(
   format: string,
   selection: Selection,
   currentRange: Range,
-  parent: Node,
   setFormatting: (
     value: React.SetStateAction<{
       strong: boolean;
@@ -238,54 +278,67 @@ export function unwrapAll(
   removeTag: boolean
 ) {
   console.log("Removing Full Tag...");
-  let siblingTarget = true;
-  let startOffset = 0;
-  let endOffset = currentRange.endOffset - currentRange.startOffset;
-  const newEndOffset = currentRange.endOffset;
-  const targetTagName = format.toUpperCase();
-  const textNode = targetElement.lastChild;
+  console.log(
+    "target node = ",
+    targetElement,
+    "target element = ",
+    targetElement.previousSibling
+  );
 
-  while (targetElement.parentNode && targetElement.nodeName !== targetTagName) {
-    targetElement = targetElement.parentNode;
+  let parentNode = targetElement;
+  let trueContainer: Node | null = null;
+
+  while (parentNode.parentNode && parentNode.nodeName !== "SPAN") {
+    parentNode = parentNode.parentNode;
   }
 
-  if (!targetElement) {
-    return {
-      trueContainer: null,
-      startOffset: null,
-      endOffset: null,
-    };
-  }
-
-  if (parent?.nodeName === "SPAN") {
-    let seen = false;
-    const TargetElementArray = Array.from(targetElement.childNodes);
-    for (const element of TargetElementArray) {
-      if (element.nodeType !== Node.TEXT_NODE) {
-        seen = true;
-        break;
-      }
-    }
-    if (!seen) {
-      siblingTarget = false;
-    }
-  }
-
+  const trueOffset =
+    targetElement.childNodes.length <= 2 ? getTrueOffset(targetElement) : 0;
+  const startOffset = currentRange.startOffset + trueOffset;
+  const endOffset = currentRange.endOffset + trueOffset;
   const contentParent = targetElement?.parentNode;
 
-  while (targetElement && targetElement.firstChild) {
-    targetElement.parentNode?.insertBefore(
-      targetElement.firstChild,
-      targetElement
-    );
+  const previousSibling = targetElement?.previousSibling;
+  const previousContent = previousSibling?.lastChild?.textContent
+    ? previousSibling?.lastChild?.textContent
+    : previousSibling?.textContent;
+
+  let prevPrev = targetElement;
+  while (prevPrev.parentNode && prevPrev.parentNode.nodeName !== "SPAN") {
+    prevPrev = prevPrev.parentNode;
   }
 
-  if (!siblingTarget && contentParent) {
-    const trueOffset = getTrueOffset(targetElement, contentParent);
-    console.log(trueOffset, currentRange.endOffset);
-    startOffset = 0 + trueOffset;
-    endOffset = newEndOffset + trueOffset;
+  const prevPrevSibling = prevPrev.previousSibling?.previousSibling
+    ? prevPrev.previousSibling.previousSibling
+    : parentNode.firstChild;
+  console.log(
+    "prevprevprev",
+    prevPrev.previousSibling,
+    prevPrev.previousSibling?.previousSibling
+  );
+
+  // ---- Move Content Out of Tag Being Removed
+  while (targetElement && targetElement.firstChild) {
+    if (targetElement.firstChild.textContent?.trim() === "") {
+      console.log("removing something = ", targetElement.firstChild);
+      targetElement.removeChild(targetElement.firstChild);
+    } else {
+      console.log("throwing it back = ", targetElement.firstChild);
+      targetElement.parentNode?.insertBefore(
+        targetElement.firstChild,
+        targetElement
+      );
+    }
   }
+
+  const previousCurrent = targetElement.previousSibling;
+  const currentContent = previousCurrent?.lastChild?.textContent
+    ? previousCurrent?.lastChild?.textContent
+    : previousCurrent?.textContent;
+
+  const nextSibling = targetElement.nextSibling;
+  const nextContent =
+    nextSibling?.nodeType === Node.TEXT_NODE ? nextSibling.textContent : "";
 
   // ---- Remove Element & Cleanup Empty Space
   contentParent?.removeChild(targetElement);
@@ -293,53 +346,40 @@ export function unwrapAll(
   setFormatting((prev) => ({ ...prev, [format]: !removeTag }));
   selection.removeAllRanges();
 
-  // ---- Define the New Range
-  let trueContainer: Node | undefined = undefined;
+  // if the previous Sibling and current Nodes are both TextNodes
 
-  if (textNode) {
-    trueContainer =
-      contentParent?.childNodes[
-        Array.from(contentParent.childNodes).indexOf(textNode)
-      ];
+  if (
+    previousSibling?.nodeType === Node.TEXT_NODE &&
+    previousCurrent?.nodeType === Node.TEXT_NODE &&
+    previousContent &&
+    currentContent
+  ) {
+    // If both will become textNodes, then combined their
+    // texts, make a new textNode ouf of them and delete
+    // the rest
+    const updatedElement = document.createTextNode(
+      previousContent + currentContent + nextContent
+    );
+
+    parentNode.replaceChild(updatedElement, previousSibling);
+    trueContainer = updatedElement;
   } else {
-    trueContainer = undefined;
+    console.log(
+      "different previous container",
+      //   parentNode.childNodes,
+      prevPrevSibling?.nextSibling?.childNodes,
+      prevPrevSibling?.nextSibling
+    );
+    trueContainer = prevPrevSibling?.nextSibling?.lastChild?.textContent
+      ? prevPrevSibling?.nextSibling.lastChild
+      : prevPrevSibling?.nextSibling;
+    console.log(trueContainer);
   }
 
-  if (!trueContainer && contentParent?.childNodes) {
-    const NodeArray = Array.from(contentParent?.childNodes);
-    let fragmentSearch: number | undefined = undefined;
+  // ---- Define the New Range
 
-    NodeArray.forEach((element, idx) => {
-      if (textNode?.textContent) {
-        fragmentSearch = element.textContent?.indexOf(textNode?.textContent);
-      } else {
-        fragmentSearch = -1;
-      }
-
-      if (fragmentSearch !== -1) {
-        trueContainer = contentParent?.childNodes[idx];
-        if (trueContainer?.nodeName !== "SPAN") {
-          while (trueContainer?.firstChild) {
-            trueContainer = trueContainer.firstChild;
-          }
-        }
-        console.log("RESULT FROM SEARCH: ", trueContainer);
-        return;
-      }
-    });
-  }
-
-  if (!trueContainer) {
-    return {
-      trueContainer: null,
-      startOffset: null,
-      endOffset: null,
-    };
-  }
-
-  console.log("CURRENT PARENT AFTER TAG REMOVAL", contentParent);
-  console.log(contentParent?.childNodes, textNode);
-  console.log("RANGE DETAILS: ", trueContainer, startOffset, endOffset);
+  console.log(document.getElementById("father")?.childNodes);
+  console.log(trueContainer, startOffset, endOffset, trueOffset);
 
   return {
     trueContainer: trueContainer,
