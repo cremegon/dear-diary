@@ -18,7 +18,7 @@ export function treeWalkerSearch(currentRange: Range) {
   let closestDistance = Infinity;
   let closestTextNode: Text | null = null;
 
-  const actualTextSearch = currentRange.toString().normalize();
+  const actualTextSearch = currentRange.toString().trim();
   const actualRect = currentRange.getBoundingClientRect();
 
   console.log("Finding True Node = ", actualTextSearch);
@@ -217,13 +217,17 @@ export function getTrueOffset(target: Node) {
   let offset = 0;
   let current = target;
 
+  console.log("offset sibling = ", current.previousSibling);
   while (
-    current.previousSibling?.textContent &&
+    current.previousSibling &&
+    current.previousSibling !== null &&
     current.previousSibling.nodeType === Node.TEXT_NODE
   ) {
     console.log("SEARCH FOR TRUEOFFSET child: ", current.previousSibling);
 
-    offset += current.previousSibling?.textContent.length;
+    offset += current.previousSibling?.textContent
+      ? current.previousSibling.textContent.length
+      : 0;
     current = current.previousSibling;
   }
   console.log("returned offset = ", offset);
@@ -277,53 +281,26 @@ export function unwrapAll(
   ) => void,
   removeTag: boolean
 ) {
-  console.log("Removing Full Tag...");
-  console.log(
-    "target node = ",
-    targetElement,
-    "target element = ",
-    targetElement.previousSibling
-  );
+  console.log("Removing Full Tag...", targetElement);
 
   let parentNode = targetElement;
-  let trueContainer: Node | null = null;
-
   while (parentNode.parentNode && parentNode.nodeName !== "SPAN") {
     parentNode = parentNode.parentNode;
   }
 
   const trueOffset =
-    targetElement.childNodes.length <= 2 ? getTrueOffset(targetElement) : 0;
+    targetElement.childNodes.length < 2 ? getTrueOffset(targetElement) : 0;
   const startOffset = currentRange.startOffset + trueOffset;
   const endOffset = currentRange.endOffset + trueOffset;
   const contentParent = targetElement?.parentNode;
 
-  const previousSibling = targetElement?.previousSibling;
-  const previousContent = previousSibling?.lastChild?.textContent
-    ? previousSibling?.lastChild?.textContent
-    : previousSibling?.textContent;
-
-  let prevPrev = targetElement;
-  while (prevPrev.parentNode && prevPrev.parentNode.nodeName !== "SPAN") {
-    prevPrev = prevPrev.parentNode;
-  }
-
-  const prevPrevSibling = prevPrev.previousSibling?.previousSibling
-    ? prevPrev.previousSibling.previousSibling
-    : parentNode.firstChild;
-  console.log(
-    "prevprevprev",
-    prevPrev.previousSibling,
-    prevPrev.previousSibling?.previousSibling
-  );
-
   // ---- Move Content Out of Tag Being Removed
   while (targetElement && targetElement.firstChild) {
+    // ---- Remove Empty Text Nodes
     if (targetElement.firstChild.textContent?.trim() === "") {
-      console.log("removing something = ", targetElement.firstChild);
       targetElement.removeChild(targetElement.firstChild);
     } else {
-      console.log("throwing it back = ", targetElement.firstChild);
+      // ---- Throwback Everything that's a Node/Text Node
       targetElement.parentNode?.insertBefore(
         targetElement.firstChild,
         targetElement
@@ -331,14 +308,8 @@ export function unwrapAll(
     }
   }
 
+  contentParent?.normalize();
   const previousCurrent = targetElement.previousSibling;
-  const currentContent = previousCurrent?.lastChild?.textContent
-    ? previousCurrent?.lastChild?.textContent
-    : previousCurrent?.textContent;
-
-  const nextSibling = targetElement.nextSibling;
-  const nextContent =
-    nextSibling?.nodeType === Node.TEXT_NODE ? nextSibling.textContent : "";
 
   // ---- Remove Element & Cleanup Empty Space
   contentParent?.removeChild(targetElement);
@@ -347,52 +318,24 @@ export function unwrapAll(
   selection.removeAllRanges();
 
   // if the previous Sibling and current Nodes are both TextNodes
+  const trueContainer = previousCurrent?.lastChild?.textContent
+    ? previousCurrent.lastChild
+    : previousCurrent;
 
-  if (
-    previousSibling?.nodeType === Node.TEXT_NODE &&
-    previousCurrent?.nodeType === Node.TEXT_NODE &&
-    previousContent &&
-    currentContent
-  ) {
-    // If both will become textNodes, then combined their
-    // texts, make a new textNode ouf of them and delete
-    // the rest
-    const updatedElement = document.createTextNode(
-      previousContent + currentContent + nextContent
-    );
-
-    parentNode.replaceChild(updatedElement, previousSibling);
-    trueContainer = updatedElement;
-  } else {
-    console.log(
-      "different previous container",
-      //   parentNode.childNodes,
-      prevPrevSibling?.nextSibling?.childNodes,
-      prevPrevSibling?.nextSibling
-    );
-    trueContainer = prevPrevSibling?.nextSibling?.lastChild?.textContent
-      ? prevPrevSibling?.nextSibling.lastChild
-      : prevPrevSibling?.nextSibling;
-    console.log(trueContainer);
-  }
-
-  // ---- Define the New Range
-
-  console.log(document.getElementById("father")?.childNodes);
+  console.log(parentNode.childNodes);
   console.log(trueContainer, startOffset, endOffset, trueOffset);
 
-  return {
-    trueContainer: trueContainer,
-    startOffset: startOffset,
-    endOffset: endOffset,
-  };
+  if (!trueContainer) return;
 
   // ---- Programmatically Set & Select the New Range
-  //   console.log(trueContainer, startOffset, endOffset);
-  //   newRange.setStart(trueContainer, startOffset);
-  //   newRange.setEnd(trueContainer, endOffset);
-
-  //   selection.addRange(newRange);
+  try {
+    const newRange = document.createRange();
+    newRange.setStart(trueContainer, startOffset);
+    newRange.setEnd(trueContainer, endOffset);
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function unwrapStart(

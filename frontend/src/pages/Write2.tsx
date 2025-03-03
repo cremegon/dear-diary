@@ -53,7 +53,7 @@ export const Editor = () => {
           start === 0 &&
           end === startCont.textContent?.length
         ) {
-          const { trueContainer, startOffset, endOffset } = unwrapAll(
+          unwrapAll(
             targetElement,
             format,
             selection,
@@ -61,15 +61,6 @@ export const Editor = () => {
             setFormatting,
             removeTag
           );
-
-          // ---- Programmatically Set & Select the New Range
-          if (trueContainer) {
-            const newRange = document.createRange();
-            newRange.setStart(trueContainer, startOffset);
-            newRange.setEnd(trueContainer, endOffset);
-
-            selection.addRange(newRange);
-          }
         }
 
         // ---- UNBOLDEN START
