@@ -242,7 +242,19 @@ export function wrapAll(
 ) {
   console.log("Adding Tag...");
   console.log(targetNode);
-  const endOffset = currentRange.endOffset - currentRange.startOffset;
+  console.log(currentRange);
+  let endOffset = 0;
+  const startOffset = 0;
+
+  if (currentRange.startContainer !== currentRange.endContainer) {
+    endOffset = currentRange.startContainer.textContent
+      ? currentRange.startContainer.textContent.length -
+        currentRange.startOffset
+      : 0;
+  } else {
+    endOffset = currentRange.endOffset - currentRange.startOffset;
+  }
+
   const wrappedNode = document.createElement(format);
   const fragment = currentRange.extractContents();
 
@@ -257,14 +269,17 @@ export function wrapAll(
     ? wrappedNode.lastChild
     : wrappedNode;
 
+  console.log(trueContainer, startOffset, endOffset);
   try {
-    newRange.setStart(trueContainer, 0);
-    newRange.setEnd(trueContainer, endOffset);
+    newRange.setStart(trueContainer, startOffset);
+    newRange.setEnd(trueContainer, endOffset - startOffset);
 
     selection.addRange(newRange);
   } catch (error) {
     console.log(error);
   }
+
+  return trueContainer;
 }
 
 export function unwrapAll(
@@ -336,6 +351,8 @@ export function unwrapAll(
   } catch (error) {
     console.log(error);
   }
+
+  return trueContainer;
 }
 
 export function unwrapStart(
@@ -433,4 +450,85 @@ export function validSelection(currentRange: Range) {
     return false;
   }
   return true;
+}
+
+export function removeFailedTag(node: Node) {
+  let parent = node;
+  while (parent.parentNode && parent.parentNode.nodeName !== "SPAN") {
+    parent = parent.parentNode;
+  }
+
+  if (
+    parent.previousSibling?.nodeType === node.ELEMENT_NODE &&
+    parent.previousSibling.textContent?.trim() === "" &&
+    parent.previousSibling.nodeName !== "BR"
+  ) {
+    parent.removeChild(parent.previousSibling);
+  }
+  if (
+    parent.nextSibling?.nodeType === node.ELEMENT_NODE &&
+    parent.nextSibling.textContent?.trim() === "" &&
+    parent.nextSibling.nodeName !== "BR"
+  ) {
+    parent.removeChild(parent.nextSibling);
+  }
+
+  parent.normalize();
+}
+
+export function insertBlankTag(
+  currentRange: Range,
+  format: string,
+  selection: Selection
+) {
+  const element = document.createElement(`${format}`);
+  currentRange.insertNode(element);
+  const trueContainer = element;
+
+  selection.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStart(trueContainer, 0);
+  newRange.setEnd(trueContainer, 0);
+  selection.addRange(newRange);
+}
+
+export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
+  if (event.key !== "Enter") return;
+
+  event.preventDefault();
+  const selection = window.getSelection();
+  console.log("selection = ", selection);
+  if (!selection || selection?.rangeCount < 1) return;
+
+  const currentRange = selection.getRangeAt(0);
+
+  const div = document.createElement("div");
+  const span = document.createElement("span");
+  span.innerHTML = "&nbsp;";
+  div.appendChild(span);
+
+  let trueContainer = currentRange.startContainer;
+
+  console.log("true container before = ", trueContainer);
+  while (trueContainer.parentNode && trueContainer.nodeName !== "SPAN") {
+    trueContainer = trueContainer.parentNode;
+  }
+
+  console.log("true container after = ", trueContainer);
+
+  if (trueContainer.nextSibling) {
+    console.log("first");
+    trueContainer.parentNode?.insertBefore(div, trueContainer.nextSibling);
+  } else {
+    console.log("second");
+    trueContainer.parentNode?.appendChild(div);
+  }
+
+  const newRange = document.createRange();
+  newRange.setStart(span, 0);
+  newRange.setEnd(span, 0);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
+
+  console.log(document.getElementById("father")?.childNodes);
 }

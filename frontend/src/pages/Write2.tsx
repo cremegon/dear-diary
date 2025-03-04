@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import {
+  addNewLine,
   findToggleState2,
   findToggleVariation,
+  insertBlankTag,
+  removeFailedTag,
   treeWalkerSearch,
   unwrapAll,
   unwrapBetween,
@@ -17,12 +20,18 @@ export const Editor = () => {
     underline: false,
   });
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    addNewLine(event);
+  }
+
   function toggleFormat(format: string) {
+    let lastNode: Node | undefined | null = null;
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const currentRange = selection.getRangeAt(0);
 
       if (currentRange.collapsed) {
+        insertBlankTag(currentRange, format, selection);
         return;
       }
 
@@ -53,7 +62,7 @@ export const Editor = () => {
           start === 0 &&
           end === startCont.textContent?.length
         ) {
-          unwrapAll(
+          lastNode = unwrapAll(
             targetElement,
             format,
             selection,
@@ -108,7 +117,11 @@ export const Editor = () => {
 
       // ---- WRAP INSIDE TAG
       else if (!variation && !removeTag && targetElement) {
-        wrapAll(currentRange, format, selection, targetElement);
+        lastNode = wrapAll(currentRange, format, selection, targetElement);
+      }
+
+      if (lastNode) {
+        removeFailedTag(lastNode);
       }
     }
     console.log(document.getElementById("father")?.innerHTML);
@@ -134,13 +147,11 @@ export const Editor = () => {
         className="bg-slate-400 w-full h-full"
         contentEditable="true"
         id="father"
+        onKeyDown={handleKeyDown}
       >
-        <span>Hello, World!</span> <br />
-        <span>
-          We are <em>testing</em> and <em>testing</em> and <strong>tes</strong>
-          ti<strong>ng</strong> and test<strong>in</strong>g this and that that
-          that that <strong>BULLSHIT</strong>
-        </span>
+        <div>
+          <span>HELLO EVERY NYAN!</span>
+        </div>
       </div>
     </div>
   );
