@@ -501,26 +501,87 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   if (!selection || selection?.rangeCount < 1) return;
 
   const currentRange = selection.getRangeAt(0);
+  let contentParent = currentRange.startContainer;
+  while (contentParent.parentNode && contentParent.nodeName !== "SPAN") {
+    contentParent = contentParent.parentNode;
+  }
+
+  let selectionParent = currentRange.startContainer;
+  while (
+    selectionParent.parentNode &&
+    selectionParent.parentNode.nodeName !== "SPAN"
+  ) {
+    selectionParent = selectionParent.parentNode;
+  }
+
+  const startOffset = currentRange.startOffset;
+  const endOffset = currentRange.startContainer.textContent
+    ? currentRange.startContainer.textContent.length
+    : 0;
 
   const div = document.createElement("div");
   const span = document.createElement("span");
   span.innerHTML = "&nbsp;";
   div.appendChild(span);
 
+  if (startOffset === 0 && !selectionParent.previousSibling) {
+    console.log("first");
+    const clonedNodes = [];
+
+    for (const child of contentParent.childNodes) {
+      clonedNodes.push(child.cloneNode(true) as never);
+    }
+
+    for (const cloned of clonedNodes) {
+      span.appendChild(cloned);
+    }
+  } else if (endOffset - startOffset > 1) {
+    console.log("first");
+    const newLineText = currentRange.startContainer.textContent?.slice(
+      startOffset,
+      endOffset
+    );
+    const oldLineText = currentRange.startContainer.textContent?.slice(
+      0,
+      startOffset
+    );
+    currentRange.startContainer.textContent = oldLineText as string;
+    const newTextNode = document.createTextNode(newLineText as string);
+    span.appendChild(newTextNode);
+
+    let curr = selectionParent;
+
+    while (curr?.nextSibling) {
+      span.appendChild(curr.nextSibling);
+      curr = curr?.nextSibling;
+    }
+  } else if (
+    startOffset === endOffset - 1 ||
+    (startOffset === 0 && selectionParent.previousSibling)
+  ) {
+    console.log("second");
+    if (startOffset === endOffset) {
+      while (selectionParent.nextSibling) {
+        span.appendChild(selectionParent.nextSibling);
+      }
+    } else {
+      while (selectionParent.nextSibling) {
+        span.appendChild(selectionParent);
+      }
+    }
+  }
+
   let trueContainer = currentRange.startContainer;
 
-  console.log("true container before = ", trueContainer);
   while (trueContainer.parentNode && trueContainer.nodeName !== "SPAN") {
     trueContainer = trueContainer.parentNode;
   }
 
-  console.log("true container after = ", trueContainer);
-
   if (trueContainer.nextSibling) {
-    console.log("first");
+    console.log("first bottom");
     trueContainer.parentNode?.insertBefore(div, trueContainer.nextSibling);
   } else {
-    console.log("second");
+    console.log("second bottom");
     trueContainer.parentNode?.appendChild(div);
   }
 

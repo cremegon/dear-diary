@@ -150,7 +150,9 @@ export const Editor = () => {
         onKeyDown={handleKeyDown}
       >
         <div>
-          <span>HELLO EVERY NYAN!</span>
+          <span>
+            HELLO EVERY <strong>NYAN!</strong>
+          </span>
         </div>
       </div>
     </div>
