@@ -359,12 +359,17 @@ export function unwrapStart(
   targetElement: Node,
   start: number,
   end: number,
-  parent: Node
+  parent: Node,
+  selection: Selection
 ) {
   if (!targetElement.textContent) {
     return;
   }
   console.log("UNBOLDEN START");
+
+  const trueOffset =
+    targetElement.childNodes.length < 2 ? getTrueOffset(targetElement) : 0;
+
   const textBefore = targetElement.textContent.slice(start, end);
   targetElement.textContent = targetElement.textContent.slice(
     end,
@@ -372,6 +377,14 @@ export function unwrapStart(
   );
   const textBeforeNode = document.createTextNode(textBefore);
   parent?.insertBefore(textBeforeNode, targetElement);
+
+  parent.normalize();
+
+  const newRange = document.createRange();
+  newRange.setStart(textBeforeNode, 0 + trueOffset);
+  newRange.setEnd(textBeforeNode, textBefore.length + trueOffset);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
 }
 
 export function unwrapEnd(

@@ -80,7 +80,7 @@ export const Editor = () => {
           startCont.textContent &&
           end < startCont.textContent.length
         ) {
-          unwrapStart(targetElement, start, end, parent);
+          unwrapStart(targetElement, start, end, parent, selection);
         }
 
         // ---- UNBOLDEN END
