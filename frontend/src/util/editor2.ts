@@ -521,6 +521,7 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
 
   const div = document.createElement("div");
   const span = document.createElement("span");
+  span.innerHTML = "&nbsp;";
   div.appendChild(span);
 
   if (startOffset === 0 && !selectionParent.previousSibling) {
@@ -532,6 +533,8 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     spanParent.textContent = "\u00A0";
   } else if (startOffset > 0 && endOffset - startOffset > 1) {
     console.log("second", startOffset, endOffset);
+    const elementArray = [];
+
     const newLineText = currentRange.startContainer.textContent?.slice(
       startOffset,
       endOffset
@@ -541,7 +544,11 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
       startOffset
     );
     currentRange.startContainer.textContent = oldLineText as string;
-    const newTextNode = document.createTextNode(newLineText as string);
+    let newTextNode = document.createTextNode(newLineText as string);
+
+    for (const element of elementArray) {
+      const newElement = document.createElement(element);
+    }
     span.appendChild(newTextNode);
 
     while (selectionParent.nextSibling) {
