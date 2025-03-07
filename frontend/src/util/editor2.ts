@@ -307,7 +307,7 @@ export function unwrapAll(
     targetElement.childNodes.length < 2 ? getTrueOffset(targetElement) : 0;
   const startOffset = currentRange.startOffset + trueOffset;
   const endOffset = currentRange.endOffset + trueOffset;
-  const contentParent = targetElement?.parentNode;
+  const spanParent = targetElement?.parentNode;
 
   // ---- Move Content Out of Tag Being Removed
   while (targetElement && targetElement.firstChild) {
@@ -323,12 +323,12 @@ export function unwrapAll(
     }
   }
 
-  contentParent?.normalize();
+  spanParent?.normalize();
   const previousCurrent = targetElement.previousSibling;
 
   // ---- Remove Element & Cleanup Empty Space
-  contentParent?.removeChild(targetElement);
-  contentParent?.normalize();
+  spanParent?.removeChild(targetElement);
+  spanParent?.normalize();
   setFormatting((prev) => ({ ...prev, [format]: !removeTag }));
   selection.removeAllRanges();
 
@@ -501,12 +501,12 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   if (!selection || selection?.rangeCount < 1) return;
 
   const currentRange = selection.getRangeAt(0);
-  let contentParent = currentRange.startContainer;
-  while (contentParent.parentNode && contentParent.nodeName !== "SPAN") {
-    contentParent = contentParent.parentNode;
+  let spanParent = currentRange.startContainer;
+  while (spanParent.parentNode && spanParent.nodeName !== "SPAN") {
+    spanParent = spanParent.parentNode;
   }
 
-  let selectionParent = currentRange.startContainer;
+  let selectionParent: Node | null = currentRange.startContainer;
   while (
     selectionParent.parentNode &&
     selectionParent.parentNode.nodeName !== "SPAN"
@@ -521,22 +521,17 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
 
   const div = document.createElement("div");
   const span = document.createElement("span");
-  span.innerHTML = "&nbsp;";
   div.appendChild(span);
 
   if (startOffset === 0 && !selectionParent.previousSibling) {
     console.log("first");
-    const clonedNodes = [];
 
-    for (const child of contentParent.childNodes) {
-      clonedNodes.push(child.cloneNode(true) as never);
+    while (spanParent.firstChild) {
+      span.appendChild(spanParent.firstChild);
     }
-
-    for (const cloned of clonedNodes) {
-      span.appendChild(cloned);
-    }
-  } else if (endOffset - startOffset > 1) {
-    console.log("first");
+    spanParent.textContent = "\u00A0";
+  } else if (startOffset > 0 && endOffset - startOffset > 1) {
+    console.log("second", startOffset, endOffset);
     const newLineText = currentRange.startContainer.textContent?.slice(
       startOffset,
       endOffset
@@ -549,40 +544,37 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     const newTextNode = document.createTextNode(newLineText as string);
     span.appendChild(newTextNode);
 
-    let curr = selectionParent;
-
-    while (curr?.nextSibling) {
-      span.appendChild(curr.nextSibling);
-      curr = curr?.nextSibling;
+    while (selectionParent.nextSibling) {
+      span.appendChild(selectionParent.nextSibling);
     }
   } else if (
     startOffset === endOffset - 1 ||
     (startOffset === 0 && selectionParent.previousSibling)
   ) {
-    console.log("second");
-    if (startOffset === endOffset) {
+    console.log(startOffset, endOffset - 1);
+    console.log("third");
+    if (startOffset === endOffset - 1) {
       while (selectionParent.nextSibling) {
+        console.log("hi", selectionParent.nextSibling);
         span.appendChild(selectionParent.nextSibling);
       }
     } else {
-      while (selectionParent.nextSibling) {
+      while (selectionParent) {
+        console.log("hey", selectionParent);
         span.appendChild(selectionParent);
+        selectionParent = selectionParent.nextSibling;
       }
     }
   }
 
-  let trueContainer = currentRange.startContainer;
+  const trueContainer = document.getElementById("father");
 
-  while (trueContainer.parentNode && trueContainer.nodeName !== "SPAN") {
-    trueContainer = trueContainer.parentNode;
-  }
-
-  if (trueContainer.nextSibling) {
+  if (trueContainer?.nextSibling) {
     console.log("first bottom");
-    trueContainer.parentNode?.insertBefore(div, trueContainer.nextSibling);
+    trueContainer?.insertBefore(div, trueContainer?.nextSibling);
   } else {
     console.log("second bottom");
-    trueContainer.parentNode?.appendChild(div);
+    trueContainer?.appendChild(div);
   }
 
   const newRange = document.createRange();
