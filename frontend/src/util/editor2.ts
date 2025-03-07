@@ -494,19 +494,20 @@ export function insertBlankTag(
 
 export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   if (event.key !== "Enter") return;
-
   event.preventDefault();
-  const selection = window.getSelection();
-  console.log("selection = ", selection);
-  if (!selection || selection?.rangeCount < 1) return;
 
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
+
+  // ---- Find the Current Selection's Span Node and Div Node
   let spanParent = currentRange.startContainer;
   while (spanParent.parentNode && spanParent.nodeName !== "SPAN") {
     spanParent = spanParent.parentNode;
   }
   const divParent = spanParent.parentNode;
 
+  // ---- Find the Outermost Node of the Selection Container
   let selectionParent: Node | null = currentRange.startContainer;
   while (
     selectionParent.parentNode &&
@@ -515,11 +516,14 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     selectionParent = selectionParent.parentNode;
   }
 
+  // ---- Define Start Offset as the current Caret Position
+  // ---- Define End Offset as the Total Length of Container
   const startOffset = currentRange.startOffset;
   const endOffset = currentRange.startContainer.textContent
     ? currentRange.startContainer.textContent.length
     : 0;
 
+  // ---- Create new Div and Span to Insert
   const div = document.createElement("div");
   const span = document.createElement("span");
   span.innerHTML = "&nbsp;";
