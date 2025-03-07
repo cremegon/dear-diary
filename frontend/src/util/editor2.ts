@@ -542,23 +542,29 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   // ---- New Line: If Caret is in-between a Text Node
   else if (startOffset > 0 && endOffset - startOffset > 1) {
     console.log("Caret in Between...");
-    const elementArray: string[] = [];
 
+    // ---- Go Up and record every Element Node
+    const elementArray: string[] = [];
     let current = currentRange.startContainer;
     while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
       elementArray.push(current.parentNode.nodeName);
       current = current.parentNode;
     }
 
+    // ---- Slice the Text for the New Line
     const newLineText = currentRange.startContainer.textContent?.slice(
       startOffset,
       endOffset
     );
+
+    // ---- Slice the Text on the Current Line
     const oldLineText = currentRange.startContainer.textContent?.slice(
       0,
       startOffset
     );
     currentRange.startContainer.textContent = oldLineText as string;
+
+    // ---- Build the NewTextNode with/without Element Tags
     const newTextNode = document.createTextNode(newLineText as string);
     let wrappedNode: Node = newTextNode;
 
@@ -567,8 +573,11 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
       newElement.appendChild(wrappedNode);
       wrappedNode = newElement;
     }
+
+    // ---- Append newTextNode to Span
     span.appendChild(newTextNode);
 
+    // ---- Append the rest of the Nodes after the newTextNode
     while (selectionParent.nextSibling) {
       span.appendChild(selectionParent.nextSibling);
     }
@@ -593,17 +602,12 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   }
 
   const trueContainer = divParent?.parentNode;
-  console.log(
-    trueContainer?.previousSibling,
-    trueContainer,
-    trueContainer?.nextSibling
-  );
 
   if (divParent?.nextSibling) {
-    console.log("first bottom");
+    console.log("In-between Line");
     trueContainer?.insertBefore(div, divParent?.nextSibling);
   } else {
-    console.log("second bottom");
+    console.log("New Line");
     trueContainer?.appendChild(div);
   }
 
