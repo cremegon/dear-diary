@@ -505,6 +505,7 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   while (spanParent.parentNode && spanParent.nodeName !== "SPAN") {
     spanParent = spanParent.parentNode;
   }
+  const divParent = spanParent.parentNode;
 
   let selectionParent: Node | null = currentRange.startContainer;
   while (
@@ -533,7 +534,13 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     spanParent.textContent = "\u00A0";
   } else if (startOffset > 0 && endOffset - startOffset > 1) {
     console.log("second", startOffset, endOffset);
-    const elementArray = [];
+    const elementArray: string[] = [];
+
+    let current = currentRange.startContainer;
+    while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
+      elementArray.push(current.parentNode.nodeName);
+      current = current.parentNode;
+    }
 
     const newLineText = currentRange.startContainer.textContent?.slice(
       startOffset,
@@ -544,10 +551,13 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
       startOffset
     );
     currentRange.startContainer.textContent = oldLineText as string;
-    let newTextNode = document.createTextNode(newLineText as string);
+    const newTextNode = document.createTextNode(newLineText as string);
+    let wrappedNode: Node = newTextNode;
 
-    for (const element of elementArray) {
-      const newElement = document.createElement(element);
+    for (const element of elementArray.reverse()) {
+      const newElement = document.createElement(element.toLowerCase());
+      newElement.appendChild(wrappedNode);
+      wrappedNode = newElement;
     }
     span.appendChild(newTextNode);
 
@@ -574,11 +584,16 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     }
   }
 
-  const trueContainer = document.getElementById("father");
+  const trueContainer = divParent?.parentNode;
+  console.log(
+    trueContainer?.previousSibling,
+    trueContainer,
+    trueContainer?.nextSibling
+  );
 
-  if (trueContainer?.nextSibling) {
+  if (divParent?.nextSibling) {
     console.log("first bottom");
-    trueContainer?.insertBefore(div, trueContainer?.nextSibling);
+    trueContainer?.insertBefore(div, divParent?.nextSibling);
   } else {
     console.log("second bottom");
     trueContainer?.appendChild(div);
