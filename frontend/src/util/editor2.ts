@@ -529,15 +529,19 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   span.innerHTML = "&nbsp;";
   div.appendChild(span);
 
+  // ---- New Line: If Caret is at the very beginning of the Line
   if (startOffset === 0 && !selectionParent.previousSibling) {
-    console.log("first");
+    console.log("Caret at Left...");
 
     while (spanParent.firstChild) {
       span.appendChild(spanParent.firstChild);
     }
     spanParent.textContent = "\u00A0";
-  } else if (startOffset > 0 && endOffset - startOffset > 1) {
-    console.log("second", startOffset, endOffset);
+  }
+
+  // ---- New Line: If Caret is in-between a Text Node
+  else if (startOffset > 0 && endOffset - startOffset > 1) {
+    console.log("Caret in Between...");
     const elementArray: string[] = [];
 
     let current = currentRange.startContainer;
@@ -568,20 +572,20 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     while (selectionParent.nextSibling) {
       span.appendChild(selectionParent.nextSibling);
     }
-  } else if (
+  }
+
+  // ---- New Line: If Caret is at the end of a Node
+  else if (
     startOffset === endOffset - 1 ||
     (startOffset === 0 && selectionParent.previousSibling)
   ) {
-    console.log(startOffset, endOffset - 1);
-    console.log("third");
+    console.log("Caret at Right...");
     if (startOffset === endOffset - 1) {
       while (selectionParent.nextSibling) {
-        console.log("hi", selectionParent.nextSibling);
         span.appendChild(selectionParent.nextSibling);
       }
     } else {
       while (selectionParent) {
-        console.log("hey", selectionParent);
         span.appendChild(selectionParent);
         selectionParent = selectionParent.nextSibling;
       }
