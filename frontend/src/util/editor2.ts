@@ -303,8 +303,12 @@ export function unwrapAll(
     parentNode = parentNode.parentNode;
   }
 
+  console.log("???", targetElement.childNodes);
+
   const trueOffset =
-    targetElement.childNodes.length < 2 ? getTrueOffset(targetElement) : 0;
+    targetElement.firstChild?.nodeType === Node.TEXT_NODE
+      ? getTrueOffset(targetElement)
+      : 0;
   const startOffset = currentRange.startOffset + trueOffset;
   const endOffset = currentRange.endOffset + trueOffset;
   const spanParent = targetElement?.parentNode;
