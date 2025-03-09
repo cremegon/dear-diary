@@ -17,6 +17,8 @@ export const Editor = () => {
     underline: false,
   });
 
+  const [fontSize, setFontSize] = useState(16);
+
   // ---- NEW FX TO ADD:
   // ---- finally have the main editing logic working,
   // ---- now the last left is the option to change font size
@@ -136,12 +138,25 @@ export const Editor = () => {
         >
           Italic
         </button>
+        <button
+          className="btn-writeUI"
+          onClick={() => setFontSize(fontSize + 2)}
+        >
+          Font +
+        </button>
+        <button
+          className="btn-writeUI"
+          onClick={() => setFontSize(Math.max(10, fontSize - 2))}
+        >
+          Font -
+        </button>
       </div>
       <div
         className="bg-slate-400 w-full h-full"
         contentEditable="true"
         id="father"
         onKeyDown={handleKeyDown}
+        style={{ fontSize: `${fontSize}px` }}
       >
         <div>
           <span>
