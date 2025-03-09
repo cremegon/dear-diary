@@ -17,6 +17,12 @@ export const Editor = () => {
     underline: false,
   });
 
+  // ---- NEW FX TO ADD:
+  // ---- finally have the main editing logic working,
+  // ---- now the last left is the option to change font size
+  // ---- option to change font family, text alignment,
+  // ---- as well as to change text color on selections (tentative)
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     addNewLine(event);
   }
@@ -115,20 +121,22 @@ export const Editor = () => {
 
   return (
     <div className="w-full h-[80vh] flex flex-col items-center">
-      <button
-        value="strong"
-        className="btn-writeUI"
-        onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
-      >
-        Bold
-      </button>
-      <button
-        value="em"
-        className="btn-writeUI"
-        onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
-      >
-        Italic
-      </button>
+      <div className="flex flex-row">
+        <button
+          value="strong"
+          className="btn-writeUI"
+          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+        >
+          Bold
+        </button>
+        <button
+          value="em"
+          className="btn-writeUI"
+          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+        >
+          Italic
+        </button>
+      </div>
       <div
         className="bg-slate-400 w-full h-full"
         contentEditable="true"
