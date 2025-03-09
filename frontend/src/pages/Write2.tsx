@@ -136,6 +136,13 @@ export const Editor = () => {
   return (
     <div className="w-full h-[80vh] flex flex-col items-center">
       <div className="flex flex-row text">
+        <select className="btn-writeUI">
+          <option>Ariel</option>
+          <option>Garamond</option>
+          <option>Milker</option>
+          <option>Cretol</option>
+        </select>
+
         <button
           value="strong"
           className="btn-writeUI"
@@ -177,11 +184,15 @@ export const Editor = () => {
         contentEditable="true"
         id="father"
         onKeyDown={handleKeyDown}
-        style={{ fontSize: `${fontSize}px`, textAlign: `${textAlign}` }}
+        style={{
+          fontSize: `${fontSize}px`,
+          textAlign: `${textAlign}`,
+          fontFamily: "Sour Gummy",
+        }}
       >
         <div>
           <span>
-            HELLO EVERY <strong>NYAN!</strong>
+            Hello every <strong>NYAN!</strong>
           </span>
         </div>
       </div>
