@@ -7,9 +7,6 @@ import {
   removeFailedTag,
   treeWalkerSearch,
   unwrapAll,
-  unwrapBetween,
-  unwrapEnd,
-  unwrapStart,
   wrapAll,
 } from "../util/editor2.ts";
 
@@ -48,68 +45,57 @@ export const Editor = () => {
 
       // ---- UNWRAP FROM TAG
       if (!variation && removeTag && targetElement) {
-        const startCont = currentRange.startContainer;
-        const endCont = currentRange.endContainer;
-        const start = currentRange.startOffset;
-        const end = currentRange.endOffset;
-        const parent = targetElement.parentNode;
         console.log(currentRange);
 
-        // ---- UNBOLDEN ALL
-        if (
-          parent &&
-          startCont === endCont &&
-          start === 0 &&
-          end === startCont.textContent?.length
-        ) {
-          lastNode = unwrapAll(
-            targetElement,
-            format,
-            selection,
-            currentRange,
-            setFormatting,
-            removeTag
-          );
-        }
+        lastNode = unwrapAll(
+          targetElement,
+          format,
+          selection,
+          currentRange,
+          setFormatting,
+          removeTag
+        );
 
-        // ---- UNBOLDEN START
-        else if (
-          parent &&
-          startCont === endCont &&
-          start === 0 &&
-          startCont.textContent &&
-          end < startCont.textContent.length
-        ) {
-          unwrapStart(targetElement, start, end, parent, selection);
-        }
+        // else if (start,inbetween or end fx?) {
+        //   // ---- UNBOLDEN START
+        //   if (
+        //     parent &&
+        //     startCont === endCont &&
+        //     start === 0 &&
+        //     startCont.textContent &&
+        //     end < startCont.textContent.length
+        //   ) {
+        //     unwrapStart(targetElement, start, end, parent, selection);
+        //   }
 
-        // ---- UNBOLDEN END
-        else if (
-          parent &&
-          startCont === endCont &&
-          start > 0 &&
-          end === startCont.textContent?.length
-        ) {
-          unwrapEnd(targetElement, start, end, parent);
-        }
+        //   // ---- UNBOLDEN END
+        //   else if (
+        //     parent &&
+        //     startCont === endCont &&
+        //     start > 0 &&
+        //     end === startCont.textContent?.length
+        //   ) {
+        //     unwrapEnd(targetElement, start, end, parent);
+        //   }
 
-        // ---- UNBOLDEN BETWEEN
-        else if (
-          parent &&
-          startCont === endCont &&
-          start > 0 &&
-          endCont.textContent &&
-          end < endCont.textContent.length
-        ) {
-          unwrapBetween(
-            targetElement,
-            start,
-            end,
-            parent,
-            format,
-            currentRange
-          );
-        }
+        //   // ---- UNBOLDEN BETWEEN
+        //   else if (
+        //     parent &&
+        //     startCont === endCont &&
+        //     start > 0 &&
+        //     endCont.textContent &&
+        //     end < endCont.textContent.length
+        //   ) {
+        //     unwrapBetween(
+        //       targetElement,
+        //       start,
+        //       end,
+        //       parent,
+        //       format,
+        //       currentRange
+        //     );
+        //   }
+        // }
 
         console.log(document.getElementById("father")?.innerHTML);
         return;
