@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   addNewLine,
+  exitCurrentTag,
   findToggleState2,
   findToggleVariation,
   insertBlankTag,
@@ -18,6 +19,9 @@ export const Editor = () => {
   });
 
   const [fontSize, setFontSize] = useState(16);
+  const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
+    "left"
+  );
 
   // ---- NEW FX TO ADD:
   // ---- finally have the main editing logic working,
@@ -36,7 +40,15 @@ export const Editor = () => {
       const currentRange = selection.getRangeAt(0);
 
       if (currentRange.collapsed) {
-        insertBlankTag(currentRange, format, selection);
+        if (
+          currentRange.startContainer.parentNode?.nodeType ===
+            Node.ELEMENT_NODE &&
+          currentRange.startContainer.parentNode.nodeName !== "SPAN"
+        ) {
+          exitCurrentTag(currentRange, selection);
+        } else {
+          insertBlankTag(currentRange, format, selection);
+        }
         return;
       }
 
@@ -123,7 +135,7 @@ export const Editor = () => {
 
   return (
     <div className="w-full h-[80vh] flex flex-col items-center">
-      <div className="flex flex-row">
+      <div className="flex flex-row text">
         <button
           value="strong"
           className="btn-writeUI"
@@ -146,9 +158,18 @@ export const Editor = () => {
         </button>
         <button
           className="btn-writeUI"
-          onClick={() => setFontSize(Math.max(10, fontSize - 2))}
+          onClick={() => setFontSize(Math.max(12, fontSize - 2))}
         >
           Font -
+        </button>
+        <button className="btn-writeUI" onClick={() => setTextAlign("left")}>
+          Text Left
+        </button>
+        <button className="btn-writeUI" onClick={() => setTextAlign("center")}>
+          Text Center
+        </button>
+        <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
+          Text Right
         </button>
       </div>
       <div
@@ -156,7 +177,7 @@ export const Editor = () => {
         contentEditable="true"
         id="father"
         onKeyDown={handleKeyDown}
-        style={{ fontSize: `${fontSize}px` }}
+        style={{ fontSize: `${fontSize}px`, textAlign: `${textAlign}` }}
       >
         <div>
           <span>

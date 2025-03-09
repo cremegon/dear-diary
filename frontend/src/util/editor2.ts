@@ -498,6 +498,7 @@ export function insertBlankTag(
   format: string,
   selection: Selection
 ) {
+  console.log("Inserting Empty Tag...");
   const element = document.createElement(`${format}`);
   currentRange.insertNode(element);
   const trueContainer = element;
@@ -506,6 +507,20 @@ export function insertBlankTag(
   const newRange = document.createRange();
   newRange.setStart(trueContainer, 0);
   newRange.setEnd(trueContainer, 0);
+  selection.addRange(newRange);
+}
+
+export function exitCurrentTag(currentRange: Range, selection: Selection) {
+  console.log("Exiting Current Tag...");
+  let current = currentRange.startContainer;
+  while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+  const newRange = document.createRange();
+  newRange.setStartAfter(current);
+  newRange.setEndAfter(current);
+  selection.removeAllRanges();
+  console.log(newRange);
   selection.addRange(newRange);
 }
 
