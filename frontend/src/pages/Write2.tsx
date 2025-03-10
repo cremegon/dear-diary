@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   addNewLine,
   exitCurrentTag,
@@ -19,6 +19,7 @@ export const Editor = () => {
     underline: false,
   });
 
+  const windowHeight = window.screen.height;
   const fonts = tailwindConfig.theme?.extend?.fontFamily || {};
   const fontOptions = Object.values(fonts).map((font) => {
     return font[0];
@@ -140,8 +141,34 @@ export const Editor = () => {
     console.log(document.getElementById("father")?.innerHTML);
   }
 
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleInput = () => {
+      const editor = editorRef.current;
+      if (editor) {
+        console.log("getting big for you...", editorRef.current);
+        // editor.style.height = "auto"; // Reset height to recalculate
+        editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
+        console.log("WINDOW!!!", windowHeight);
+      }
+    };
+
+    const editor = editorRef.current;
+
+    if (editor) {
+      editor.addEventListener("input", handleInput);
+    }
+
+    return () => {
+      if (editor) {
+        editor.removeEventListener("input", handleInput);
+      }
+    };
+  }, []);
+
   return (
-    <div className="w-full h-[80vh] flex flex-col items-center">
+    <div className="w-full h-svh flex flex-col items-center">
       <div className="flex flex-row text">
         <select className="btn-writeUI">
           {fontOptions.map((font) => (
@@ -193,7 +220,8 @@ export const Editor = () => {
         <input type="color" />
       </div>
       <div
-        className="bg-slate-400 w-full h-full"
+        className="bg-slate-400 w-full break-words"
+        ref={editorRef}
         contentEditable="true"
         id="father"
         onKeyDown={handleKeyDown}
@@ -201,6 +229,7 @@ export const Editor = () => {
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,
           fontFamily: `${selectedFont}`,
+          height: `${windowHeight}px`,
         }}
       >
         <div>

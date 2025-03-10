@@ -8,10 +8,11 @@ export const HomePageLayout = () => {
     <>
       <Navbar />
 
-      <div className="w-full min-h-full">
+      <div className="w-full h-auto">
         <Outlet />
       </div>
-      <Footer />
+
+      {/* <Footer /> */}
     </>
   );
 };
