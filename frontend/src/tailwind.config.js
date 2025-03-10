@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const tailwindConfig = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -12,11 +12,9 @@ export default {
         Gabarito: ["Gabarito", "sans-serif"],
         SourGummy: ["Sour Gummy", "sans-serif"],
         Yellowtail: ["Yellowtail", "sans-serif"],
-        DynaPuff: ["Dyna Puff", "sans-serif"],
         Chewy: ["Chewy", "sans-serif"],
         HomemadeApple: ["Homemade Apple", "sans-serif"],
         UnifrakturCook: ["UnifrakturCook", "sans-serif"],
-        Jacquard12: ["Jacquard 12", "sans-serif"],
         Lugrasimo: ["Lugrasimo", "sans-serif"],
         Smokum: ["Smokum", "sans-serif"],
         FreckleFace: ["Freckle Face", "sans-serif"],
@@ -32,3 +30,5 @@ export default {
   },
   plugins: [],
 };
+
+export default tailwindConfig;

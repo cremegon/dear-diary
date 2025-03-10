@@ -37,7 +37,6 @@ export const Editor = () => {
   // ---- as well as to change text color on selections (tentative)
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-    console.log(fonts);
     addNewLine(event);
   }
 
