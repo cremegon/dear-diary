@@ -10,6 +10,7 @@ import {
   unwrapAll,
   wrapAll,
 } from "../util/editor2.ts";
+import tailwindConfig from "../tailwind.config.js";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -18,6 +19,12 @@ export const Editor = () => {
     underline: false,
   });
 
+  const fonts = tailwindConfig.theme?.extend?.fontFamily || {};
+  const fontOptions = Object.values(fonts).map((font) => {
+    return font[0];
+  });
+
+  const [selectedFont, setSelectedFont] = useState("serif");
   const [fontSize, setFontSize] = useState(16);
   const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
     "left"
@@ -30,6 +37,7 @@ export const Editor = () => {
   // ---- as well as to change text color on selections (tentative)
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    console.log(fonts);
     addNewLine(event);
   }
 
@@ -137,10 +145,15 @@ export const Editor = () => {
     <div className="w-full h-[80vh] flex flex-col items-center">
       <div className="flex flex-row text">
         <select className="btn-writeUI">
-          <option>Ariel</option>
-          <option>Garamond</option>
-          <option>Milker</option>
-          <option>Cretol</option>
+          {fontOptions.map((font) => (
+            <option
+              key={font}
+              value={font}
+              onClick={() => setSelectedFont(font)}
+            >
+              {font}
+            </option>
+          ))}
         </select>
 
         <button
@@ -187,7 +200,7 @@ export const Editor = () => {
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,
-          fontFamily: "Sour Gummy",
+          fontFamily: `${selectedFont}`,
         }}
       >
         <div>
