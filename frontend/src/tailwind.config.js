@@ -5,6 +5,7 @@ const tailwindConfig = {
     extend: {
       fontFamily: {
         Radley: ["Radley", "sans-serif"],
+        STIXTwoText: ["STIX Two Text", "serif"],
         Enriqueta: ["Enriqueta", "sans-serif"],
         Inter: ["Inter", "sans-serif"],
         MerriweatherSans: ["Merriweather Sans", "sans-serif"],

@@ -190,6 +190,7 @@ export const Editor = () => {
         <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
           Text Right
         </button>
+        <input type="color" />
       </div>
       <div
         className="bg-slate-400 w-full h-full"
