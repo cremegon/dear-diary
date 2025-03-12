@@ -143,7 +143,7 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
 
-  // ----change made right
+  // ----change made right here
 
   useEffect(() => {
     const handleInput = () => {
