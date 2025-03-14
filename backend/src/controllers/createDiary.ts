@@ -10,7 +10,7 @@ export const createDiary = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  console.log("before db check");
+  const title = req.body;
   const token = req.cookies.authToken;
 
   if (!token)
@@ -21,7 +21,7 @@ export const createDiary = async (
 
   await pool.query("INSERT INTO diaries(user_id,title) VALUES ($1,$2)", [
     decoded.userId,
-    "FIRST DIARY!",
+    title,
   ]);
   console.log("new diary created");
   return res.status(200).json({ message: "Successfully Created New Diary" });
