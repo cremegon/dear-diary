@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import { config } from "../config";
 
 const pool = new Pool(config.db);
-console.log(pool);
 
 const JWT_SECRET = config.jwtSecret;
 

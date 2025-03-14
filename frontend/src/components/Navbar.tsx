@@ -12,7 +12,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <div className="bg-black w-full h-1/6 flex flex-col justify-center">
+    <div className="bg-black w-full h-32 flex flex-col justify-center">
       <ul className="flex flex-row justify-between items-center text-xl text-white">
         <NavLink to={"/"} className="ml-8">
           Home

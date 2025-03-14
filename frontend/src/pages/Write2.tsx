@@ -143,8 +143,6 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
 
-  // ----change made right here right now
-
   useEffect(() => {
     const handleInput = () => {
       const editor = editorRef.current;
@@ -152,7 +150,6 @@ export const Editor = () => {
         console.log("getting big for you...", editorRef.current);
         // editor.style.height = "auto"; // Reset height to recalculate
         editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
-        console.log("WINDOW!!!", windowHeight);
       }
     };
 

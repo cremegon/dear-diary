@@ -5,15 +5,11 @@ import Footer from "../components/Footer.tsx";
 
 export const HomePageLayout = () => {
   return (
-    <>
+    <div>
       <Navbar />
-
-      <div className="w-full h-auto">
-        <Outlet />
-      </div>
-
-      {/* <Footer /> */}
-    </>
+      <Outlet />
+      <Footer />
+    </div>
   );
 };
 export default HomePageLayout;
