@@ -10,15 +10,19 @@ export const createDiary = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  console.log("before db check");
   const token = req.cookies.authToken;
 
   if (!token)
     return res.status(403).json({ message: "No Token Found (Creating Diary)" });
 
   const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+  console.log(decoded.userId);
 
-  pool.query("INSERT INTO diaries(user_id,title) VALUES $1,$2", [
-    decoded.id,
+  await pool.query("INSERT INTO diaries(user_id,title) VALUES ($1,$2)", [
+    decoded.userId,
     "FIRST DIARY!",
   ]);
+  console.log("new diary created");
+  return res.status(200).json({ message: "Successfully Created New Diary" });
 };

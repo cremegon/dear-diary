@@ -6,6 +6,7 @@ import { signupUser } from "./controllers/authSignup";
 import { loginUser } from "./controllers/authLogin";
 import { validateToken } from "./middleware/validateToken";
 import { logoutUser } from "./controllers/authLogout";
+import { createDiary } from "./controllers/createDiary";
 
 const app = express();
 app.use(express.json());
@@ -28,6 +29,9 @@ app.post("/login", loginUser);
 
 // ---------------------- Logout existing Users
 app.get("/logout", logoutUser);
+
+// ---------------------- Create Diary
+app.post("/new-diary", createDiary);
 
 //Server Listen
 const PORT = config.serverPort;

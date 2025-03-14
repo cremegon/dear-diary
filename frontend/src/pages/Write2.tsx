@@ -37,6 +37,19 @@ export const Editor = () => {
   // ---- option to change font family, text alignment,
   // ---- as well as to change text color on selections (tentative)
 
+  async function handleSubmit(e: React.FormEvent) {
+    console.log("creating new diary...");
+    e.preventDefault();
+    const response = await fetch("http://localhost:5000/new-diary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    console.log("NEW DATA!", data);
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     addNewLine(event);
   }
@@ -217,6 +230,12 @@ export const Editor = () => {
           Text Right
         </button>
         <input type="color" />
+        <form action="post" onSubmit={(e) => handleSubmit(e)}>
+          <button type="submit" className="btn-writeUI">
+            {" "}
+            New Diary
+          </button>
+        </form>
       </div>
       <div
         className="bg-slate-400 w-full break-words"

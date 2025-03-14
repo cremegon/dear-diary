@@ -26,7 +26,7 @@ export const validateToken = async (
   // select the user connected to the token from the database
   const selectedUser = await pool.query(
     "SELECT email FROM users WHERE id = $1",
-    [decoded.id]
+    [decoded.userId]
   );
   const user = selectedUser.rows[0];
 
