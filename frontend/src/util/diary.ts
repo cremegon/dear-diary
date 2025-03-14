@@ -16,11 +16,17 @@ export async function handleDiary(e: React.FormEvent) {
 
 export async function handleChapter(e: React.FormEvent) {
   e.preventDefault();
+  const [id, content, fontFamily, fontSize] = [
+    69,
+    "<div>theniggachin?</div>",
+    "Ariel",
+    20,
+  ];
 
   const response = await fetch("http://localhost:5000/new-chapter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ id, content, fontFamily, fontSize }),
     credentials: "include",
   });
 

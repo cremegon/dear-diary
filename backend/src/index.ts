@@ -7,6 +7,7 @@ import { loginUser } from "./controllers/authLogin";
 import { validateToken } from "./middleware/validateToken";
 import { logoutUser } from "./controllers/authLogout";
 import { createDiary } from "./controllers/createDiary";
+import { createChapter } from "./controllers/createChapter";
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,9 @@ app.get("/logout", logoutUser);
 
 // ---------------------- Create Diary
 app.post("/new-diary", createDiary);
+
+// ---------------------- Create Chapter
+app.post("/new-chapter", createChapter);
 
 //Server Listen
 const PORT = config.serverPort;
