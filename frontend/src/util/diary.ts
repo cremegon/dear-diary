@@ -16,8 +16,8 @@ export async function handleDiary(e: React.FormEvent) {
 
 export async function handleChapter(e: React.FormEvent) {
   e.preventDefault();
-  const [id, content, fontFamily, fontSize] = [
-    69,
+  const [title, content, fontFamily, fontSize] = [
+    "Big Fall",
     "<div>theniggachin?</div>",
     "Ariel",
     20,
@@ -26,11 +26,9 @@ export async function handleChapter(e: React.FormEvent) {
   const response = await fetch("http://localhost:5000/new-chapter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, content, fontFamily, fontSize }),
+    body: JSON.stringify({ title, content, fontFamily, fontSize }),
     credentials: "include",
   });
-
-  if (!response.ok) return "An Error Occured with Chapters";
 
   const data = await response.json();
   console.log(data.message);
