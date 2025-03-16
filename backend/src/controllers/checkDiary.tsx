@@ -20,9 +20,10 @@ export const checkDiary = async (req: Request, res: Response): Promise<any> => {
     "SELECT * FROM diaries WHERE user_id = $1",
     [decoded.userId]
   );
-  console.log("hey now...", diaryEntry.rows[0]);
+  console.log("hey now...", diaryEntry.rows);
+  console.log(typeof diaryEntry.rows);
 
   return res
     .status(200)
-    .json({ message: "Diary Entries Found", data: diaryEntry.rows[0] });
+    .json({ message: "Diary Entries Found", data: diaryEntry.rows });
 };
