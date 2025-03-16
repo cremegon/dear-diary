@@ -33,3 +33,18 @@ export async function handleChapter(e: React.FormEvent) {
   const data = await response.json();
   console.log(data.message);
 }
+
+export async function checkDiary() {
+  console.log("checking diary entries...");
+
+  const response = await fetch("http://localhost:5000/check-diary", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) return "NO Diaries Found";
+
+  const data = await response.json();
+  return data.message;
+}
