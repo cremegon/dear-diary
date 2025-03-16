@@ -5,6 +5,7 @@ import { checkDiary } from "../util/diary.ts";
 export const DiaryPage = () => {
   useEffect(() => {
     const response = checkDiary();
+    console.log(response);
   }, []);
 
   return (

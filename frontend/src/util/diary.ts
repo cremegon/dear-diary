@@ -46,5 +46,6 @@ export async function checkDiary() {
   if (!response.ok) return "NO Diaries Found";
 
   const data = await response.json();
-  return data.message;
+
+  return data;
 }
