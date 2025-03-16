@@ -12,6 +12,8 @@ import SettingsPage from "./pages/Settings.tsx";
 import AboutPage from "./pages/About.tsx";
 import Drawing from "./pages/DrawCanvas.tsx";
 import Editor from "./pages/Write2.tsx";
+import DiaryPage from "./pages/HomeDiary.tsx";
+import ChapterPage from "./pages/HomeChapter.tsx";
 
 function App() {
   useEffect(() => {
@@ -44,7 +46,13 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<HomePageLayout />}>
               <Route index path="/" element={<Homepage />} />
-              <Route path="/write-session" element={<Editor />} />
+
+              <Route path="diary" element={<DiaryPage />}>
+                <Route path="chapter" element={<ChapterPage />}>
+                  <Route path="write-session" element={<Editor />} />
+                </Route>
+              </Route>
+
               <Route path="/about" element={<AboutPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />

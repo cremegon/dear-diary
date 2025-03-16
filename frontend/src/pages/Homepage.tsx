@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 
 export const Homepage = () => {
   return (
-    <div>
+    <div className="h-screen">
       <h1 className="text-5xl">HOMEPAGE</h1>
-      <Link to={"/write-session"}>Writing Sessions</Link>
+
+      <Link to={"/diary"}>Diary Page</Link>
     </div>
   );
 };
