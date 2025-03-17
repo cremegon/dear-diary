@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { checkDiary } from "../util/diary.ts";
 
+interface DiaryEntry {
+  id: number;
+  user_id: number;
+  title: string;
+  created_at: Date;
+}
+
 export const DiaryPage = () => {
-  const [entry, setEntry] = useState([]);
+  const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const location = useLocation();
@@ -47,7 +54,7 @@ export const DiaryPage = () => {
           ? entry.map((item) => (
               <ul key={item.id} className="flex flex-row justify-evenly">
                 <li>{item.title}</li>
-                <li>{item.created_at}</li>
+                <li>{new Date(item.created_at).toLocaleDateString()}</li>
               </ul>
             ))
           : "nothing..."}
