@@ -38,13 +38,32 @@ export async function handleChapter(e: React.FormEvent) {
 export async function checkDiary() {
   console.log("checking diary entries...");
 
-  const response = await fetch("http://localhost:5000/check-diary", {
+  const response = await fetch(`http://localhost:5000/check-diary`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
   });
 
-  if (!response.ok) return "NO Diaries Found";
+  if (!response.ok) return `NO diary Found`;
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function checkChapter(params: string) {
+  console.log("checking chapter entries...");
+
+  const response = await fetch(
+    `http://localhost:5000/check-chapter?key=${params}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) return `NO chapter Found`;
 
   const data = await response.json();
 

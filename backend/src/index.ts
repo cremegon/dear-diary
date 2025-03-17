@@ -9,6 +9,7 @@ import { logoutUser } from "./controllers/authLogout";
 import { createDiary } from "./controllers/createDiary";
 import { createChapter } from "./controllers/createChapter";
 import { checkDiary } from "./controllers/checkDiary";
+import { checkChapter } from "./controllers/checkChapter";
 
 const app = express();
 app.use(express.json());
@@ -40,6 +41,9 @@ app.post("/new-chapter", createChapter);
 
 // ---------------------- Check Diary
 app.get("/check-diary", checkDiary);
+
+// ---------------------- Check Diary
+app.get("/check-chapter", checkChapter);
 
 //Server Listen
 const PORT = config.serverPort;
