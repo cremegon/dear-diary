@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { checkDiary } from "../util/diary.ts";
+import { checkDiary, handleDiary } from "../util/diary.ts";
 
 interface DiaryEntry {
   id: number;
@@ -14,19 +14,26 @@ export const DiaryPage = () => {
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
   const location = useLocation();
 
-  useEffect(() => {
-    async function checkAndRender() {
-      try {
-        const response = await checkDiary();
-        setEntry(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  async function checkAndRender() {
+    try {
+      const response = await checkDiary();
+      setEntry(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  const refreshHandle = async (e: React.FormEvent) => {
+    await handleDiary(e, title);
+    checkAndRender();
+  };
+
+  useEffect(() => {
     if (location.pathname === "/diary") checkAndRender();
   }, [location.pathname]);
 
@@ -61,7 +68,19 @@ export const DiaryPage = () => {
             ))
           : "nothing..."}
       </h2>
-      <Link to="1/chapter">Chapter View!</Link>
+      <form action="post" onSubmit={(e) => refreshHandle(e)}>
+        <input
+          type="text"
+          value={title}
+          placeholder="Add your Title"
+          onChange={(e) => setTitle(e.target.value)}
+          className="border-pink-400 border-4"
+        />
+        <button type="submit" className="btn-writeUI">
+          {" "}
+          New Diary
+        </button>
+      </form>
     </div>
   );
 };

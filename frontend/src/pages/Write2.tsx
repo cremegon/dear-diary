@@ -11,7 +11,6 @@ import {
   wrapAll,
 } from "../util/editor2.ts";
 import tailwindConfig from "../tailwind.config.js";
-import { handleChapter, handleDiary } from "../util/diary.ts";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -218,18 +217,6 @@ export const Editor = () => {
           Text Right
         </button>
         <input type="color" />
-        <form action="post" onSubmit={(e) => handleChapter(e)}>
-          <button type="submit" className="btn-writeUI">
-            {" "}
-            New Chapter
-          </button>
-        </form>
-        <form action="post" onSubmit={(e) => handleDiary(e)}>
-          <button type="submit" className="btn-writeUI">
-            {" "}
-            New Diary
-          </button>
-        </form>
       </div>
       <div
         className="bg-slate-400 w-full break-words"

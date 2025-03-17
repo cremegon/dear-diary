@@ -67,7 +67,12 @@ export const ChapterPage = () => {
             ))
           : "nothing..."}
       </h2>
-      <Link to="1/chapter">Chapter View!</Link>
+      <form action="post" onSubmit={(e) => handleChapter(e)}>
+        <button type="submit" className="btn-writeUI">
+          {" "}
+          New Chapter
+        </button>
+      </form>
     </div>
   );
 };
