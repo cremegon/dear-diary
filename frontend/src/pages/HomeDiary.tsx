@@ -7,6 +7,7 @@ interface DiaryEntry {
   user_id: number;
   title: string;
   created_at: Date;
+  url: string;
 }
 
 export const DiaryPage = () => {
@@ -29,14 +30,14 @@ export const DiaryPage = () => {
     if (location.pathname === "/diary") checkAndRender();
   }, [location.pathname]);
 
-  if (loading)
+  if (location.pathname === "/diary" && loading)
     return (
       <div className="h-screen flex justify-center items-center">
         <p>Loading...</p>
       </div>
     );
 
-  if (error)
+  if (location.pathname === "/diary" && error)
     return (
       <div className="h-screen flex justify-center items-center">
         <p>{error}</p>
@@ -51,7 +52,10 @@ export const DiaryPage = () => {
         {entry
           ? entry.map((item) => (
               <ul key={item.id} className="flex flex-row justify-evenly">
-                <li>{item.title}</li>
+                <Link to={`${item.url}/chapter`}>
+                  <li>{item.title}</li>
+                </Link>
+
                 <li>{new Date(item.created_at).toLocaleDateString()}</li>
               </ul>
             ))

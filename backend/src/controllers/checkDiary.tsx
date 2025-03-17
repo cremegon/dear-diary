@@ -2,11 +2,10 @@ import { Request, response, Response } from "express";
 import { Pool } from "pg";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
-import CryptoJS from "crypto-js";
+import { encryptUserId } from "../utils/security";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
-const CRYPTO_SECRET = config.cryptoSecret;
 
 export const checkDiary = async (req: Request, res: Response): Promise<any> => {
   const token = req.cookies.authToken;
@@ -17,15 +16,15 @@ export const checkDiary = async (req: Request, res: Response): Promise<any> => {
   }
 
   const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+  const userId = decoded.userId;
 
   const diaryEntry = await pool.query(
     "SELECT * FROM diaries WHERE user_id = $1",
-    [decoded.userId]
+    [userId]
   );
-  console.log("hey now...", diaryEntry.rows);
-  console.log(typeof diaryEntry.rows);
 
-  return res
-    .status(200)
-    .json({ message: "Diary Entries Found", data: diaryEntry.rows });
+  return res.status(200).json({
+    message: "Diary Entries Found",
+    data: diaryEntry.rows,
+  });
 };

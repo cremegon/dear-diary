@@ -1,7 +1,7 @@
 export async function handleDiary(e: React.FormEvent) {
   console.log("creating new diary...");
   e.preventDefault();
-  const title = "Precious Tea";
+  const title = "DJ Racist";
   const response = await fetch("http://localhost:5000/new-diary", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

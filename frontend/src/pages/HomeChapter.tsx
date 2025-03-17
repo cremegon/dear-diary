@@ -6,7 +6,7 @@ export const ChapterPage = () => {
     <div className="h-screen">
       <Outlet />
       <h1 className="text-4xl">Write Your Chapters</h1>
-      <Link to="write-session">Write NOW!</Link>
+      <Link to="1/write-session">Write NOW!</Link>
     </div>
   );
 };
