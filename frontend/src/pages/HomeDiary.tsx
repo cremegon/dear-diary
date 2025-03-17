@@ -10,8 +10,7 @@ export const DiaryPage = () => {
       try {
         const response = await checkDiary();
         console.log(response.data);
-
-        console.log(entry);
+        setEntry(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -23,7 +22,7 @@ export const DiaryPage = () => {
     <div className="h-screen">
       <Outlet />
       <h1 className="text-4xl">Write Your Diary</h1>
-      <h2 className="text-4xl text-yellow-500">{}</h2>
+      <h2 className="text-4xl text-yellow-500">{entry[1].title}</h2>
       <Link to="chapter">Chapter View!</Link>
     </div>
   );

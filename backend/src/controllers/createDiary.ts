@@ -10,7 +10,8 @@ export const createDiary = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const title = req.body;
+  const { title } = req.body;
+  console.log("checking title", title);
   const token = req.cookies.authToken;
 
   if (!token)
