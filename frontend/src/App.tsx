@@ -48,8 +48,8 @@ function App() {
               <Route index path="/" element={<Homepage />} />
 
               <Route path="diary" element={<DiaryPage />}>
-                <Route path="chapter" element={<ChapterPage />}>
-                  <Route path="write-session" element={<Editor />} />
+                <Route path=":diaryId/chapter" element={<ChapterPage />}>
+                  <Route path=":chapterId/write-session" element={<Editor />} />
                 </Route>
               </Route>
 

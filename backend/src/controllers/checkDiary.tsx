@@ -2,9 +2,11 @@ import { Request, response, Response } from "express";
 import { Pool } from "pg";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
+import CryptoJS from "crypto-js";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
+const CRYPTO_SECRET = config.cryptoSecret;
 
 export const checkDiary = async (req: Request, res: Response): Promise<any> => {
   const token = req.cookies.authToken;

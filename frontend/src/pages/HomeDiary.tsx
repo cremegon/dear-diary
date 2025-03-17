@@ -19,11 +19,9 @@ export const DiaryPage = () => {
     async function checkAndRender() {
       try {
         const response = await checkDiary();
-        console.log(response.data);
         setEntry(response.data);
       } catch (error) {
         setError(error);
-        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -59,7 +57,7 @@ export const DiaryPage = () => {
             ))
           : "nothing..."}
       </h2>
-      <Link to="chapter">Chapter View!</Link>
+      <Link to="1/chapter">Chapter View!</Link>
     </div>
   );
 };

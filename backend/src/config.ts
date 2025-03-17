@@ -10,6 +10,7 @@ interface Config {
     port: number;
   };
   jwtSecret: string;
+  cryptoSecret: string;
   serverPort: number;
 }
 
@@ -22,5 +23,6 @@ export const config = {
     port: Number(process.env.DB_PORT),
   },
   jwtSecret: process.env.JWT_SECRETKEY || "poopdog@1234!",
+  cryptoSecret: process.env.CRYPTO_SECRETKEY || "dorman34",
   serverPort: Number(process.env.PORT) || 5000,
 };
