@@ -232,9 +232,7 @@ export const Editor = () => {
         }}
       >
         <div>
-          <span>
-            Hello every <strong>NYAN!</strong>
-          </span>
+          <span></span>
         </div>
       </div>
     </div>

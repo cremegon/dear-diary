@@ -13,15 +13,12 @@ export const checkChapter = async (
   const { key } = req.query;
   const token = req.cookies.authToken;
 
-  console.log("KEY!!!1", key);
+  console.log("Checking Chapters...");
 
   if (!token) {
     console.log("Token Error at checkChapter");
     return res.status(404).json({ message: "No Chapters Found" });
   }
-
-  const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-  const userId = decoded.userId;
 
   const query = await pool.query("SELECT id FROM diaries WHERE url = $1", [
     key,

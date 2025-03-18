@@ -16,22 +16,20 @@ export async function handleDiary(e: React.FormEvent, title: string) {
 
 export async function handleChapter(e: React.FormEvent) {
   e.preventDefault();
-  const [title, content, fontFamily, fontSize] = [
-    "Big Fall",
-    "<div>theniggachin?</div>",
-    "Ariel",
-    20,
-  ];
+  const [fontFamily, fontSize] = ["Ariel", 20];
 
   const response = await fetch("http://localhost:5000/new-chapter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, content, fontFamily, fontSize }),
+    body: JSON.stringify({ fontFamily, fontSize }),
     credentials: "include",
   });
 
   const data = await response.json();
-  console.log(data.message);
+
+  if (!response.ok) return data.message;
+
+  return data;
 }
 
 export async function checkDiary() {

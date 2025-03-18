@@ -11,7 +11,7 @@ export const createChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { title, content, fontFamily, fontSize } = req.body;
+  const { fontFamily, fontSize } = req.body;
   const token = req.cookies.authToken;
   console.log("WE OUT HERE SMOKING PENISES!!!");
 
@@ -27,8 +27,8 @@ export const createChapter = async (
   const diaryId = selectedRow.rows[0].id;
 
   const query = await pool.query(
-    "INSERT INTO chapters(diary_id,title,content,font_family,font_size) VALUES($1,$2,$3,$4,$5) RETURNING id",
-    [diaryId, title, content, fontFamily, fontSize]
+    "INSERT INTO chapters(diary_id,font_family,font_size) VALUES($1,$2,$3) RETURNING id",
+    [diaryId, fontFamily, fontSize]
   );
 
   const id = query.rows[0].id;
@@ -39,5 +39,8 @@ export const createChapter = async (
     id,
   ]);
   console.log("new chapter created");
-  return res.status(200).json({ message: "Chapter Created Successfully" });
+  return res.status(200).json({
+    message: "Chapter Created Successfully",
+    redirect: `${encryptedURL}/write-session?create=true`,
+  });
 };

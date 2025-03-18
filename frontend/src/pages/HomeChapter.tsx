@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useParams } from "react-router-dom";
-import { checkChapter } from "../util/diary.ts";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+import { checkChapter, handleChapter } from "../util/diary.ts";
 
 interface ChapterEntry {
   id: number;
@@ -19,6 +25,7 @@ export const ChapterPage = () => {
   const [error, setError] = useState("");
   const location = useLocation();
 
+  const navigate = useNavigate();
   const params = useParams().diaryId as string;
 
   useEffect(() => {
@@ -35,6 +42,14 @@ export const ChapterPage = () => {
     }
     if (params) checkAndRender();
   }, [params]);
+
+  async function createChapter(e: React.FormEvent) {
+    const data = await handleChapter(e);
+    console.log(data);
+    if (!data) return;
+
+    navigate(data.redirect);
+  }
 
   if (location.pathname === `${params}/chapter` && loading)
     return (
@@ -67,7 +82,7 @@ export const ChapterPage = () => {
             ))
           : "nothing..."}
       </h2>
-      <form action="post" onSubmit={(e) => handleChapter(e)}>
+      <form action="post" onSubmit={(e) => createChapter(e)}>
         <button type="submit" className="btn-writeUI">
           {" "}
           New Chapter
