@@ -31,15 +31,30 @@ export const Editor = () => {
     "left"
   );
 
-  // ---- NEW FX TO ADD:
-  // ---- finally have the main editing logic working,
-  // ---- now the last left is the option to change font size
-  // ---- option to change font family, text alignment,
-  // ---- as well as to change text color on selections (tentative)
+  const editorRef = useRef<HTMLDivElement>(null);
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-    addNewLine(event);
-  }
+  useEffect(() => {
+    const handleInput = () => {
+      const editor = editorRef.current;
+      if (editor) {
+        console.log("getting big for you...", editorRef.current);
+        // editor.style.height = "auto"; // Reset height to recalculate
+        editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
+      }
+    };
+
+    const editor = editorRef.current;
+
+    if (editor) {
+      editor.addEventListener("input", handleInput);
+    }
+
+    return () => {
+      if (editor) {
+        editor.removeEventListener("input", handleInput);
+      }
+    };
+  }, []);
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -141,33 +156,36 @@ export const Editor = () => {
     console.log(document.getElementById("father")?.innerHTML);
   }
 
-  const editorRef = useRef<HTMLDivElement>(null);
+  function checkAndPlaceCaret() {
+    const selection = window.getSelection();
+    if (!selection || selection?.rangeCount < 1) return;
 
-  useEffect(() => {
-    const handleInput = () => {
-      const editor = editorRef.current;
-      if (editor) {
-        console.log("getting big for you...", editorRef.current);
-        // editor.style.height = "auto"; // Reset height to recalculate
-        editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
-      }
-    };
+    const father = document.getElementById("father");
+    if (!father?.innerHTML) {
+      const span = document.createElement("span");
+      const div = document.createElement("div");
+      div.appendChild(span);
+      father?.appendChild(div);
 
-    const editor = editorRef.current;
+      const newRange = document.createRange();
+      newRange.setStart(span, 0);
+      newRange.setEnd(span, 0);
 
-    if (editor) {
-      editor.addEventListener("input", handleInput);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+      return;
     }
-
-    return () => {
-      if (editor) {
-        editor.removeEventListener("input", handleInput);
-      }
-    };
-  }, []);
+  }
 
   return (
     <div className="w-full h-svh flex flex-col items-center">
+      <input
+        type="text"
+        placeholder="enter title"
+        className="border-pink-400 border-4"
+        id="title"
+      />
+
       <div className="flex flex-row text">
         <select className="btn-writeUI">
           {fontOptions.map((font) => (
@@ -218,23 +236,27 @@ export const Editor = () => {
         </button>
         <input type="color" />
       </div>
+
+      <form action="submit">
+        <button type="submit" className="btn-writeUI">
+          Save
+        </button>
+      </form>
+
       <div
         className="bg-slate-400 w-full break-words"
         ref={editorRef}
         contentEditable="true"
         id="father"
-        onKeyDown={handleKeyDown}
+        onClick={() => checkAndPlaceCaret()}
+        onKeyDown={(e) => addNewLine(e)}
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,
           fontFamily: `${selectedFont}`,
           height: `${windowHeight}px`,
         }}
-      >
-        <div>
-          <span></span>
-        </div>
-      </div>
+      ></div>
     </div>
   );
 };

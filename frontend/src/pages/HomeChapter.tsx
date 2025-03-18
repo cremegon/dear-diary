@@ -73,7 +73,7 @@ export const ChapterPage = () => {
         {entry
           ? entry.map((item) => (
               <ul key={item.id} className="flex flex-row justify-evenly">
-                <Link to={`${item.url}/write-session`}>
+                <Link to={`${item.url}/write-session?create=false`}>
                   <li>{item.title}</li>
                 </Link>
 

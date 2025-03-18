@@ -45,14 +45,14 @@ function App() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route element={<HomePageLayout />}>
+              <Route path="diary" element={<DiaryPage />} />
+              <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
+              <Route
+                path="diary/:diaryId/chapter/:chapterId/write-session"
+                element={<Editor />}
+              />
+
               <Route index path="/" element={<Homepage />} />
-
-              <Route path="diary" element={<DiaryPage />}>
-                <Route path=":diaryId/chapter" element={<ChapterPage />}>
-                  <Route path=":chapterId/write-session" element={<Editor />} />
-                </Route>
-              </Route>
-
               <Route path="/about" element={<AboutPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
