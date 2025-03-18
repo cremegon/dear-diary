@@ -11,6 +11,8 @@ import {
   wrapAll,
 } from "../util/editor2.ts";
 import tailwindConfig from "../tailwind.config.js";
+import { useParams, useSearchParams } from "react-router-dom";
+import { saveToDatabase } from "../util/diary.ts";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -18,6 +20,9 @@ export const Editor = () => {
     em: false,
     underline: false,
   });
+  const params = useParams().chapterId as string;
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("create");
 
   const windowHeight = window.screen.height;
   const fonts = tailwindConfig.theme?.extend?.fontFamily || {};
@@ -25,6 +30,7 @@ export const Editor = () => {
     return font[0];
   });
 
+  const [title, setTitle] = useState("");
   const [selectedFont, setSelectedFont] = useState("serif");
   const [fontSize, setFontSize] = useState(16);
   const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
@@ -179,6 +185,17 @@ export const Editor = () => {
     }
   }
 
+  async function writerSessionHandler(e: React.FormEvent) {
+    e.preventDefault();
+    if (query) {
+      if (!title) return;
+      const content = document.getElementById("father")?.innerHTML as string;
+      console.log(content);
+      const response = await saveToDatabase(title, content, params);
+      console.log("RESPONSE", response);
+    }
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <input
@@ -186,6 +203,7 @@ export const Editor = () => {
         placeholder="enter title"
         className="border-pink-400 border-4"
         id="title"
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       <div className="flex flex-row text">
@@ -239,7 +257,7 @@ export const Editor = () => {
         <input type="color" />
       </div>
 
-      <form action="submit">
+      <form action="submit" onSubmit={(e) => writerSessionHandler(e)}>
         <button type="submit" className="btn-writeUI">
           Save
         </button>

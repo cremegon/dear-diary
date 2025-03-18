@@ -66,3 +66,19 @@ export async function checkChapter(params: string) {
 
   return data;
 }
+
+export async function saveToDatabase(
+  title: string,
+  content: string,
+  url: string
+) {
+  const response = await fetch(`http://localhost:5000/save-to-db`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, content, url }),
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
+}

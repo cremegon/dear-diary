@@ -12,6 +12,10 @@ code {
     monospace;
 } */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
   width: 100%;
   height: 100%;
@@ -20,7 +24,3 @@ code {
 .btn-writeUI {
   @apply border-4 border-pink-700 bg-pink-400 w-[100px];
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
