@@ -14,6 +14,7 @@ import Drawing from "./pages/DrawCanvas.tsx";
 import Editor from "./pages/Write2.tsx";
 import DiaryPage from "./pages/HomeDiary.tsx";
 import ChapterPage from "./pages/HomeChapter.tsx";
+import EditorPageLayout from "./pages/EditorLayout.tsx";
 
 function App() {
   useEffect(() => {
@@ -47,15 +48,17 @@ function App() {
             <Route element={<HomePageLayout />}>
               <Route path="diary" element={<DiaryPage />} />
               <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
-              <Route
-                path="diary/:diaryId/chapter/:chapterId/write-session"
-                element={<Editor />}
-              />
 
               <Route index path="/" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
+            </Route>
+            <Route element={<EditorPageLayout />}>
+              <Route
+                path="diary/:diaryId/chapter/:chapterId/write-session"
+                element={<Editor />}
+              />
             </Route>
           </Route>
         </Route>

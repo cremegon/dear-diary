@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   addNewLine,
   exitCurrentTag,
@@ -33,28 +33,28 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleInput = () => {
-      const editor = editorRef.current;
-      if (editor) {
-        console.log("getting big for you...", editorRef.current);
-        // editor.style.height = "auto"; // Reset height to recalculate
-        editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
-      }
-    };
+  // useEffect(() => {
+  //   const handleInput = () => {
+  //     const editor = editorRef.current;
+  //     if (editor) {
+  //       console.log("getting big for you...", editorRef.current);
+  //       // editor.style.height = "auto"; // Reset height to recalculate
+  //       editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
+  //     }
+  //   };
 
-    const editor = editorRef.current;
+  //   const editor = editorRef.current;
 
-    if (editor) {
-      editor.addEventListener("input", handleInput);
-    }
+  //   if (editor) {
+  //     editor.addEventListener("input", handleInput);
+  //   }
 
-    return () => {
-      if (editor) {
-        editor.removeEventListener("input", handleInput);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (editor) {
+  //       editor.removeEventListener("input", handleInput);
+  //     }
+  //   };
+  // }, []);
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -164,6 +164,8 @@ export const Editor = () => {
     if (!father?.innerHTML) {
       const span = document.createElement("span");
       const div = document.createElement("div");
+      span.innerHTML = "\u00A0";
+
       div.appendChild(span);
       father?.appendChild(div);
 
@@ -178,7 +180,7 @@ export const Editor = () => {
   }
 
   return (
-    <div className="w-full h-svh flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center">
       <input
         type="text"
         placeholder="enter title"
@@ -244,7 +246,7 @@ export const Editor = () => {
       </form>
 
       <div
-        className="bg-slate-400 w-full break-words"
+        className="bg-slate-400 w-2/3 min-h-screen break-words flex-1"
         ref={editorRef}
         contentEditable="true"
         id="father"

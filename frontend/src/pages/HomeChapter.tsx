@@ -66,28 +66,29 @@ export const ChapterPage = () => {
     );
 
   return (
-    <div className="h-screen">
+    <div className="w-full h-full flex flex-col">
       <Outlet />
-      <h1 className="text-4xl">Write Your Chapters</h1>
-      <h2 className="text-4xl text-yellow-500">
-        {entry
-          ? entry.map((item) => (
-              <ul key={item.id} className="flex flex-row justify-evenly">
-                <Link to={`${item.url}/write-session?create=false`}>
-                  <li>{item.title}</li>
-                </Link>
-
-                <li>{new Date(item.created_at).toLocaleDateString()}</li>
-              </ul>
-            ))
-          : "nothing..."}
-      </h2>
-      <form action="post" onSubmit={(e) => createChapter(e)}>
-        <button type="submit" className="btn-writeUI">
-          {" "}
-          New Chapter
-        </button>
-      </form>
+      <div className="flex-1">
+        <h1 className="text-4xl">Write Your Chapters</h1>
+        <h2 className="text-4xl text-yellow-500">
+          {entry
+            ? entry.map((item) => (
+                <ul key={item.id} className="flex flex-row justify-evenly">
+                  <Link to={`${item.url}/write-session?create=false`}>
+                    <li>{item.title}</li>
+                  </Link>
+                  <li>{new Date(item.created_at).toLocaleDateString()}</li>
+                </ul>
+              ))
+            : "nothing..."}
+        </h2>
+        <form action="post" onSubmit={(e) => createChapter(e)}>
+          <button type="submit" className="btn-writeUI">
+            {" "}
+            New Chapter
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

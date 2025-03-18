@@ -7,7 +7,9 @@ export const HomePageLayout = () => {
   return (
     <div>
       <Navbar />
+
       <Outlet />
+
       <Footer />
     </div>
   );
