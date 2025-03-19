@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   addNewLine,
+  backSpaceCheck,
+  checkAndPlaceCaret,
   exitCurrentTag,
   findToggleState2,
   findToggleVariation,
@@ -37,6 +39,7 @@ export const Editor = () => {
   );
 
   const editorRef = useRef<HTMLDivElement>(null);
+  const father = document.getElementById("father");
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -136,32 +139,6 @@ export const Editor = () => {
       }
     }
     console.log(document.getElementById("father")?.innerHTML);
-  }
-
-  function checkAndPlaceCaret() {
-    const selection = window.getSelection();
-    if (!selection || selection?.rangeCount < 1) return;
-
-    const father = document.getElementById("father");
-    if (!father?.innerHTML) {
-      const span = document.createElement("span");
-      const div = document.createElement("div");
-      span.innerHTML = "\u00A0";
-
-      div.appendChild(span);
-      father?.appendChild(div);
-
-      const newRange = document.createRange();
-      newRange.setStart(span, 0);
-      newRange.setEnd(span, 0);
-
-      selection.removeAllRanges();
-      selection.addRange(newRange);
-      return;
-    } else {
-      const range = selection.getRangeAt(0);
-      console.log(range);
-    }
   }
 
   async function saveSession(e: React.FormEvent) {
@@ -313,6 +290,7 @@ export const Editor = () => {
         id="father"
         onClick={() => checkAndPlaceCaret()}
         onKeyDown={(e) => addNewLine(e)}
+        onKeyUp={(e) => backSpaceCheck(e, father as Element)}
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,

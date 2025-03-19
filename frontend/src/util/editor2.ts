@@ -1,3 +1,5 @@
+import React from "react";
+
 export function treeWalkerSearch(currentRange: Range) {
   function calculateRectDistance(rect1: DOMRect, rect2: DOMRect) {
     const center1 = {
@@ -669,4 +671,53 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   console.log(document.getElementById("father")?.childNodes);
 }
 
-export function checkAndPlaceCaret() {}
+export function checkAndPlaceCaret() {
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return;
+
+  const father = document.getElementById("father");
+  if (!father?.innerHTML) {
+    const span = document.createElement("span");
+    const div = document.createElement("div");
+    span.innerHTML = "\u00A0";
+
+    div.appendChild(span);
+    father?.appendChild(div);
+
+    const newRange = document.createRange();
+    newRange.setStart(span, 0);
+    newRange.setEnd(span, 0);
+
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    return;
+  } else {
+    const range = selection.getRangeAt(0);
+    console.log(range);
+  }
+}
+
+export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
+  e.preventDefault();
+  if (e.key !== "Backspace") return;
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount < 1) return;
+  console.log(father.innerHTML);
+  if (father.innerHTML === "<br>") {
+    father.innerHTML = "";
+    const span = document.createElement("span");
+    const div = document.createElement("div");
+    span.innerHTML = "\u00A0";
+
+    div.appendChild(span);
+    father?.appendChild(div);
+
+    const newRange = document.createRange();
+    newRange.setStart(span, 0);
+    newRange.setEnd(span, 0);
+
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    return;
+  }
+}
