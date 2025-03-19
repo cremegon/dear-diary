@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   addNewLine,
   exitCurrentTag,
@@ -11,7 +11,7 @@ import {
   wrapAll,
 } from "../util/editor2.ts";
 import tailwindConfig from "../tailwind.config.js";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { loadFromDatabase, saveToDatabase } from "../util/diary.ts";
 
 export const Editor = () => {
@@ -21,8 +21,6 @@ export const Editor = () => {
     underline: false,
   });
   const params = useParams().chapterId as string;
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get("create");
 
   const windowHeight = window.screen.height;
   const fonts = tailwindConfig.theme?.extend?.fontFamily || {};
@@ -38,29 +36,6 @@ export const Editor = () => {
   );
 
   const editorRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   const handleInput = () => {
-  //     const editor = editorRef.current;
-  //     if (editor) {
-  //       console.log("getting big for you...", editorRef.current);
-  //       // editor.style.height = "auto"; // Reset height to recalculate
-  //       editor.style.height = `${editor.scrollHeight}px`; // Adjust height dynamically
-  //     }
-  //   };
-
-  //   const editor = editorRef.current;
-
-  //   if (editor) {
-  //     editor.addEventListener("input", handleInput);
-  //   }
-
-  //   return () => {
-  //     if (editor) {
-  //       editor.removeEventListener("input", handleInput);
-  //     }
-  //   };
-  // }, []);
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -185,20 +160,36 @@ export const Editor = () => {
     }
   }
 
-  async function writerSessionHandler(e: React.FormEvent) {
-    e.preventDefault();
-    if (query === "true") {
-      if (!title) return;
-      const content = document.getElementById("father")?.innerHTML as string;
-      console.log(content);
-      const response = await saveToDatabase(title, content, params);
-      console.log("RESPONSE", response);
-    } else {
-      const response = await loadFromDatabase(params);
-      const father = document.getElementById("father");
-    }
+  async function loadContent() {
+    const response = await loadFromDatabase(params);
+    console.log("LOADED CONTENT = ", response);
+    const father = document.getElementById("father");
+    setTitle(response.data[0]);
+    if (father && response.data[1] !== "null")
+      father.innerHTML = response.data[1];
+    setFontSize(response.data[2]);
+    setSelectedFont(response.data[3]);
+    return;
   }
 
+  async function saveSession(e: React.FormEvent) {
+    e.preventDefault();
+    if (!title) return;
+    const content = document.getElementById("father")?.innerHTML as string;
+    console.log(content);
+    const response = await saveToDatabase(
+      title,
+      content,
+      params,
+      selectedFont,
+      fontSize
+    );
+    console.log("RESPONSE", response);
+  }
+
+  useEffect(() => {
+    loadContent();
+  }, []);
   return (
     <div className="w-full h-full flex flex-col items-center">
       <input
@@ -206,6 +197,7 @@ export const Editor = () => {
         placeholder="enter title"
         className="border-pink-400 border-4"
         id="title"
+        value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
@@ -260,7 +252,7 @@ export const Editor = () => {
         <input type="color" />
       </div>
 
-      <form action="submit" onSubmit={(e) => writerSessionHandler(e)}>
+      <form action="submit" onSubmit={(e) => saveSession(e)}>
         <button type="submit" className="btn-writeUI">
           Save
         </button>

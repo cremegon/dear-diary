@@ -70,12 +70,14 @@ export async function checkChapter(params: string) {
 export async function saveToDatabase(
   title: string,
   content: string,
-  url: string
+  url: string,
+  font: string,
+  fontsize: number
 ) {
   const response = await fetch("http://localhost:5000/save-to-db", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, content, url }),
+    body: JSON.stringify({ title, content, url, font, fontsize }),
     credentials: "include",
   });
 
