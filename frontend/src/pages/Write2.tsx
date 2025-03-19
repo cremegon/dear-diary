@@ -12,7 +12,7 @@ import {
 } from "../util/editor2.ts";
 import tailwindConfig from "../tailwind.config.js";
 import { useParams, useSearchParams } from "react-router-dom";
-import { saveToDatabase } from "../util/diary.ts";
+import { loadFromDatabase, saveToDatabase } from "../util/diary.ts";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -187,12 +187,15 @@ export const Editor = () => {
 
   async function writerSessionHandler(e: React.FormEvent) {
     e.preventDefault();
-    if (query) {
+    if (query === "true") {
       if (!title) return;
       const content = document.getElementById("father")?.innerHTML as string;
       console.log(content);
       const response = await saveToDatabase(title, content, params);
       console.log("RESPONSE", response);
+    } else {
+      const response = await loadFromDatabase(params);
+      const father = document.getElementById("father");
     }
   }
 

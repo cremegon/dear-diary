@@ -72,10 +72,22 @@ export async function saveToDatabase(
   content: string,
   url: string
 ) {
-  const response = await fetch(`http://localhost:5000/save-to-db`, {
+  const response = await fetch("http://localhost:5000/save-to-db", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, content, url }),
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+export async function loadFromDatabase(url: string) {
+  const response = await fetch("http://localhost:5000/load-from-db", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
     credentials: "include",
   });
 

@@ -11,6 +11,7 @@ import { createChapter } from "./controllers/createChapter";
 import { checkDiary } from "./controllers/checkDiary";
 import { checkChapter } from "./controllers/checkChapter";
 import { saveContent } from "./controllers/saveContent";
+import { loadContent } from "./controllers/loadContent";
 
 const app = express();
 app.use(express.json());
@@ -48,6 +49,9 @@ app.get("/check-chapter", checkChapter);
 
 // ---------------------- Save Content
 app.post("/save-to-db", saveContent);
+
+// ---------------------- Load Content
+app.post("/load-from-db", loadContent);
 
 //Server Listen
 const PORT = config.serverPort;
