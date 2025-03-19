@@ -43,8 +43,8 @@ export const ChapterPage = () => {
     if (params) checkAndRender();
   }, [params]);
 
-  async function createChapter(e: React.FormEvent) {
-    const data = await handleChapter(e);
+  async function createChapter(e: React.FormEvent, params: string) {
+    const data = await handleChapter(e, params);
     console.log(data);
     if (!data) return;
 
@@ -82,7 +82,7 @@ export const ChapterPage = () => {
               ))
             : "nothing..."}
         </h2>
-        <form action="post" onSubmit={(e) => createChapter(e)}>
+        <form action="post" onSubmit={(e) => createChapter(e, params)}>
           <button type="submit" className="btn-writeUI">
             {" "}
             New Chapter

@@ -24,7 +24,6 @@ export const checkChapter = async (
     key,
   ]);
   const diaryId = query.rows[0].id;
-  console.log(diaryId);
   const diaryEntry = await pool.query(
     "SELECT * FROM chapters WHERE diary_id = $1",
     [diaryId]

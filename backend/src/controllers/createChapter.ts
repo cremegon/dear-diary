@@ -11,23 +11,22 @@ export const createChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { fontFamily, fontSize } = req.body;
+  const { fontFamily, fontSize, url } = req.body;
   const token = req.cookies.authToken;
   console.log("WE OUT HERE SMOKING PENISES!!!");
 
   if (!token)
     return res.status(403).json({ message: "Token not verified at Chapters" });
 
-  const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-
   const selectedRow = await pool.query(
-    "SELECT diaries.id FROM diaries WHERE user_id = $1",
-    [decoded.userId]
+    "SELECT id FROM diaries WHERE url = $1",
+    [url]
   );
   const diaryId = selectedRow.rows[0].id;
+  console.log("selected diary id for chapters", diaryId);
 
   const query = await pool.query(
-    "INSERT INTO chapters(diary_id,font_family,font_size) VALUES($1,$2,$3) RETURNING id",
+    "INSERT INTO chapters(diary_id,font_family,font_size) VALUES($1,$2,$3) RETURNING *",
     [diaryId, fontFamily, fontSize]
   );
 

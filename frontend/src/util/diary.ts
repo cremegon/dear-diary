@@ -14,14 +14,14 @@ export async function handleDiary(e: React.FormEvent, title: string) {
   console.log("NEW DATA!", data.message);
 }
 
-export async function handleChapter(e: React.FormEvent) {
+export async function handleChapter(e: React.FormEvent, url: string) {
   e.preventDefault();
   const [fontFamily, fontSize] = ["Ariel", 20];
 
   const response = await fetch("http://localhost:5000/new-chapter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fontFamily, fontSize }),
+    body: JSON.stringify({ fontFamily, fontSize, url }),
     credentials: "include",
   });
 
