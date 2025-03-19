@@ -28,6 +28,7 @@ export const Editor = () => {
     return font[0];
   });
 
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [selectedFont, setSelectedFont] = useState("serif");
   const [fontSize, setFontSize] = useState(16);
@@ -157,26 +158,16 @@ export const Editor = () => {
       selection.removeAllRanges();
       selection.addRange(newRange);
       return;
+    } else {
+      const range = selection.getRangeAt(0);
+      console.log(range);
     }
-  }
-
-  async function loadContent() {
-    const response = await loadFromDatabase(params);
-    console.log("LOADED CONTENT = ", response);
-    const father = document.getElementById("father");
-    setTitle(response.data[0]);
-    if (father && response.data[1] !== "null")
-      father.innerHTML = response.data[1];
-    setFontSize(response.data[2]);
-    setSelectedFont(response.data[3]);
-    return;
   }
 
   async function saveSession(e: React.FormEvent) {
     e.preventDefault();
     if (!title) return;
     const content = document.getElementById("father")?.innerHTML as string;
-    console.log(content);
     const response = await saveToDatabase(
       title,
       content,
@@ -188,8 +179,65 @@ export const Editor = () => {
   }
 
   useEffect(() => {
+    async function loadContent() {
+      const response = await loadFromDatabase(params);
+      try {
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        requestAnimationFrame(() => {
+          if (editorRef.current) {
+            console.log(editorRef);
+            editorRef.current.innerHTML = response.data[1];
+          }
+          console.log(response.data);
+          setTitle(response.data[0]);
+          setFontSize(response.data[2]);
+          setSelectedFont(response.data[3]);
+        });
+      }
+    }
+
     loadContent();
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      requestAnimationFrame(() => {
+        if (!editorRef.current) {
+          console.log("no editorref present");
+          return;
+        }
+        editorRef.current.focus();
+        const selection = window.getSelection();
+        const range = document.createRange();
+
+        range.selectNodeContents(editorRef.current);
+        const span = range.startContainer.lastChild?.lastChild;
+        let startContainer =
+          span?.lastChild?.nodeName !== "BR"
+            ? span?.lastChild
+            : span.lastChild.previousSibling;
+
+        while (startContainer?.firstChild) {
+          startContainer = startContainer.firstChild;
+        }
+        const offset = startContainer?.textContent?.length || 0;
+
+        if (!startContainer) return;
+
+        range.setStart(startContainer, offset);
+        range.setEnd(startContainer, offset);
+
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      });
+    }
+  }, [loading]);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <input
@@ -202,7 +250,7 @@ export const Editor = () => {
       />
 
       <div className="flex flex-row text">
-        <select className="btn-writeUI">
+        <select className="btn-writeUI" value={selectedFont}>
           {fontOptions.map((font) => (
             <option
               key={font}

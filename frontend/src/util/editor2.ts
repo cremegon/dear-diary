@@ -574,10 +574,23 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   // ---- New Line: If Caret is in-between a Text Node
   else if (startOffset > 0 && endOffset - startOffset > 1) {
     console.log("Caret in Between...");
+    const range = selection.getRangeAt(0);
+    console.log(range);
 
     // ---- Go Up and record every Element Node
     const elementArray: string[] = [];
     let current = currentRange.startContainer;
+
+    if (current.nodeName === "SPAN") {
+      divParent?.parentNode?.appendChild(div);
+
+      const newRange = document.createRange();
+      newRange.setStart(span, 0);
+      newRange.setEnd(span, 0);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+      return;
+    }
     while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
       elementArray.push(current.parentNode.nodeName);
       current = current.parentNode;
@@ -643,11 +656,17 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
     trueContainer?.appendChild(div);
   }
 
-  const newRange = document.createRange();
-  newRange.setStart(span, 0);
-  newRange.setEnd(span, 0);
-  selection.removeAllRanges();
-  selection.addRange(newRange);
+  try {
+    const newRange = document.createRange();
+    newRange.setStart(span, 0);
+    newRange.setEnd(span, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
+  }
 
   console.log(document.getElementById("father")?.childNodes);
 }
+
+export function checkAndPlaceCaret() {}
