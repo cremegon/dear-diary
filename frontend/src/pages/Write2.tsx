@@ -44,6 +44,7 @@ export const Editor = () => {
   // ---- Last thing to add:
   // ---- Selection-font-color-change
   // ---- selection -> range -> wrap and unwrap
+  // ---- wrap: just surround it
   // ----
 
   function toggleFormat(format: string) {
