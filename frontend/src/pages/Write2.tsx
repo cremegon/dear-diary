@@ -47,7 +47,7 @@ export const Editor = () => {
   // ---- wrap: just surround it
   // ---- unwrap: should behave as usual by the current unwrap logic
   // ---- after that: minor queries to fix:
-  // ----
+  // ---- verifyToken endpoint checking the expiration date of cookie
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
