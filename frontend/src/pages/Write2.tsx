@@ -84,47 +84,6 @@ export const Editor = () => {
           removeTag
         );
 
-        // else if (start,inbetween or end fx?) {
-        //   // ---- UNBOLDEN START
-        //   if (
-        //     parent &&
-        //     startCont === endCont &&
-        //     start === 0 &&
-        //     startCont.textContent &&
-        //     end < startCont.textContent.length
-        //   ) {
-        //     unwrapStart(targetElement, start, end, parent, selection);
-        //   }
-
-        //   // ---- UNBOLDEN END
-        //   else if (
-        //     parent &&
-        //     startCont === endCont &&
-        //     start > 0 &&
-        //     end === startCont.textContent?.length
-        //   ) {
-        //     unwrapEnd(targetElement, start, end, parent);
-        //   }
-
-        //   // ---- UNBOLDEN BETWEEN
-        //   else if (
-        //     parent &&
-        //     startCont === endCont &&
-        //     start > 0 &&
-        //     endCont.textContent &&
-        //     end < endCont.textContent.length
-        //   ) {
-        //     unwrapBetween(
-        //       targetElement,
-        //       start,
-        //       end,
-        //       parent,
-        //       format,
-        //       currentRange
-        //     );
-        //   }
-        // }
-
         console.log(document.getElementById("father")?.innerHTML);
         return;
       }
