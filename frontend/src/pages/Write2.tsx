@@ -43,6 +43,8 @@ export const Editor = () => {
 
   // ---- Last thing to add:
   // ---- Selection-font-color-change
+  // ---- selection -> range -> wrap and unwrap
+  // ----
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
