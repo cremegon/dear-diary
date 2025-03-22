@@ -45,7 +45,7 @@ export const Editor = () => {
   // ---- Selection-font-color-change
   // ---- selection -> range -> wrap and unwrap
   // ---- wrap: just surround it
-  // ----
+  // ---- unwrap: should behave as usual by the current unwrap logic
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
