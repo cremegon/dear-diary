@@ -41,6 +41,9 @@ export const Editor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
 
+  // ---- Last thing to add:
+  // ---- Selection-font-color-change
+
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
     const selection = window.getSelection();
