@@ -48,6 +48,7 @@ export const Editor = () => {
   // ---- unwrap: should behave as usual by the current unwrap logic
   // ---- after that: minor queries to fix:
   // ---- verifyToken endpoint checking the expiration date of cookie
+  // ---- make a seperate page for the draw cover page
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -144,7 +145,7 @@ export const Editor = () => {
     }
 
     loadContent();
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     if (!loading) {
