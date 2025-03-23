@@ -240,7 +240,8 @@ export function wrapAll(
   currentRange: Range,
   format: string,
   selection: Selection,
-  targetNode: Node
+  targetNode: Node,
+  color: string
 ) {
   console.log("Adding Tag...");
   console.log(targetNode);
@@ -258,6 +259,9 @@ export function wrapAll(
   }
 
   const wrappedNode = document.createElement(format);
+  if (wrappedNode.nodeName === "P") {
+    wrappedNode.style.color = color;
+  }
   const fragment = currentRange.extractContents();
 
   wrappedNode.appendChild(fragment);
