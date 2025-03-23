@@ -100,7 +100,13 @@ export const Editor = () => {
 
       // ---- WRAP INSIDE TAG
       else if (!variation && !removeTag && targetElement) {
-        lastNode = wrapAll(currentRange, format, selection, targetElement);
+        lastNode = wrapAll(
+          currentRange,
+          format,
+          selection,
+          targetElement,
+          color
+        );
       }
 
       if (lastNode) {
@@ -251,7 +257,11 @@ export const Editor = () => {
         <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
           Text Right
         </button>
-        <input type="color" onChange={(e) => setColor(e)} />
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => setColor(e.target.value)}
+        />
       </div>
 
       <form action="submit" onSubmit={(e) => saveSession(e)}>
