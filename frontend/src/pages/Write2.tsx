@@ -32,6 +32,7 @@ export const Editor = () => {
 
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
+  const [color, setColor] = useState("fff");
   const [selectedFont, setSelectedFont] = useState("serif");
   const [fontSize, setFontSize] = useState(16);
   const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
@@ -222,6 +223,14 @@ export const Editor = () => {
           Italic
         </button>
         <button
+          value="p"
+          className="btn-writeUI"
+          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+        >
+          Highlight
+        </button>
+
+        <button
           className="btn-writeUI"
           onClick={() => setFontSize(fontSize + 2)}
         >
@@ -242,7 +251,7 @@ export const Editor = () => {
         <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
           Text Right
         </button>
-        <input type="color" />
+        <input type="color" onChange={(e) => setColor(e)} />
       </div>
 
       <form action="submit" onSubmit={(e) => saveSession(e)}>
