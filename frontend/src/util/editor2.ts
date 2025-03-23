@@ -259,11 +259,12 @@ export function wrapAll(
   }
 
   const wrappedNode = document.createElement(format);
+  const fragment = currentRange.extractContents();
+
   if (wrappedNode.nodeName === "P") {
     wrappedNode.style.display = "inline";
     wrappedNode.style.color = color;
   }
-  const fragment = currentRange.extractContents();
 
   wrappedNode.appendChild(fragment);
 
