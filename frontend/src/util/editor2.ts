@@ -259,8 +259,7 @@ export function wrapAll(
   }
 
   const wrappedNode = document.createElement(format);
-  if (wrappedNode.nodeName === "P") {
-    wrappedNode.style.display = "inline";
+  if (wrappedNode.id === "color") {
     wrappedNode.style.color = color;
   }
   const fragment = currentRange.extractContents();
