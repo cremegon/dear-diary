@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 interface AuthContextType {
   auth: boolean;
@@ -9,7 +9,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>(null!);
 
 export const AuthProvider = () => {
-  const navigate = useNavigate();
   const user = localStorage.getItem("user");
   const [auth, setAuth] = useState<boolean>(() => {
     return user ? JSON.parse(user).isAuthenticated === true : false;
@@ -25,27 +24,31 @@ export const AuthProvider = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setAuth(false);
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          parsedUser.isAuthenticated = false;
+          localStorage.setItem("user", JSON.stringify(parsedUser));
+        }
         console.log(data.message);
       } else {
         console.log(data.message);
         if (user) {
           const parsedUser = JSON.parse(user);
-          parsedUser.loggedIn = true;
+          parsedUser.isAuthenticated = true;
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
-        navigate("/", { replace: true });
       }
     };
 
     console.log("user verification:", auth);
-    if (auth && user && JSON.parse(user).loggedIn === false) {
-      console.log("authenticating...");
-      verifyToken();
-    } else {
-      return;
-    }
-  }, [auth, navigate, user]);
+    // if (auth && user && JSON.parse(user).loggedIn === false) {
+    //   console.log("authenticating...");
+    //   verifyToken();
+    // } else {
+    //   return;
+    // }
+    verifyToken();
+  }, [auth, user]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

@@ -13,7 +13,7 @@ export const validateToken = async (
   console.log("Verifying Token...");
 
   const token = req.cookies.authToken;
-  console.log(req.cookies, "hi");
+  console.log(req.cookies, "hey");
 
   // check if a token exists ; if not then a user isn't verified
   if (!token) {
