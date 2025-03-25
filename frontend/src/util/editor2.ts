@@ -724,6 +724,36 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
 
     selection.removeAllRanges();
     selection.addRange(newRange);
-    return;
+  } else {
+    const currentRange = selection.getRangeAt(0);
+    const currentContainer = currentRange.startContainer;
+    console.log("checking father: ", currentContainer);
+    if (currentContainer === father) {
+      const fatherNode = currentContainer;
+
+      const span = document.createElement("span");
+      const div = document.createElement("div");
+      span.innerHTML = "\u00A0";
+
+      div.appendChild(span);
+      console.log(currentContainer.childNodes);
+
+      if (!currentContainer.nextSibling) {
+        console.log("append");
+        console.log(currentContainer.previousSibling);
+        fatherNode?.appendChild(div);
+      } else {
+        console.log("insert");
+        fatherNode?.insertBefore(div, currentContainer.nextSibling);
+      }
+
+      const newRange = document.createRange();
+      newRange.setStart(span, 0);
+      newRange.setEnd(span, 0);
+
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+    }
   }
+  return;
 }
