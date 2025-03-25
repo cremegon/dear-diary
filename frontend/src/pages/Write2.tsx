@@ -46,6 +46,8 @@ export const Editor = () => {
   // ---- when you select a range of words in father
   // ---- once you delete it, theres a chance you delete
   // ---- the whole div it was in as well
+  // ---- if leave some characters its fine
+  // ----
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
