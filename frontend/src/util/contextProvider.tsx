@@ -26,17 +26,12 @@ export const AuthProvider = () => {
 
       if (!response.ok) {
         setAuth(false);
-        if (user) {
-          const parsedUser = JSON.parse(user);
-          parsedUser.isAuthenticated = false;
-          localStorage.setItem("user", JSON.stringify(parsedUser));
-        }
         console.log(data.message);
       } else {
         console.log(data.message);
         if (user) {
           const parsedUser = JSON.parse(user);
-          parsedUser.isAuthenticated = true;
+          parsedUser.loggedIn = true;
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
         navigate("/", { replace: true });
@@ -44,7 +39,7 @@ export const AuthProvider = () => {
     };
 
     console.log("user verification:", auth);
-    if (auth && user && JSON.parse(user).isAuthenticated === true) {
+    if (auth && user && JSON.parse(user).loggedIn === false) {
       console.log("authenticating...");
       verifyToken();
     } else {
