@@ -49,6 +49,9 @@ export const Editor = () => {
   // ---- if leave some characters its fine
   // ---- but if you dont, the caret is not inside a div
   // ---- its in father itself directly
+  // ---- therefore, we need to check if the immediate parentnode
+  // ---- of the currentrange is not father
+  // ---- if it is, create a div and a span and put the caret in it
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
