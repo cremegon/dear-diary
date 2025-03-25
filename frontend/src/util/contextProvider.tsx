@@ -26,24 +26,25 @@ export const AuthProvider = () => {
 
       if (!response.ok) {
         setAuth(false);
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          parsedUser.isAuthenticated = false;
+          localStorage.setItem("user", JSON.stringify(parsedUser));
+        }
         console.log(data.message);
       } else {
         console.log(data.message);
         if (user) {
           const parsedUser = JSON.parse(user);
-          parsedUser.loggedIn = true;
+          parsedUser.isAuthenticated = true;
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
         navigate("/", { replace: true });
       }
     };
 
-    if (
-      auth &&
-      user &&
-      JSON.parse(user).isAuthenticated === true &&
-      JSON.parse(user).loggedIn === false
-    ) {
+    console.log("user verification:", auth);
+    if (auth && user && JSON.parse(user).isAuthenticated === true) {
       console.log("authenticating...");
       verifyToken();
     } else {
@@ -61,7 +62,7 @@ export const AuthProvider = () => {
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used wihitin an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
