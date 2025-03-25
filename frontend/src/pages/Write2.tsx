@@ -48,7 +48,7 @@ export const Editor = () => {
   // ---- the whole div it was in as well
   // ---- if leave some characters its fine
   // ---- but if you dont, the caret is not inside a div
-  // ----
+  // ---- its in father itself directly
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
