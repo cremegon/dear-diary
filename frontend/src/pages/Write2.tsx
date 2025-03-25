@@ -47,6 +47,7 @@ export const Editor = () => {
   // ---- once you delete it, theres a chance you delete
   // ---- the whole div it was in as well
   // ---- if leave some characters its fine
+  // ---- but if you dont, the caret is not inside a div
   // ----
 
   function toggleFormat(format: string) {
