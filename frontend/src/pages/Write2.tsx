@@ -42,14 +42,9 @@ export const Editor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
 
-  // ---- Last thing to add:
-  // ---- Selection-font-color-change
-  // ---- selection -> range -> wrap and unwrap
-  // ---- wrap: just surround it
-  // ---- unwrap: should behave as usual by the current unwrap logic
-  // ---- after that: minor queries to fix:
-  // ---- verifyToken endpoint checking the expiration date of cookie
-  // ---- make a seperate page for the draw cover page
+  // ---- Now the only other edge case to add is this:
+  // ---- when you select a range of words in father
+  // ----
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
