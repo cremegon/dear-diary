@@ -44,7 +44,8 @@ export const Editor = () => {
 
   // ---- Now the only other edge case to add is this:
   // ---- when you select a range of words in father
-  // ----
+  // ---- once you delete it, theres a chance you delete
+  // ---- the whole div it was in as well
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
