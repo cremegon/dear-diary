@@ -707,14 +707,15 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
   e.preventDefault();
   const selection = window.getSelection();
   if (!selection || selection.rangeCount < 1) return;
-  const currentRange = selection.getRangeAt(0);
-  let current = currentRange.startContainer;
-  while (current && current.parentNode?.nodeName !== "DIV") {
-    current = current.parentNode;
-  }
-  console.log("DIV PARENT = ", current);
+  // const currentRange = selection.getRangeAt(0);
 
-  const nextSibling = currentRange.endContainer.nextSibling;
+  // let current = currentRange.startContainer;
+  // while (current && current.parentNode?.nodeName !== "DIV") {
+  //   current = current.parentNode;
+  // }
+  // console.log("DIV PARENT = ", current);
+
+  // const nextSibling = currentRange.endContainer.nextSibling;
   if (e.key !== "Backspace") return;
   console.log(father.innerHTML);
   if (father.innerHTML === "<br>") {
