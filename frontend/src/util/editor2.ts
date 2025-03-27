@@ -708,7 +708,12 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
-  let divParent:Node|null = null
+  let current = currentRange.startContainer;
+  while (current && current.parentNode?.nodeName !== "DIV") {
+    current = current.parentNode;
+  }
+  console.log("DIV PARENT = ", current);
+
   const nextSibling = currentRange.endContainer.nextSibling;
   if (e.key !== "Backspace") return;
   console.log(father.innerHTML);
@@ -734,11 +739,6 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
 
     div.appendChild(span);
     father?.appendChild(div);
-
-    let nextContainer: Node | null = null;
-    if (!nextSibling) {
-      nextContainer = 
-    }
 
     const newRange = document.createRange();
     newRange.setStart(span, 0);
