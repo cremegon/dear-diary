@@ -714,9 +714,9 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
     current = current.parentNode;
   }
   const fatherNode = current.parentNode;
-  console.log("DIV PARENT = ", fatherNode);
-
   const nextSibling = currentRange.endContainer.nextSibling;
+
+  const nextContainer = nextSibling ? nextSibling : fatherNode;
   if (e.key !== "Backspace") return;
   console.log(father.innerHTML);
   if (father.innerHTML === "<br>") {
