@@ -742,6 +742,8 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
     const div = document.createElement("div");
     span.innerHTML = "\u00A0";
 
+    // ---- Issues here: a <br> tag keeps getting added
+
     div.appendChild(span);
     father?.appendChild(div);
 
