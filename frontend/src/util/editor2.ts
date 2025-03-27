@@ -715,8 +715,7 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
   }
   const fatherNode = current.parentNode;
   const nextSibling = currentRange.endContainer.nextSibling;
-
-  const nextContainer = nextSibling ? nextSibling : fatherNode;
+  const nextContainer = nextSibling ? true : false;
   if (e.key !== "Backspace") return;
   console.log(father.innerHTML);
   if (father.innerHTML === "<br>") {
@@ -741,6 +740,12 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
 
     div.appendChild(span);
     father?.appendChild(div);
+
+    if (nextContainer) {
+      fatherNode?.insertBefore(div, nextSibling);
+    } else {
+      fatherNode?.appendChild(div);
+    }
 
     const newRange = document.createRange();
     newRange.setStart(span, 0);
