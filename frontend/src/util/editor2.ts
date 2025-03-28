@@ -708,6 +708,7 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
+  console.log("NEW CURRENT RANGE = ", currentRange);
 
   let current = currentRange.startContainer;
   while (current.parentNode && current.nodeName !== "DIV") {
@@ -719,13 +720,19 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
 
   if (e.key !== "Backspace") return;
   console.log(father.innerHTML);
-  if (!currentRange.startContainer.nodeValue) {
+  if (
+    currentRange.startContainer === currentRange.endContainer &&
+    !currentRange.startContainer.nodeValue
+  ) {
+    console.log("REMOVAL 1");
+    console.log(currentRange);
     const divRemoval = current;
     console.log("removal div = ", divRemoval, fatherNode);
     fatherNode?.removeChild(divRemoval);
   }
 
   if (father.innerHTML === "<br>") {
+    console.log("REMOVAL 2");
     father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");
@@ -741,6 +748,7 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
     selection.removeAllRanges();
     selection.addRange(newRange);
   } else {
+    console.log("REMOVAL 3");
     const postDeleteRange = selection.getRangeAt(0);
     if (postDeleteRange.startContainer !== fatherNode) return;
 
