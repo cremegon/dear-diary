@@ -723,7 +723,7 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
     father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");
-    span.innerHTML = "\u00A0";
+    span.innerText = "\uFEFF";
 
     div.appendChild(span);
     father?.appendChild(div);
