@@ -740,7 +740,7 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
 
     const span = document.createElement("span");
     const div = document.createElement("div");
-    span.innerHTML = "\u00A0";
+    span.innerText = "\uFEFF";
 
     // ---- Issues here: a <br> tag keeps getting added
 
@@ -751,6 +751,10 @@ export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
       fatherNode?.insertBefore(div, nextSibling);
     } else {
       fatherNode?.appendChild(div);
+    }
+
+    if (div.previousSibling && div.previousSibling?.nodeName === "BR") {
+      fatherNode.removeChild(div.previousSibling);
     }
 
     const newRange = document.createRange();
