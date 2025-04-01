@@ -679,14 +679,18 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
 
 export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
-  if (!selection || selection?.rangeCount < 1) return;
+  if (!selection || selection?.rangeCount < 1) return null;
 
   const currentRange = selection.getRangeAt(0);
-  if (!currentRange.collapsed) {
+  if (currentRange.collapsed) {
     let nextContainer: Node | null = null;
     let nextSibling: boolean | null = null;
-    if (currentRange.endContainer.nextSibling) {
-      nextContainer = currentRange.endContainer.nextSibling;
+    let current = currentRange.startContainer;
+    while (current.parentNode && current.nodeName !== "DIV") {
+      current = current.parentNode;
+    }
+    if (current.nextSibling) {
+      nextContainer = current.nextSibling;
       nextSibling = true;
     } else {
       nextContainer = father;
@@ -709,10 +713,11 @@ export function checkOrPlaceCaret(father: Element) {
 
     selection.removeAllRanges();
     selection.addRange(newRange);
-    return;
+    return null;
   } else {
     const range = selection.getRangeAt(0);
     console.log(range);
+    return null;
   }
 }
 
@@ -720,5 +725,14 @@ export function backSpaceCheck(e: React.FormEvent, father: Element) {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
-  console.log("checking BACKSPACE", currentRange.toString, e);
+  if (
+    currentRange.startContainer.textContent &&
+    currentRange.startContainer.textContent.length > 2
+  )
+    return;
+  if (checkOrPlaceCaret(father) === null) return;
+  const [nextSibling, nextContainer] = checkOrPlaceCaret(father);
+  console.log("ALMOST NOTHING INSIDE!", currentRange);
+  console.log("NEXT SIBLING?", nextSibling);
+  console.log("NEXT CONTAINER = ", nextContainer);
 }

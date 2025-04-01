@@ -30,6 +30,7 @@ export const Editor = () => {
     return font[0];
   });
 
+  const [lastLetter, setLastLetter] = useState("");
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [color, setColor] = useState("fff");
@@ -190,6 +191,11 @@ export const Editor = () => {
     }
   }, [loading]);
 
+  // useEffect(() => {
+  //   console.log("TIMES ARE CHANGING M'LORD = ", editorRef.current?.innerText);
+  //   backSpaceCheck(father as Element);
+  // }, [editorRef]);
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -277,7 +283,7 @@ export const Editor = () => {
         ref={editorRef}
         contentEditable="true"
         id="father"
-        onChange={() => backSpaceCheck(father as Element)}
+        onInput={(e) => backSpaceCheck(e, father as Element, lastLetter)}
         onKeyDown={(e) => addNewLine(e)}
         onClick={() => checkOrPlaceCaret(father as Element)}
         style={{
