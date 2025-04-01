@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   addNewLine,
   backSpaceCheck,
-  checkAndPlaceCaret,
+  checkOrPlaceCaret,
   exitCurrentTag,
   findToggleState2,
   findToggleVariation,
@@ -277,9 +277,9 @@ export const Editor = () => {
         ref={editorRef}
         contentEditable="true"
         id="father"
-        onClick={() => checkAndPlaceCaret()}
+        onChange={() => backSpaceCheck(father as Element)}
         onKeyDown={(e) => addNewLine(e)}
-        onKeyUp={(e) => backSpaceCheck(e, father as Element)}
+        onClick={() => checkOrPlaceCaret(father as Element)}
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,

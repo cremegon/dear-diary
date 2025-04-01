@@ -677,11 +677,24 @@ export function addNewLine(event: React.KeyboardEvent<HTMLDivElement>) {
   console.log(document.getElementById("father")?.childNodes);
 }
 
-export function checkAndPlaceCaret() {
+export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return;
 
-  const father = document.getElementById("father");
+  const currentRange = selection.getRangeAt(0);
+  if (!currentRange.collapsed) {
+    let nextContainer: Node | null = null;
+    let nextSibling: boolean | null = null;
+    if (currentRange.endContainer.nextSibling) {
+      nextContainer = currentRange.endContainer.nextSibling;
+      nextSibling = true;
+    } else {
+      nextContainer = father;
+      nextSibling = false;
+    }
+    return [nextSibling, nextContainer];
+  }
+
   if (!father?.innerHTML) {
     const span = document.createElement("span");
     const div = document.createElement("div");
@@ -703,80 +716,9 @@ export function checkAndPlaceCaret() {
   }
 }
 
-export function backSpaceCheck(e: React.KeyboardEvent, father: Element) {
-  e.preventDefault();
+export function backSpaceCheck(e: React.FormEvent, father: Element) {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
-  console.log("NEW CURRENT RANGE = ", currentRange);
-
-  let current = currentRange.startContainer;
-  while (current.parentNode && current.nodeName !== "DIV") {
-    current = current.parentNode;
-  }
-  const fatherNode = current.parentNode;
-  const nextSibling = currentRange.endContainer.nextSibling;
-  const nextContainer = nextSibling ? true : false;
-
-  if (e.key !== "Backspace") return;
-  console.log(father.innerHTML);
-  if (
-    currentRange.startContainer === currentRange.endContainer &&
-    !currentRange.startContainer.nodeValue
-  ) {
-    console.log("REMOVAL 1");
-    console.log(currentRange);
-    const divRemoval = current;
-    console.log("removal div = ", divRemoval, fatherNode);
-    fatherNode?.removeChild(divRemoval);
-  }
-
-  if (father.innerHTML === "<br>") {
-    console.log("REMOVAL 2");
-    father.innerHTML = "";
-    const span = document.createElement("span");
-    const div = document.createElement("div");
-    span.innerText = "\uFEFF";
-
-    div.appendChild(span);
-    father?.appendChild(div);
-
-    const newRange = document.createRange();
-    newRange.setStart(span, 0);
-    newRange.setEnd(span, 0);
-
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-  } else {
-    console.log("REMOVAL 3");
-    const postDeleteRange = selection.getRangeAt(0);
-    if (postDeleteRange.startContainer !== fatherNode) return;
-
-    const span = document.createElement("span");
-    const div = document.createElement("div");
-    span.innerText = "\uFEFF";
-
-    // ---- Issues here: a <br> tag keeps getting added
-
-    div.appendChild(span);
-    father?.appendChild(div);
-
-    if (nextContainer) {
-      fatherNode?.insertBefore(div, nextSibling);
-    } else {
-      fatherNode?.appendChild(div);
-    }
-
-    if (div.previousSibling && div.previousSibling?.nodeName === "BR") {
-      fatherNode.removeChild(div.previousSibling);
-    }
-
-    const newRange = document.createRange();
-    newRange.setStart(span, 0);
-    newRange.setEnd(span, 0);
-
-    selection.removeAllRanges();
-    selection.addRange(newRange);
-  }
-  return;
+  console.log("checking BACKSPACE", currentRange.toString, e);
 }
