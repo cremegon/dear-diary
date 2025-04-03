@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   addNewLine,
   backSpaceCheck,
-  checkOrPlaceCaret,
   exitCurrentTag,
   findToggleState2,
   findToggleVariation,
@@ -45,17 +44,6 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
-
-  // ---- Now the only other edge case to add is this:
-  // ---- when you select a range of words in father
-  // ---- once you delete it, theres a chance you delete
-  // ---- the whole div it was in as well
-  // ---- if leave some characters its fine
-  // ---- but if you dont, the caret is not inside a div
-  // ---- its in father itself directly
-  // ---- therefore, we need to check if the immediate parentnode
-  // ---- of the currentrange is not father
-  // ---- if it is, create a div and a span and put the caret in it
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -136,29 +124,45 @@ export const Editor = () => {
     console.log("RESPONSE", response);
   }
 
-  function handleBackspaceCheck(e: React.FormEvent) {
-    if (!lastLetter) {
-      const [sibling, container]: [boolean, Node | null] = backSpaceCheck(
-        e,
+  function handleRemove(e: React.KeyboardEvent) {
+    if (e.key === "Backspace") {
+      const [sibling, container] = removeAndReplace(
+        nextSibling,
+        nextContainer as Node,
         father as Element,
-        lastLetter,
-        nextContainer
+        lastLetter
       ) as [boolean, Node];
+      if (sibling && container) {
+        setNextSibling(sibling);
+        setNextContainer(container);
+      }
+    }
+
+    if (e.key !== "Backspace" && e.key !== "Enter") {
+      console.log(father?.innerHTML);
+
+      const [sibling, container]: [boolean | null, Node | null] =
+        backSpaceCheck(e, father as Element, lastLetter, nextContainer) as [
+          boolean,
+          Node,
+        ];
+      if (sibling === null && container === null) {
+        setLastLetter(false);
+        console.log("last letter reset", lastLetter);
+        return;
+      }
+      console.log("next sibling and next container = ", sibling, container);
       setNextSibling(sibling);
       setNextContainer(container);
       setLastLetter(true);
-    }
-  }
 
-  function handleRemove(e: React.KeyboardEvent) {
-    const [sibling, container] = removeAndReplace(
-      e,
-      nextSibling,
-      nextContainer as Node,
-      father as Element
-    ) as [boolean, Node];
-    setNextSibling(sibling);
-    setNextContainer(container);
+      console.log("CURRENT SIBLING AND CONTAINER AND LAST LETTER");
+      console.log(nextSibling, nextContainer, lastLetter);
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addNewLine();
+    }
   }
 
   useEffect(() => {
@@ -311,10 +315,9 @@ export const Editor = () => {
         ref={editorRef}
         contentEditable="true"
         id="father"
-        onInput={(e) => handleBackspaceCheck(e)}
-        onKeyUp={(e) => addNewLine(e)}
+        // onInput={(e) => handleBackspaceCheck(e)}
         onKeyDown={(e) => handleRemove(e)}
-        onClick={() => checkOrPlaceCaret(father as Element)}
+        // onClick={() => checkOrPlaceCaret(father as Element)}
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,
