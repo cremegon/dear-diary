@@ -7,6 +7,7 @@ import {
   findToggleState2,
   findToggleVariation,
   insertBlankTag,
+  removeAndReplace,
   removeFailedTag,
   treeWalkerSearch,
   unwrapAll,
@@ -30,7 +31,9 @@ export const Editor = () => {
     return font[0];
   });
 
-  const [lastLetter, setLastLetter] = useState("");
+  const [lastLetter, setLastLetter] = useState(false);
+  const [nextSibling, setNextSibling] = useState(false);
+  const [nextContainer, setNextContainer] = useState<null | Node>(null);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [color, setColor] = useState("fff");
@@ -131,6 +134,31 @@ export const Editor = () => {
       fontSize
     );
     console.log("RESPONSE", response);
+  }
+
+  function handleBackspaceCheck(e: React.FormEvent) {
+    if (!lastLetter) {
+      const [sibling, container]: [boolean, Node | null] = backSpaceCheck(
+        e,
+        father as Element,
+        lastLetter,
+        nextContainer
+      ) as [boolean, Node];
+      setNextSibling(sibling);
+      setNextContainer(container);
+      setLastLetter(true);
+    }
+  }
+
+  function handleRemove(e: React.KeyboardEvent) {
+    const [sibling, container] = removeAndReplace(
+      e,
+      nextSibling,
+      nextContainer as Node,
+      father as Element
+    ) as [boolean, Node];
+    setNextSibling(sibling);
+    setNextContainer(container);
   }
 
   useEffect(() => {
@@ -283,8 +311,9 @@ export const Editor = () => {
         ref={editorRef}
         contentEditable="true"
         id="father"
-        onInput={(e) => backSpaceCheck(e, father as Element, lastLetter)}
-        onKeyDown={(e) => addNewLine(e)}
+        onInput={(e) => handleBackspaceCheck(e)}
+        onKeyUp={(e) => addNewLine(e)}
+        onKeyDown={(e) => handleRemove(e)}
         onClick={() => checkOrPlaceCaret(father as Element)}
         style={{
           fontSize: `${fontSize}px`,
