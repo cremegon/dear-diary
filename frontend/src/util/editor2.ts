@@ -781,7 +781,12 @@ export function removeAndReplace(
       father.removeChild(node);
     }
   }
-
+  let current = currentRange.startContainer;
+  while (current.parentNode && current.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+  const br = document.createElement("br");
+  current.appendChild(br);
   const span = document.createElement("span");
   const div = document.createElement("div");
   span.innerHTML = "\u00A0";
