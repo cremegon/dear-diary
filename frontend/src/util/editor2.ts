@@ -678,7 +678,8 @@ export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
-  if (!father?.innerHTML) {
+  if (father.innerHTML === "<br>") {
+    father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");
     span.innerHTML = "\u00A0";
@@ -693,12 +694,9 @@ export function checkOrPlaceCaret(father: Element) {
     selection.removeAllRanges();
     selection.addRange(newRange);
     console.log("father not present");
-    console.log(father.innerHTML);
-    return null;
   } else {
     console.log("father present");
-    const range = selection.getRangeAt(0);
-    console.log(range);
-    return null;
   }
+  console.log(father.innerHTML);
+  return;
 }

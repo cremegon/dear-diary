@@ -131,7 +131,8 @@ export const Editor = () => {
       e.preventDefault();
       addNewLine();
     } else {
-      console.log(father?.innerHTML);
+      checkOrPlaceCaret(father as Element);
+      // console.log(father?.innerHTML);
     }
   }
 
