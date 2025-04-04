@@ -120,6 +120,12 @@ export const Editor = () => {
     console.log("RESPONSE", response);
   }
 
+  // function handleInput() {
+  //   if (editorRef.current) {
+  //     setContent(editorRef.current.innerHTML);
+  //   }
+  // }
+
   function handleKeyboard(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -137,157 +143,156 @@ export const Editor = () => {
       } catch (error) {
         console.log(error);
       } finally {
-        requestAnimationFrame(() => {
-          if (editorRef.current) {
-            console.log(editorRef);
-            editorRef.current.innerHTML = response.data[1];
-          }
-          console.log(response.data);
-          setTitle(response.data[0]);
-          setFontSize(response.data[2]);
-          setSelectedFont(response.data[3]);
-        });
+        console.log(response.data);
+        if (editorRef.current) {
+          editorRef.current.innerHTML = response.data[1];
+          console.log("HI:3");
+        }
+        setTitle(response.data[0]);
+        setFontSize(response.data[2]);
+        setSelectedFont(response.data[3]);
       }
     }
 
     loadContent();
   }, [params]);
 
-  useEffect(() => {
-    if (!loading) {
-      requestAnimationFrame(() => {
-        if (!editorRef.current) {
-          console.log("no editorref present");
-          return;
-        }
-        editorRef.current.focus();
-        const selection = window.getSelection();
-        const range = document.createRange();
-
-        range.selectNodeContents(editorRef.current);
-        const span = range.startContainer.lastChild?.lastChild;
-        let startContainer =
-          span?.lastChild?.nodeName !== "BR"
-            ? span?.lastChild
-            : span.lastChild.previousSibling;
-
-        while (startContainer?.firstChild) {
-          startContainer = startContainer.firstChild;
-        }
-        const offset = startContainer?.textContent?.length || 0;
-
-        if (!startContainer) return;
-
-        range.setStart(startContainer, offset);
-        range.setEnd(startContainer, offset);
-
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-      });
-    }
-  }, [loading]);
-
   // useEffect(() => {
-  //   console.log("TIMES ARE CHANGING M'LORD = ", editorRef.current?.innerText);
-  //   backSpaceCheck(father as Element);
-  // }, [editorRef]);
+  //   if (!loading) {
+  //     if (!editorRef.current) {
+  //       console.log("no editorref present");
+  //       return;
+  //     }
+  //     editorRef.current.focus();
+  //     const selection = window.getSelection();
+  //     const range = document.createRange();
 
-  if (loading) return <div>Loading...</div>;
+  //     range.selectNodeContents(editorRef.current);
+  //     const span = range.startContainer.lastChild?.lastChild;
+  //     let startContainer =
+  //       span?.lastChild?.nodeName !== "BR"
+  //         ? span?.lastChild
+  //         : span.lastChild.previousSibling;
+
+  //     while (startContainer?.firstChild) {
+  //       startContainer = startContainer.firstChild;
+  //     }
+  //     const offset = startContainer?.textContent?.length || 0;
+
+  //     if (!startContainer) return;
+
+  //     range.setStart(startContainer, offset);
+  //     range.setEnd(startContainer, offset);
+
+  //     selection?.removeAllRanges();
+  //     selection?.addRange(range);
+  //   }
+  // }, [loading]);
+
+  // if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <input
-        type="text"
-        placeholder="enter title"
-        className="border-pink-400 border-4"
-        id="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      <div className="flex flex-row text">
-        <select className="btn-writeUI" value={selectedFont}>
-          {fontOptions.map((font) => (
-            <option
-              key={font}
-              value={font}
-              onClick={() => setSelectedFont(font)}
-            >
-              {font}
-            </option>
-          ))}
-        </select>
-
-        <button
-          value="strong"
-          className="btn-writeUI"
-          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
-        >
-          Bold
-        </button>
-        <button
-          value="em"
-          className="btn-writeUI"
-          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
-        >
-          Italic
-        </button>
-        <button
-          value="p"
-          className="btn-writeUI"
-          onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
-        >
-          Highlight
-        </button>
-
-        <button
-          className="btn-writeUI"
-          onClick={() => setFontSize(fontSize + 2)}
-        >
-          Font +
-        </button>
-        <button
-          className="btn-writeUI"
-          onClick={() => setFontSize(Math.max(12, fontSize - 2))}
-        >
-          Font -
-        </button>
-        <button className="btn-writeUI" onClick={() => setTextAlign("left")}>
-          Text Left
-        </button>
-        <button className="btn-writeUI" onClick={() => setTextAlign("center")}>
-          Text Center
-        </button>
-        <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
-          Text Right
-        </button>
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
-      </div>
-
-      <form action="submit" onSubmit={(e) => saveSession(e)}>
-        <button type="submit" className="btn-writeUI">
-          Save
-        </button>
-      </form>
-
+    <div>
       <div
-        className="bg-slate-400 w-2/3 min-h-screen break-words flex-1"
-        ref={editorRef}
-        contentEditable="true"
-        id="father"
-        onKeyDown={(e) => handleKeyboard(e)}
-        onClick={() => checkOrPlaceCaret(father as Element)}
-        style={{
-          fontSize: `${fontSize}px`,
-          textAlign: `${textAlign}`,
-          fontFamily: `${selectedFont}`,
-          height: `${windowHeight}px`,
-        }}
-      ></div>
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading ? "block" : "hidden"} absolute`}
+      >
+        Loading...
+      </div>
+      <div
+        className={`w-full h-full flex flex-col items-center ${loading ? "hidden" : "block"}`}
+      >
+        <input
+          type="text"
+          placeholder="enter title"
+          className="border-pink-400 border-4"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <div className="flex flex-row text">
+          <select className="btn-writeUI" value={selectedFont}>
+            {fontOptions.map((font) => (
+              <option
+                key={font}
+                value={font}
+                onClick={() => setSelectedFont(font)}
+              >
+                {font}
+              </option>
+            ))}
+          </select>
+          <button
+            value="strong"
+            className="btn-writeUI"
+            onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+          >
+            Bold
+          </button>
+          <button
+            value="em"
+            className="btn-writeUI"
+            onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+          >
+            Italic
+          </button>
+          <button
+            value="p"
+            className="btn-writeUI"
+            onClick={(e) => toggleFormat((e.target as HTMLButtonElement).value)}
+          >
+            Highlight
+          </button>
+          <button
+            className="btn-writeUI"
+            onClick={() => setFontSize(fontSize + 2)}
+          >
+            Font +
+          </button>
+          <button
+            className="btn-writeUI"
+            onClick={() => setFontSize(Math.max(12, fontSize - 2))}
+          >
+            Font -
+          </button>
+          <button className="btn-writeUI" onClick={() => setTextAlign("left")}>
+            Text Left
+          </button>
+          <button
+            className="btn-writeUI"
+            onClick={() => setTextAlign("center")}
+          >
+            Text Center
+          </button>
+          <button className="btn-writeUI" onClick={() => setTextAlign("right")}>
+            Text Right
+          </button>
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          />
+        </div>
+        <form action="submit" onSubmit={(e) => saveSession(e)}>
+          <button type="submit" className="btn-writeUI">
+            Save
+          </button>
+        </form>
+        <div
+          className="bg-slate-400 w-2/3 min-h-screen break-words flex-1"
+          id="father"
+          ref={editorRef}
+          contentEditable="true"
+          suppressContentEditableWarning
+          onKeyDown={(e) => handleKeyboard(e)}
+          onClick={() => checkOrPlaceCaret(father as Element)}
+          style={{
+            fontSize: `${fontSize}px`,
+            textAlign: `${textAlign}`,
+            fontFamily: `${selectedFont}`,
+            height: `${windowHeight}px`,
+          }}
+        ></div>
+      </div>
     </div>
   );
 };

@@ -693,6 +693,7 @@ export function checkOrPlaceCaret(father: Element) {
     selection.removeAllRanges();
     selection.addRange(newRange);
     console.log("father not present");
+    console.log(father.innerHTML);
     return null;
   } else {
     console.log("father present");
