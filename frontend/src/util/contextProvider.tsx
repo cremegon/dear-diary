@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
 
 interface AuthContextType {
   auth: boolean;
@@ -30,6 +30,7 @@ export const AuthProvider = () => {
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
         console.log(data.message);
+        redirect("/login");
       } else {
         console.log(data.message);
         if (user) {
