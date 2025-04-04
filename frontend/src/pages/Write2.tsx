@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   addNewLine,
-  backSpaceCheck,
+  checkOrPlaceCaret,
   exitCurrentTag,
   findToggleState2,
   findToggleVariation,
   insertBlankTag,
-  removeAndReplace,
   removeFailedTag,
   treeWalkerSearch,
   unwrapAll,
@@ -30,9 +29,6 @@ export const Editor = () => {
     return font[0];
   });
 
-  const [lastLetter, setLastLetter] = useState(false);
-  const [nextSibling, setNextSibling] = useState(false);
-  const [nextContainer, setNextContainer] = useState<null | Node>(null);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [color, setColor] = useState("fff");
@@ -124,44 +120,12 @@ export const Editor = () => {
     console.log("RESPONSE", response);
   }
 
-  function handleRemove(e: React.KeyboardEvent) {
-    if (e.key === "Backspace") {
-      const [sibling, container] = removeAndReplace(
-        nextSibling,
-        nextContainer as Node,
-        father as Element,
-        lastLetter
-      ) as [boolean, Node];
-      if (sibling && container) {
-        setNextSibling(sibling);
-        setNextContainer(container);
-      }
-    }
-
-    if (e.key !== "Backspace" && e.key !== "Enter") {
-      console.log(father?.innerHTML);
-
-      const [sibling, container]: [boolean | null, Node | null] =
-        backSpaceCheck(e, father as Element, lastLetter, nextContainer) as [
-          boolean,
-          Node,
-        ];
-      if (sibling === null && container === null) {
-        setLastLetter(false);
-        console.log("last letter reset", lastLetter);
-        return;
-      }
-      console.log("next sibling and next container = ", sibling, container);
-      setNextSibling(sibling);
-      setNextContainer(container);
-      setLastLetter(true);
-
-      console.log("CURRENT SIBLING AND CONTAINER AND LAST LETTER");
-      console.log(nextSibling, nextContainer, lastLetter);
-    }
+  function handleKeyboard(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       e.preventDefault();
       addNewLine();
+    } else {
+      console.log(father?.innerHTML);
     }
   }
 
@@ -315,9 +279,8 @@ export const Editor = () => {
         ref={editorRef}
         contentEditable="true"
         id="father"
-        // onInput={(e) => handleBackspaceCheck(e)}
-        onKeyDown={(e) => handleRemove(e)}
-        // onClick={() => checkOrPlaceCaret(father as Element)}
+        onKeyDown={(e) => handleKeyboard(e)}
+        onClick={() => checkOrPlaceCaret(father as Element)}
         style={{
           fontSize: `${fontSize}px`,
           textAlign: `${textAlign}`,

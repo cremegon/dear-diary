@@ -678,25 +678,6 @@ export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
-  const currentRange = selection.getRangeAt(0);
-  if (currentRange.collapsed) {
-    let nextContainer: Node | null = null;
-    let nextSibling: boolean | null = null;
-    let current = currentRange.startContainer;
-    console.log("checkingCaret:", current);
-    while (current.parentNode && current.nodeName !== "DIV") {
-      current = current.parentNode;
-    }
-    if (current.nextSibling) {
-      nextContainer = current.nextSibling;
-      nextSibling = true;
-    } else {
-      nextContainer = father;
-      nextSibling = false;
-    }
-    return [nextSibling, nextContainer];
-  }
-
   if (!father?.innerHTML) {
     const span = document.createElement("span");
     const div = document.createElement("div");
@@ -719,92 +700,4 @@ export function checkOrPlaceCaret(father: Element) {
     console.log(range);
     return null;
   }
-}
-
-export function backSpaceCheck(
-  e: React.FormEvent,
-  father: Element,
-  lastLetter: boolean,
-  nextContainer: null | Node
-) {
-  const selection = window.getSelection();
-  if (!selection || selection.rangeCount < 1) return null;
-  const currentRange = selection.getRangeAt(0);
-  if (
-    currentRange.startContainer.textContent &&
-    currentRange.startContainer.textContent.length !== 1
-  ) {
-    console.log("more than 1 character");
-    console.log(currentRange.startContainer.textContent);
-    return [null, null];
-  }
-
-  const [nextSib, nextCont] = checkOrPlaceCaret(father) as [boolean, Node];
-
-  console.log("NEXT SIBLING?", nextSib);
-  console.log("NEXT CONTAINER = ", nextCont);
-  return [nextSib, nextCont];
-}
-
-export function removeAndReplace(
-  nextSibling: boolean,
-  nextContainer: Node,
-  father: Element,
-  lastLetter: boolean
-) {
-  const selection = window.getSelection();
-  if (!selection || selection.rangeCount < 1) return null;
-
-  const currentRange = selection.getRangeAt(0);
-  if (lastLetter === false) {
-    console.log("not the last letter");
-    return [null, null];
-  }
-
-  console.log("current last letter = ", lastLetter);
-  if (!currentRange.collapsed) {
-    let currentContainer = currentRange.startContainer;
-    const lastContainer = currentRange.endContainer;
-    const removeNodeArray: Node[] = [];
-
-    while (currentContainer.parentNode && currentContainer.nodeName !== "DIV") {
-      currentContainer = currentContainer.parentNode;
-    }
-    while (
-      currentContainer.nextSibling &&
-      currentContainer.nodeValue !== lastContainer.nodeValue
-    ) {
-      removeNodeArray.push(currentContainer);
-      currentContainer = currentContainer.nextSibling;
-    }
-    for (const node of removeNodeArray) {
-      father.removeChild(node);
-    }
-  }
-  let current = currentRange.startContainer;
-  while (current.parentNode && current.nodeName !== "SPAN") {
-    current = current.parentNode;
-  }
-  const br = document.createElement("br");
-  current.appendChild(br);
-  const span = document.createElement("span");
-  const div = document.createElement("div");
-  span.innerHTML = "\u00A0";
-
-  div.appendChild(span);
-
-  if (nextSibling) {
-    father.insertBefore(div, nextContainer);
-  } else {
-    father.appendChild(div);
-  }
-
-  const newRange = document.createRange();
-  newRange.setStart(span, 0);
-  newRange.setEnd(span, 0);
-
-  selection.removeAllRanges();
-  selection.addRange(newRange);
-  console.log("after remove innerHTML = ", father.innerHTML);
-  return [nextSibling, nextContainer];
 }
