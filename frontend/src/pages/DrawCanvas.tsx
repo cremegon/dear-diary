@@ -16,7 +16,6 @@ export const Drawing = () => {
       const context = canvas.getContext("2d");
       if (context) {
         contextRef.current! = context;
-        context.fillStyle = "salmon";
         context.strokeStyle = "salmon";
 
         //draw vertical grid
@@ -37,6 +36,18 @@ export const Drawing = () => {
       }
     }
   }, []);
+
+  // ---- Reset the Canvas Colors etc
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.fillStyle = color;
+      }
+    }
+  }, [color]);
 
   const startDrawing = (e: React.MouseEvent) => {
     setIsDrawing(true);
