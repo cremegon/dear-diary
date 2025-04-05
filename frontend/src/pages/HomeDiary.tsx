@@ -64,6 +64,11 @@ export const DiaryPage = () => {
                 </Link>
 
                 <li>{new Date(item.created_at).toLocaleDateString()}</li>
+                <div className="bg-lime-400 w-20 h-20 flex items-center justify-center">
+                  <Link to={`${item.url}/draw`}>
+                    <div className="bg-slate-800 rounded-full w-8 h-8" />
+                  </Link>
+                </div>
               </ul>
             ))
           : "nothing..."}

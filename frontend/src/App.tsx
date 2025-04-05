@@ -40,13 +40,13 @@ function App() {
       <Routes>
         <Route element={<AuthProvider />}>
           <Route element={<PublicRoute />}>
-            <Route path="/draw" element={<Drawing />} />
             <Route path="/login" element={<Login />} />
             <Route index path="/signup" element={<Signup />} />
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route element={<HomePageLayout />}>
               <Route path="diary" element={<DiaryPage />} />
+              <Route path="diary/:diaryId/draw" element={<Drawing />} />
               <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
 
               <Route index path="/" element={<Homepage />} />
