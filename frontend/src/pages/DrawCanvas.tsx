@@ -80,9 +80,9 @@ export const Drawing = () => {
     <div>
       <div id="toolbar" className="flex flex-row ">
         <div
-          onClick={setBrush(!brush)}
+          onClick={() => setBrush(!brush)}
           id="brush"
-          className="w-20 h-20 bg-red-400 items-center justify-center mr-4"
+          className={`w-20 h-20 ${ brush ? {bg-green-200} : {bg-red-400}} items-center justify-center mr-4`}
         >
           <p>Brush</p>
         </div>
