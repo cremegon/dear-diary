@@ -2,9 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 
 export const Drawing = () => {
   const [isDrawing, setIsDrawing] = useState(false);
+  const [brush, setBrush] = useState(false);
+  const [eraser, setEraser] = useState(false);
+  const [color, setColor] = useState("fff");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
+  // ---- Create the Canvas Grid on Launch
   useEffect(() => {
     const canvas = canvasRef.current!;
 
@@ -74,6 +78,24 @@ export const Drawing = () => {
 
   return (
     <div>
+      <div id="toolbar" className="flex flex-row ">
+        <div
+          onClick={setBrush(!brush)}
+          id="brush"
+          className="w-20 h-20 bg-red-400 items-center justify-center mr-4"
+        >
+          <p>Brush</p>
+        </div>
+
+        <div
+          id="eraser"
+          className="w-20 h-20 bg-red-400 items-center justify-center mr-4"
+        >
+          <p>Erase</p>
+        </div>
+
+        <input type="color" className="w-20 h-20" />
+      </div>
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
