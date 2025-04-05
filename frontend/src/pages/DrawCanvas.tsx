@@ -82,19 +82,24 @@ export const Drawing = () => {
         <div
           onClick={() => setBrush(!brush)}
           id="brush"
-          className={`w-20 h-20 ${ brush ? {bg-green-200} : {bg-red-400}} items-center justify-center mr-4`}
+          className={`w-20 h-20 ${brush ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
           <p>Brush</p>
         </div>
 
         <div
+          onClick={() => setEraser(!eraser)}
           id="eraser"
-          className="w-20 h-20 bg-red-400 items-center justify-center mr-4"
+          className={`w-20 h-20 ${eraser ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
           <p>Erase</p>
         </div>
 
-        <input type="color" className="w-20 h-20" />
+        <input
+          onChange={(e) => setColor(e.target.value)}
+          type="color"
+          className="w-20 h-20"
+        />
       </div>
       <canvas
         ref={canvasRef}
