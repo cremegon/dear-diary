@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 export const Drawing = () => {
+  const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
   const [brush, setBrush] = useState(false);
   const [eraser, setEraser] = useState(false);
@@ -121,7 +122,7 @@ export const Drawing = () => {
         onMouseUp={stopDrawing}
         width={300}
         height={460}
-        style={{ backgroundColor: "maroon" }}
+        style={{ backgroundColor: bgColor }}
       />
     </div>
   );
