@@ -5,8 +5,9 @@ export const Drawing = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brush, setBrush] = useState(false);
   const [eraser, setEraser] = useState(false);
-  const [color, setColor] = useState("fff");
+  const [color, setColor] = useState("black");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
   // ---- Create the Canvas Grid on Launch
@@ -45,13 +46,35 @@ export const Drawing = () => {
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context) {
-        if (brush) context.fillStyle = color;
-        else if (eraser) context.fillStyle = bgColor;
+        if (brush) {
+          console.log("brush: ", brush, color);
+          context.fillStyle = color;
+        } else if (eraser) {
+          console.log("eraser: ", eraser, bgColor);
+          context.fillStyle = bgColor;
+        }
       }
     }
-  }, [color, eraser]);
+  }, [color, eraser, brush]);
 
-  function handleToggle() {}
+  function handleToggle(e) {
+    const buttonId = e.id;
+    if (buttonId === "brush") {
+      if (eraser && !brush) {
+        setEraser(false);
+        setBrush(!brush);
+      } else {
+        setBrush(!brush);
+      }
+    } else if (buttonId === "eraser") {
+      if (brush && !eraser) {
+        setBrush(false);
+        setEraser(!eraser);
+      } else {
+        setEraser(!eraser);
+      }
+    }
+  }
 
   const startDrawing = (e: React.MouseEvent) => {
     if (!brush && !eraser) return;
@@ -97,7 +120,7 @@ export const Drawing = () => {
     <div>
       <div id="toolbar" className="flex flex-row ">
         <div
-          onClick={handleToggle}
+          onClick={(e) => handleToggle(e.target)}
           id="brush"
           className={`w-20 h-20 ${brush ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
@@ -105,7 +128,7 @@ export const Drawing = () => {
         </div>
 
         <div
-          onClick={handleToggle}
+          onClick={(e) => handleToggle(e.target)}
           id="eraser"
           className={`w-20 h-20 ${eraser ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
@@ -118,6 +141,7 @@ export const Drawing = () => {
           className="w-20 h-20"
         />
       </div>
+      <canvas ref={bgCanvasRef} />
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
@@ -129,6 +153,7 @@ export const Drawing = () => {
           backgroundColor: bgColor,
           borderColor: "salmon",
           borderWidth: 2,
+          zIndex: -1,
         }}
       />
     </div>
