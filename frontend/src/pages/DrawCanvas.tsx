@@ -45,13 +45,16 @@ export const Drawing = () => {
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context) {
-        context.fillStyle = color;
+        if (brush) context.fillStyle = color;
+        else if (eraser) context.fillStyle = bgColor;
       }
     }
-  }, [color]);
+  }, [color, eraser]);
+
+  function handleToggle() {}
 
   const startDrawing = (e: React.MouseEvent) => {
-    if (!brush) return;
+    if (!brush && !eraser) return;
 
     setIsDrawing(true);
 
@@ -94,7 +97,7 @@ export const Drawing = () => {
     <div>
       <div id="toolbar" className="flex flex-row ">
         <div
-          onClick={() => setBrush(!brush)}
+          onClick={handleToggle}
           id="brush"
           className={`w-20 h-20 ${brush ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
@@ -102,7 +105,7 @@ export const Drawing = () => {
         </div>
 
         <div
-          onClick={() => setEraser(!eraser)}
+          onClick={handleToggle}
           id="eraser"
           className={`w-20 h-20 ${eraser ? "bg-green-400" : "bg-red-400"} items-center justify-center mr-4`}
         >
