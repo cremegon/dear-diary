@@ -113,6 +113,7 @@ export const Drawing = () => {
   const stopDrawing = () => {
     contextRef.current!.closePath();
     setIsDrawing(false);
+    setIsErasing(false);
   };
 
   const traceErase = (e: React.MouseEvent) => {
@@ -128,8 +129,9 @@ export const Drawing = () => {
     );
   };
 
-  function handleToggle(e) {
-    const buttonId = e.id;
+  function handleToggle(e: EventTarget) {
+    const element = e as HTMLElement;
+    const buttonId = element.id;
     if (buttonId === "brush") {
       if (eraser && !brush) {
         setEraser(false);
