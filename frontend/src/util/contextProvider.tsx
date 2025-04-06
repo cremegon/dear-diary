@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Outlet, redirect } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   auth: boolean;
@@ -9,6 +9,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>(null!);
 
 export const AuthProvider = () => {
+  const navigate = useNavigate();
   const user = localStorage.getItem("user");
   const [auth, setAuth] = useState<boolean>(() => {
     return user ? JSON.parse(user).isAuthenticated === true : false;
@@ -30,7 +31,8 @@ export const AuthProvider = () => {
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
         console.log(data.message);
-        redirect("/login");
+        setAuth(false);
+        navigate("/login");
       } else {
         console.log(data.message);
         if (user) {

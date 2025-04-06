@@ -43,10 +43,22 @@ export const validateToken = async (
   } catch (error) {
     if (error === "TokenExpiredError") {
       console.log("Token has Expired");
-      return res.status(403).json({ message: "Token has Expired" });
+      return res
+        .status(403)
+        .clearCookie("authToken", {
+          httpOnly: true,
+          sameSite: "strict",
+        })
+        .json({ message: "Token has Expired" });
     } else {
       console.log("Invalid Token");
-      return res.status(403).json({ message: "Invalid Token" });
+      return res
+        .status(403)
+        .clearCookie("authToken", {
+          httpOnly: true,
+          sameSite: "strict",
+        })
+        .json({ message: "Invalid Token" });
     }
   }
 };

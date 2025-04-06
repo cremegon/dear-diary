@@ -34,56 +34,6 @@ export const Login = () => {
     }
   };
 
-  // const handleLogin = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   console.log(email, password);
-
-  //   // ------------- Verify Username via Helper Function
-  //   const validUsername: { error: boolean; message: string } =
-  //     verifyUsername(email);
-  //   if (validUsername.error) {
-  //     setError(["email", validUsername.message]);
-  //     return;
-  //   }
-  //   setError([]);
-
-  //   // ------------- Verify Password via Helper Function
-  //   const validPassword: { error: boolean; message: string } =
-  //     verifyPassword(password);
-  //   if (validPassword.error) {
-  //     setError(["password", validPassword.message]);
-  //     return;
-  //   }
-  //   setError([]);
-
-  //   const response = await fetch("http://localhost:5000/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ email, password }),
-  //     credentials: "include",
-  //   });
-
-  //   const data = await response.json();
-
-  //   if (response.ok) {
-  //     const user = localStorage.getItem("user");
-  //     if (user) {
-  //       const titleName = getName(data.content);
-  //       const parsedUser = JSON.parse(user);
-  //       parsedUser.isAuthenticated = true;
-  //       parsedUser.loggedIn = true;
-  //       parsedUser.username = titleName;
-  //       localStorage.setItem("user", JSON.stringify(parsedUser));
-
-  //       setAuth(true);
-  //       console.log("Login Successful");
-  //     }
-  //   } else {
-  //     setError(["password", data.message]);
-  //   }
-  // };
   return (
     <form
       action="post"
