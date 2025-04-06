@@ -50,6 +50,8 @@ export const Drawing = () => {
   }, [color]);
 
   const startDrawing = (e: React.MouseEvent) => {
+    if (!brush) return;
+
     setIsDrawing(true);
 
     contextRef.current!.beginPath();
