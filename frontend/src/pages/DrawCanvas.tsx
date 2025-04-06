@@ -122,7 +122,11 @@ export const Drawing = () => {
         onMouseUp={stopDrawing}
         width={300}
         height={460}
-        style={{ backgroundColor: bgColor }}
+        style={{
+          backgroundColor: bgColor,
+          borderColor: "salmon",
+          borderWidth: 2,
+        }}
       />
     </div>
   );
