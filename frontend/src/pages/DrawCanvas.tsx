@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 export const Drawing = () => {
   const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isErasing, setIsErasing] = useState(false);
   const [brush, setBrush] = useState(false);
   const [eraser, setEraser] = useState(false);
   const [color, setColor] = useState("black");
@@ -12,12 +13,14 @@ export const Drawing = () => {
 
   // ---- Create the Canvas Grid on Launch
   useEffect(() => {
-    const canvas = canvasRef.current!;
+    const bgCanvas = bgCanvasRef.current!;
+    const drawingCanvas = canvasRef.current!;
 
-    if (canvas) {
-      const context = canvas.getContext("2d");
-      if (context) {
-        contextRef.current! = context;
+    if (bgCanvas && drawingCanvas) {
+      const context = bgCanvas?.getContext("2d");
+      const drawingContext = drawingCanvas.getContext("2d");
+      if (context && drawingContext) {
+        contextRef.current! = drawingContext;
         context.strokeStyle = "salmon";
 
         //draw vertical grid
@@ -51,35 +54,17 @@ export const Drawing = () => {
           context.fillStyle = color;
         } else if (eraser) {
           console.log("eraser: ", eraser, bgColor);
-          context.fillStyle = bgColor;
+          context.fillStyle = "rgba(255,255,255,0)";
         }
       }
     }
   }, [color, eraser, brush]);
 
-  function handleToggle(e) {
-    const buttonId = e.id;
-    if (buttonId === "brush") {
-      if (eraser && !brush) {
-        setEraser(false);
-        setBrush(!brush);
-      } else {
-        setBrush(!brush);
-      }
-    } else if (buttonId === "eraser") {
-      if (brush && !eraser) {
-        setBrush(false);
-        setEraser(!eraser);
-      } else {
-        setEraser(!eraser);
-      }
-    }
-  }
-
   const startDrawing = (e: React.MouseEvent) => {
     if (!brush && !eraser) return;
 
     setIsDrawing(true);
+    console.log("drawing...", contextRef.current!);
 
     contextRef.current!.beginPath();
     contextRef.current!.moveTo(
@@ -87,6 +72,20 @@ export const Drawing = () => {
       Math.floor(e.nativeEvent.offsetY / 20) * 20
     );
     contextRef.current!.fillRect(
+      Math.floor(e.nativeEvent.offsetX / 20) * 20,
+      Math.floor(e.nativeEvent.offsetY / 20) * 20,
+      20,
+      20
+    );
+  };
+
+  const startErase = (e: React.MouseEvent) => {
+    if (!brush && !eraser) return;
+    if (!eraser && brush) return;
+
+    setIsErasing(true);
+    console.log(contextRef.current!);
+    contextRef.current!.clearRect(
       Math.floor(e.nativeEvent.offsetX / 20) * 20,
       Math.floor(e.nativeEvent.offsetY / 20) * 20,
       20,
@@ -116,6 +115,54 @@ export const Drawing = () => {
     setIsDrawing(false);
   };
 
+  const traceErase = (e: React.MouseEvent) => {
+    if (!isErasing) {
+      return;
+    }
+
+    contextRef.current!.clearRect(
+      Math.floor(e.nativeEvent.offsetX / 20) * 20,
+      Math.floor(e.nativeEvent.offsetY / 20) * 20,
+      20,
+      20
+    );
+  };
+
+  function handleToggle(e) {
+    const buttonId = e.id;
+    if (buttonId === "brush") {
+      if (eraser && !brush) {
+        setEraser(false);
+        setBrush(!brush);
+      } else {
+        setBrush(!brush);
+      }
+    } else if (buttonId === "eraser") {
+      if (brush && !eraser) {
+        setBrush(false);
+        setEraser(!eraser);
+      } else {
+        setEraser(!eraser);
+      }
+    }
+  }
+
+  function handleClick(e: React.MouseEvent) {
+    if (brush && !eraser) {
+      startDrawing(e);
+    } else {
+      startErase(e);
+    }
+  }
+
+  function handleDrag(e: React.MouseEvent) {
+    if (isDrawing) {
+      traceDrawing(e);
+    } else if (isErasing) {
+      traceErase(e);
+    }
+  }
+
   return (
     <div>
       <div id="toolbar" className="flex flex-row ">
@@ -141,21 +188,41 @@ export const Drawing = () => {
           className="w-20 h-20"
         />
       </div>
-      <canvas ref={bgCanvasRef} />
-      <canvas
-        ref={canvasRef}
-        onMouseDown={startDrawing}
-        onMouseMove={traceDrawing}
-        onMouseUp={stopDrawing}
-        width={300}
-        height={460}
-        style={{
-          backgroundColor: bgColor,
-          borderColor: "salmon",
-          borderWidth: 2,
-          zIndex: -1,
-        }}
-      />
+      <div className="w-full h-svh relative">
+        <canvas
+          id="gridLayer"
+          ref={bgCanvasRef}
+          width={300}
+          height={460}
+          style={{
+            borderColor: "salmon",
+            borderWidth: 2,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        />
+        <canvas
+          id="drawingLayer"
+          ref={canvasRef}
+          onMouseDown={handleClick}
+          onMouseMove={handleDrag}
+          onMouseUp={stopDrawing}
+          width={300}
+          height={460}
+          style={{
+            backgroundColor: bgColor,
+            borderColor: "salmon",
+            borderWidth: 2,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+          }}
+        />
+      </div>
     </div>
   );
 };
