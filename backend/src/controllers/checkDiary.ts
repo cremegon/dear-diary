@@ -14,7 +14,7 @@ export const checkDiary = async (req: Request, res: Response): Promise<any> => {
     return res.status(404).json({ message: "No Diaries Found" });
   }
 
-  const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+  const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.userId;
 
   const diaryEntry = await pool.query(

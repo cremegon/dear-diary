@@ -1,6 +1,6 @@
 import { config } from "../config";
 import CryptoJS from "crypto-js";
-const CRYPTO_SECRET = config.cryptoSecret;
+const CRYPTO_SECRET = config.cryptoSecret as string;
 
 export const encryptUserId = (userId: number): string => {
   const encrypted = CryptoJS.AES.encrypt(

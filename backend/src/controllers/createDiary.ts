@@ -18,7 +18,7 @@ export const createDiary = async (
   if (!token)
     return res.status(403).json({ message: "No Token Found (Creating Diary)" });
 
-  const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+  const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
   console.log(decoded.userId);
 
   const query = await pool.query(

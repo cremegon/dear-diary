@@ -41,7 +41,9 @@ export const signupUser = async (req: Request, res: Response): Promise<any> => {
   const userId = user.id;
 
   // generates a jwt token and sign the token with the encrypted id from the database.
-  const token = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ id: userId }, JWT_SECRET as string, {
+    expiresIn: "1h",
+  });
 
   console.log("Successfully Authorized, Cookie Issued");
 

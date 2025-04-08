@@ -22,7 +22,7 @@ export const validateToken = async (
 
   // if user exists ; decode the token they have
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
 
     // select the user connected to the token from the database
     const selectedUser = await pool.query(
