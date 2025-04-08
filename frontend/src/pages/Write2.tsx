@@ -120,19 +120,12 @@ export const Editor = () => {
     console.log("RESPONSE", response);
   }
 
-  // function handleInput() {
-  //   if (editorRef.current) {
-  //     setContent(editorRef.current.innerHTML);
-  //   }
-  // }
-
   function handleKeyboard(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       e.preventDefault();
       addNewLine();
     } else {
       checkOrPlaceCaret(father as Element);
-      // console.log(father?.innerHTML);
     }
   }
 
@@ -158,40 +151,6 @@ export const Editor = () => {
     loadContent();
   }, [params]);
 
-  // useEffect(() => {
-  //   if (!loading) {
-  //     if (!editorRef.current) {
-  //       console.log("no editorref present");
-  //       return;
-  //     }
-  //     editorRef.current.focus();
-  //     const selection = window.getSelection();
-  //     const range = document.createRange();
-
-  //     range.selectNodeContents(editorRef.current);
-  //     const span = range.startContainer.lastChild?.lastChild;
-  //     let startContainer =
-  //       span?.lastChild?.nodeName !== "BR"
-  //         ? span?.lastChild
-  //         : span.lastChild.previousSibling;
-
-  //     while (startContainer?.firstChild) {
-  //       startContainer = startContainer.firstChild;
-  //     }
-  //     const offset = startContainer?.textContent?.length || 0;
-
-  //     if (!startContainer) return;
-
-  //     range.setStart(startContainer, offset);
-  //     range.setEnd(startContainer, offset);
-
-  //     selection?.removeAllRanges();
-  //     selection?.addRange(range);
-  //   }
-  // }, [loading]);
-
-  // if (loading) return <div>Loading...</div>;
-
   return (
     <div>
       <div
@@ -211,13 +170,13 @@ export const Editor = () => {
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="flex flex-row text">
-          <select className="btn-writeUI" value={selectedFont}>
+          <select
+            className="btn-writeUI"
+            value={selectedFont}
+            onChange={(e) => setSelectedFont(e.target.value)}
+          >
             {fontOptions.map((font) => (
-              <option
-                key={font}
-                value={font}
-                onClick={() => setSelectedFont(font)}
-              >
+              <option key={font} value={font}>
                 {font}
               </option>
             ))}

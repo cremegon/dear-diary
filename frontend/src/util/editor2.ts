@@ -678,7 +678,7 @@ export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
-  if (father.innerHTML === "<br>") {
+  if (!father.innerHTML) {
     father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");

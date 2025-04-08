@@ -13,7 +13,7 @@ export const createChapter = async (
 ): Promise<any> => {
   const { fontFamily, fontSize, url } = req.body;
   const token = req.cookies.authToken;
-  console.log("WE OUT HERE SMOKING PENISES!!!");
+  console.log("Creating New Chapter....");
 
   if (!token)
     return res.status(403).json({ message: "Token not verified at Chapters" });
@@ -26,8 +26,8 @@ export const createChapter = async (
   console.log("selected diary id for chapters", diaryId);
 
   const query = await pool.query(
-    "INSERT INTO chapters(diary_id,font_family,font_size) VALUES($1,$2,$3) RETURNING *",
-    [diaryId, fontFamily, fontSize]
+    "INSERT INTO chapters(diary_id,font_family,font_size,title) VALUES($1,$2,$3,$4) RETURNING *",
+    [diaryId, fontFamily, fontSize, "untitled"]
   );
 
   const id = query.rows[0].id;

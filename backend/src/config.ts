@@ -22,7 +22,7 @@ export const config = {
     database: process.env.DB_NAME,
     port: Number(process.env.DB_PORT),
   },
-  jwtSecret: process.env.JWT_SECRETKEY || "poopdog@1234!",
-  cryptoSecret: process.env.CRYPTO_SECRETKEY || "dorman34",
+  jwtSecret: process.env.JWT_SECRETKEY,
+  cryptoSecret: process.env.CRYPTO_SECRETKEY,
   serverPort: Number(process.env.PORT) || 5000,
 };
