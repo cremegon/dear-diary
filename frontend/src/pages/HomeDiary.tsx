@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { checkDiary, handleDiary } from "../util/diary.ts";
+import { checkDiary, deleteDiary, handleDiary } from "../util/diary.ts";
 
 interface DiaryEntry {
   id: number;
@@ -28,11 +28,18 @@ export const DiaryPage = () => {
     }
   }
 
+  async function handleDelete(e: React.MouseEvent, diaryId: string) {
+    await deleteDiary(e, diaryId);
+    console.log("frontend diary delete");
+    checkAndRender();
+  }
+
   const refreshHandle = async (e: React.FormEvent) => {
     await handleDiary(e, title);
     checkAndRender();
   };
 
+  // ---- Load in Available Diary Entries
   useEffect(() => {
     if (location.pathname === "/diary") checkAndRender();
   }, [location.pathname]);
@@ -69,6 +76,12 @@ export const DiaryPage = () => {
                     <div className="bg-slate-800 rounded-full w-8 h-8" />
                   </Link>
                 </div>
+                <button
+                  onClick={(e) => handleDelete(e, item.url)}
+                  className="bg-black"
+                >
+                  Delete
+                </button>
               </ul>
             ))
           : "nothing..."}

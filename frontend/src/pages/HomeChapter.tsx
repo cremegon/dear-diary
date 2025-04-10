@@ -6,7 +6,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-import { checkChapter, handleChapter } from "../util/diary.ts";
+import { checkChapter, deleteChapter, handleChapter } from "../util/diary.ts";
 
 interface ChapterEntry {
   id: number;
@@ -28,28 +28,37 @@ export const ChapterPage = () => {
   const navigate = useNavigate();
   const params = useParams().diaryId as string;
 
-  useEffect(() => {
-    async function checkAndRender() {
-      try {
-        const response = await checkChapter(params);
-        setEntry(response.data);
-        console.log("RESPONSES", response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  async function checkAndRender() {
+    try {
+      const response = await checkChapter(params);
+      setEntry(response.data);
+      console.log("RESPONSES", response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
-    if (params) checkAndRender();
-  }, [params]);
+  }
 
   async function createChapter(e: React.FormEvent, params: string) {
+    console.log("frontend chapter params", params);
     const data = await handleChapter(e, params);
     console.log(data);
     if (!data) return;
 
     navigate(data.redirect);
   }
+
+  async function handleDelete(e: React.MouseEvent, diaryId: string) {
+    await deleteChapter(e, diaryId);
+    console.log("frontend chapter delete");
+    checkAndRender();
+  }
+
+  // ---- Load in Available Chapter Entries
+  useEffect(() => {
+    if (params) checkAndRender();
+  }, [params]);
 
   if (location.pathname === `${params}/chapter` && loading)
     return (
@@ -75,9 +84,15 @@ export const ChapterPage = () => {
             ? entry.map((item) => (
                 <ul key={item.id} className="flex flex-row justify-evenly">
                   <Link to={`${item.url}/write-session?create=false`}>
-                    <li>{item.title}</li>
+                    <li>{`chapter-${item.title}`}</li>
                   </Link>
                   <li>{new Date(item.created_at).toLocaleDateString()}</li>
+                  <button
+                    onClick={(e) => handleDelete(e, item.url)}
+                    className="bg-black"
+                  >
+                    Delete
+                  </button>
                 </ul>
               ))
             : "nothing..."}

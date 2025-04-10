@@ -13,7 +13,7 @@ export const createChapter = async (
 ): Promise<any> => {
   const { fontFamily, fontSize, url } = req.body;
   const token = req.cookies.authToken;
-  console.log("Creating New Chapter....");
+  console.log("Creating New Chapter....", url);
 
   if (!token)
     return res.status(403).json({ message: "Token not verified at Chapters" });
@@ -31,9 +31,10 @@ export const createChapter = async (
   );
 
   const id = query.rows[0].id;
+  console.log("encrypting...", id);
   const encryptedURL = encryptUserId(id);
 
-  await pool.query("UPDATE chapters SET url = $1 WHERE id = ($2)", [
+  await pool.query("UPDATE chapters SET url = $1 WHERE id = $2", [
     encryptedURL,
     id,
   ]);

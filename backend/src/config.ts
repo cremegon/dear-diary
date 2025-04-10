@@ -23,6 +23,6 @@ export const config = {
     port: Number(process.env.DB_PORT),
   },
   jwtSecret: process.env.JWT_SECRETKEY,
-  cryptoSecret: process.env.CRYPTO_SECRETKEY,
+  cryptoSecret: process.env.CRYPTO_SECREYKEY,
   serverPort: Number(process.env.PORT) || 5000,
 };

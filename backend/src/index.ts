@@ -12,6 +12,8 @@ import { checkDiary } from "./controllers/checkDiary";
 import { checkChapter } from "./controllers/checkChapter";
 import { saveContent } from "./controllers/saveContent";
 import { loadContent } from "./controllers/loadContent";
+import { deleteDiary } from "./controllers/deleteDiary";
+import { deleteChapter } from "./controllers/deleteChapter";
 
 const app = express();
 app.use(express.json());
@@ -38,8 +40,14 @@ app.get("/logout", logoutUser);
 // ---------------------- Create Diary
 app.post("/new-diary", createDiary);
 
+// ---------------------- Delete Diary
+app.delete("/delete-diary/:diaryURL", deleteDiary);
+
 // ---------------------- Create Chapter
 app.post("/new-chapter", createChapter);
+
+// ---------------------- Delete Chapter
+app.delete("/delete-chapter/:chapterURL", deleteChapter);
 
 // ---------------------- Check Diary
 app.get("/check-diary", checkDiary);

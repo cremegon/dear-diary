@@ -14,6 +14,32 @@ export async function handleDiary(e: React.FormEvent, title: string) {
   console.log("NEW DATA!", data.message);
 }
 
+export async function deleteDiary(e: React.MouseEvent, diaryId: string) {
+  console.log("deleting diary...", diaryId);
+  e.preventDefault();
+  const response = await fetch(
+    `http://localhost:5000/delete-diary/${diaryId}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+}
+
+export async function deleteChapter(e: React.MouseEvent, chapterId: string) {
+  console.log("deleting chapter...", chapterId);
+  e.preventDefault();
+  const response = await fetch(
+    `http://localhost:5000/delete-chapter/${chapterId}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+}
+
 export async function handleChapter(e: React.FormEvent, url: string) {
   e.preventDefault();
   const [fontFamily, fontSize] = ["Ariel", 20];
