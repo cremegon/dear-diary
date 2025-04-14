@@ -11,12 +11,13 @@ export const loadCoverArt = async (
   const { diaryURL } = req.params;
   console.log("loading cover art...");
 
-  const query = await pool.query("SELECT * from chapters WHERE url = $1", [
+  const query = await pool.query("SELECT * from diaries WHERE url = $1", [
     diaryURL,
   ]);
   if (query.rows.length < 1)
     return res.status(404).json({ message: "No Cover Art Found Found" });
   const data = query.rows[0].cover;
+  console.log("data for cover art:", data);
 
   return res.status(200).json({
     data: data,

@@ -24,8 +24,10 @@ export const Drawing = () => {
 
     createGrid(bgCanvas, drawingCanvas);
     async function getCoverArt() {
-      const coverArt = await fetchCoverArt(diaryURL as string);
-      setCover(coverArt);
+      if (!cover) {
+        const coverArt = await fetchCoverArt(diaryURL as string);
+        setCover(coverArt);
+      }
     }
     getCoverArt();
   }, [cover]);

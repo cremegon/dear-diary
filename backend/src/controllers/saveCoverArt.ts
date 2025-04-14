@@ -3,14 +3,13 @@ import { Pool } from "pg";
 import { config } from "../config";
 
 const pool = new Pool(config.db);
-const JWT_SECRET = config.jwtSecret;
 
 export const saveCoverArt = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   const { image } = req.body;
-  const { diaryId } = req.params;
+  const { diaryURL } = req.params;
   const token = req.cookies.authToken;
 
   if (!token) {
@@ -20,7 +19,7 @@ export const saveCoverArt = async (
 
   await pool.query("UPDATE diaries SET cover = $1 WHERE url = $2", [
     image,
-    diaryId,
+    diaryURL,
   ]);
 
   return res.status(200).json({

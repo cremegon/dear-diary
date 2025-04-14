@@ -64,7 +64,7 @@ app.post("/save-to-db", saveContent);
 app.post("/load-from-db", loadContent);
 
 // ---------------------- Save Cover Art
-app.post("/save-cover-art/:diaryId", saveCoverArt);
+app.post("/save-cover-art/:diaryURL", saveCoverArt);
 
 // ---------------------- Load Cover Art
 app.get("/load-cover-art/:diaryURL", loadCoverArt);

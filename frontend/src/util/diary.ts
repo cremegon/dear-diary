@@ -150,6 +150,6 @@ export async function fetchCoverArt(diaryId: string) {
     return "";
   }
 
-  const data = await response.json();
-  return data;
+  const coverArt = await response.json();
+  return coverArt.data;
 }
