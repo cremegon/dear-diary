@@ -194,8 +194,11 @@ export const Drawing = () => {
         <input
           onChange={(e) => setColor(e.target.value)}
           type="color"
-          className="w-20 h-20"
+          className="w-20 h-20 mr-4"
         />
+        <button onClick={(e) => handleDownloadImage(e)} className="btn-writeUI">
+          Save Image
+        </button>
       </div>
       <div className="w-full h-svh relative">
         <canvas
@@ -231,9 +234,6 @@ export const Drawing = () => {
             zIndex: 1,
           }}
         />
-        <a href="#" onClick={(e) => handleDownloadImage(e)}>
-          Download Image
-        </a>
       </div>
     </div>
   );
