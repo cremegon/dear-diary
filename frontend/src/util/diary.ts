@@ -122,3 +122,18 @@ export async function loadFromDatabase(url: string) {
   const data = await response.json();
   return data;
 }
+
+export async function saveCoverArt(image: string) {
+  const response = await fetch("http://localhost:5000/save-cover-art", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image }),
+    credentials: "include",
+  });
+  if (!response.ok) {
+    console.log("error occured for cover art from backend");
+    return;
+  }
+  const data = await response.json();
+  return data;
+}
