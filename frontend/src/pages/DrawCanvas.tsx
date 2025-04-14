@@ -168,7 +168,7 @@ export const Drawing = () => {
   function handleDownloadImage(event: React.MouseEvent) {
     const link = event.currentTarget;
     link.setAttribute("download", "canvas.jpg");
-    let image = canvasRef.current?.toDataURL();
+    const image = canvasRef.current?.toDataURL() as string;
     link.setAttribute("href", image);
   }
 
