@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchCoverArt, saveCoverArt } from "../util/diary.ts";
+import { drawImageToCanvas } from "../util/client.ts";
 
 export const Drawing = () => {
   const param = useParams();
@@ -25,8 +26,9 @@ export const Drawing = () => {
     createGrid(bgCanvas, drawingCanvas);
     async function getCoverArt() {
       if (!cover) {
-        const coverArt = await fetchCoverArt(diaryURL as string);
-        setCover(coverArt);
+        const coverArtURL = await fetchCoverArt(diaryURL as string);
+        setCover(coverArtURL);
+        drawImageToCanvas(canvasRef, coverArtURL);
       }
     }
     getCoverArt();

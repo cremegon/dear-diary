@@ -151,3 +151,20 @@ export const handleLogout = async (setAuth: (auth: boolean) => void) => {
     setAuth(false);
   }
 };
+
+export function drawImageToCanvas(
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  coverArtURL: string
+) {
+  const newImage = new Image();
+  const canvas = canvasRef.current!;
+  if (!canvas) return;
+  const canvasContext = canvas.getContext("2d");
+
+  newImage.onload = () => {
+    canvas.width = newImage.width;
+    canvas.height = newImage.height;
+    canvasContext?.drawImage(newImage, 0, 0);
+  };
+  newImage.src = coverArtURL;
+}
