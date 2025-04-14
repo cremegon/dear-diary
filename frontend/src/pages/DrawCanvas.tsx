@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { saveCoverArt } from "../util/diary.ts";
+import { fetchCoverArt, saveCoverArt } from "../util/diary.ts";
 
 export const Drawing = () => {
   const param = useParams();
-  const diaryId = param.diaryId;
+  const diaryURL = param.diaryId;
   const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
+  const [cover, setCover] = useState("");
   const [brush, setBrush] = useState(false);
   const [eraser, setEraser] = useState(false);
   const [color, setColor] = useState("black");
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -20,31 +22,13 @@ export const Drawing = () => {
     const bgCanvas = bgCanvasRef.current!;
     const drawingCanvas = canvasRef.current!;
 
-    if (bgCanvas && drawingCanvas) {
-      const context = bgCanvas?.getContext("2d");
-      const drawingContext = drawingCanvas.getContext("2d");
-      if (context && drawingContext) {
-        contextRef.current! = drawingContext;
-        context.strokeStyle = "salmon";
-
-        //draw vertical grid
-        for (let i = 0; i <= 300; i += 20) {
-          context.beginPath();
-          context.moveTo(i, 0);
-          context.lineTo(i, 460);
-          context.stroke();
-        }
-
-        //draw horizontal grid
-        for (let i = 0; i <= 460; i += 20) {
-          context.beginPath();
-          context.moveTo(0, i);
-          context.lineTo(460, i);
-          context.stroke();
-        }
-      }
+    createGrid(bgCanvas, drawingCanvas);
+    async function getCoverArt() {
+      const coverArt = await fetchCoverArt(diaryURL as string);
+      setCover(coverArt);
     }
-  }, []);
+    getCoverArt();
+  }, [cover]);
 
   // ---- Reset the Canvas Colors etc
   useEffect(() => {
@@ -169,6 +153,36 @@ export const Drawing = () => {
     }
   }
 
+  function createGrid(
+    bgCanvas: HTMLCanvasElement,
+    drawingCanvas: HTMLCanvasElement
+  ) {
+    if (bgCanvas && drawingCanvas) {
+      const context = bgCanvas?.getContext("2d");
+      const drawingContext = drawingCanvas.getContext("2d");
+      if (context && drawingContext) {
+        contextRef.current! = drawingContext;
+        context.strokeStyle = "salmon";
+
+        //draw vertical grid
+        for (let i = 0; i <= 300; i += 20) {
+          context.beginPath();
+          context.moveTo(i, 0);
+          context.lineTo(i, 460);
+          context.stroke();
+        }
+
+        //draw horizontal grid
+        for (let i = 0; i <= 460; i += 20) {
+          context.beginPath();
+          context.moveTo(0, i);
+          context.lineTo(460, i);
+          context.stroke();
+        }
+      }
+    }
+  }
+
   async function handleDownloadImage(diaryId: string) {
     const image = canvasRef.current?.toDataURL() as string;
     console.log("params!", diaryId, image);
@@ -201,7 +215,7 @@ export const Drawing = () => {
           className="w-20 h-20 mr-4"
         />
         <button
-          onClick={() => handleDownloadImage(diaryId as string)}
+          onClick={() => handleDownloadImage(diaryURL as string)}
           className="btn-writeUI"
         >
           Save Image
@@ -241,6 +255,10 @@ export const Drawing = () => {
             zIndex: 1,
           }}
         />
+      </div>
+
+      <div id="showcase" className={`${cover ? "block" : "hidden"}`}>
+        <img src={cover} alt="cover art" />
       </div>
     </div>
   );

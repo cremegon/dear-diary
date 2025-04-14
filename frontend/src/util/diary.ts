@@ -134,3 +134,22 @@ export async function saveCoverArt(image: string, diaryId: string) {
   const data = await response.json();
   return data;
 }
+
+export async function fetchCoverArt(diaryId: string) {
+  const response = await fetch(
+    `http://localhost:5000/load-cover-art/${diaryId}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) {
+    console.log("Error Retrieving Cover Art at Frontend");
+    return "";
+  }
+
+  const data = await response.json();
+  return data;
+}
