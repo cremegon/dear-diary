@@ -165,6 +165,13 @@ export const Drawing = () => {
     }
   }
 
+  function handleDownloadImage(event: React.MouseEvent) {
+    const link = event.currentTarget;
+    link.setAttribute("download", "canvas.jpg");
+    let image = canvasRef.current?.toDataURL();
+    link.setAttribute("href", image);
+  }
+
   return (
     <div>
       <div id="toolbar" className="flex flex-row ">
@@ -224,6 +231,9 @@ export const Drawing = () => {
             zIndex: 1,
           }}
         />
+        <a href="#" onClick={(e) => handleDownloadImage(e)}>
+          Download Image
+        </a>
       </div>
     </div>
   );
