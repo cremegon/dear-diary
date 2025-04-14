@@ -14,6 +14,7 @@ import { saveContent } from "./controllers/saveContent";
 import { loadContent } from "./controllers/loadContent";
 import { deleteDiary } from "./controllers/deleteDiary";
 import { deleteChapter } from "./controllers/deleteChapter";
+import { saveCoverArt } from "./controllers/saveCoverArt";
 
 const app = express();
 app.use(express.json());
@@ -52,7 +53,7 @@ app.delete("/delete-chapter/:chapterURL", deleteChapter);
 // ---------------------- Check Diary
 app.get("/check-diary", checkDiary);
 
-// ---------------------- Check Diary
+// ---------------------- Check Chapter
 app.get("/check-chapter", checkChapter);
 
 // ---------------------- Save Content
@@ -60,6 +61,9 @@ app.post("/save-to-db", saveContent);
 
 // ---------------------- Load Content
 app.post("/load-from-db", loadContent);
+
+// ---------------------- Save Cover Art
+app.post("/save-cover-art/:diaryId", saveCoverArt);
 
 //Server Listen
 const PORT = config.serverPort;

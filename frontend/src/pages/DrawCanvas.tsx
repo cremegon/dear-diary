@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { saveCoverArt } from "../util/diary.ts";
 
 export const Drawing = () => {
-  const param = useParams().diaryId;
-  console.log(param);
+  const param = useParams();
+  const diaryId = param.diaryId;
   const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
@@ -168,11 +169,11 @@ export const Drawing = () => {
     }
   }
 
-  function handleDownloadImage(event: React.MouseEvent) {
-    const link = event.currentTarget;
-    link.setAttribute("download", "canvas.jpg");
+  async function handleDownloadImage(diaryId: string) {
     const image = canvasRef.current?.toDataURL() as string;
-    link.setAttribute("href", image);
+    console.log("params!", diaryId, image);
+    const response = await saveCoverArt(image, diaryId);
+    console.log(response);
   }
 
   return (
@@ -199,7 +200,10 @@ export const Drawing = () => {
           type="color"
           className="w-20 h-20 mr-4"
         />
-        <button onClick={(e) => handleDownloadImage(e)} className="btn-writeUI">
+        <button
+          onClick={() => handleDownloadImage(diaryId as string)}
+          className="btn-writeUI"
+        >
           Save Image
         </button>
       </div>

@@ -17,27 +17,21 @@ export async function handleDiary(e: React.FormEvent, title: string) {
 export async function deleteDiary(e: React.MouseEvent, diaryId: string) {
   console.log("deleting diary...", diaryId);
   e.preventDefault();
-  const response = await fetch(
-    `http://localhost:5000/delete-diary/${diaryId}`,
-    {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    }
-  );
+  await fetch(`http://localhost:5000/delete-diary/${diaryId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 }
 
 export async function deleteChapter(e: React.MouseEvent, chapterId: string) {
   console.log("deleting chapter...", chapterId);
   e.preventDefault();
-  const response = await fetch(
-    `http://localhost:5000/delete-chapter/${chapterId}`,
-    {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    }
-  );
+  await fetch(`http://localhost:5000/delete-chapter/${chapterId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 }
 
 export async function handleChapter(e: React.FormEvent, url: string) {
@@ -124,12 +118,15 @@ export async function loadFromDatabase(url: string) {
 }
 
 export async function saveCoverArt(image: string, diaryId: string) {
-  const response = await fetch("http://localhost:5000/save-cover-art", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ diaryId, image }),
-    credentials: "include",
-  });
+  const response = await fetch(
+    `http://localhost:5000/save-cover-art/${diaryId}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image }),
+      credentials: "include",
+    }
+  );
   if (!response.ok) {
     console.log("error occured for cover art from backend");
     return;
