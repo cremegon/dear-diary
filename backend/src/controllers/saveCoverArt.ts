@@ -18,7 +18,7 @@ export const saveCoverArt = async (
     return res.status(404).json({ message: "No Token Found" });
   }
 
-  await pool.query("UPDATE diaries SET cover = $1 WHERE user_id = $2", [
+  await pool.query("UPDATE diaries SET cover = $1 WHERE url = $2", [
     image,
     diaryId,
   ]);
