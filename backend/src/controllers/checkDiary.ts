@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { Pool } from "pg";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";

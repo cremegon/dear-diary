@@ -123,11 +123,11 @@ export async function loadFromDatabase(url: string) {
   return data;
 }
 
-export async function saveCoverArt(image: string) {
+export async function saveCoverArt(image: string, diaryId: string) {
   const response = await fetch("http://localhost:5000/save-cover-art", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image }),
+    body: JSON.stringify({ diaryId, image }),
     credentials: "include",
   });
   if (!response.ok) {

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const Drawing = () => {
+  const param = useParams().diaryId;
+  console.log(param);
   const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
