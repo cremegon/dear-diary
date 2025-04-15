@@ -17,7 +17,6 @@ export const loadCoverArt = async (
   if (query.rows.length < 1)
     return res.status(404).json({ message: "No Cover Art Found Found" });
   const data = query.rows[0].cover;
-  console.log("data for cover art:", data);
 
   return res.status(200).json({
     data: data,

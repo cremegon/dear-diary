@@ -32,7 +32,7 @@ export const Drawing = () => {
       }
     }
     getCoverArt();
-  }, [cover]);
+  }, [cover, diaryURL]);
 
   // ---- Reset the Canvas Colors etc
   useEffect(() => {
@@ -262,7 +262,7 @@ export const Drawing = () => {
       </div>
 
       <div id="showcase" className={`${cover ? "block" : "hidden"}`}>
-        <img src={cover} alt="cover art" />
+        <img src={cover ? cover : "#"} alt="cover art" />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ interface DiaryEntry {
   title: string;
   created_at: Date;
   url: string;
+  cover: string;
 }
 
 export const DiaryPage = () => {
@@ -76,6 +77,14 @@ export const DiaryPage = () => {
                     <div className="bg-slate-800 rounded-full w-8 h-8" />
                   </Link>
                 </div>
+                <div className={`${item.cover ? "block" : "hidden"}`}>
+                  <img
+                    src={item.cover}
+                    width={100}
+                    height={150}
+                    alt="thebiggay"
+                  />
+                </div>
                 <button
                   onClick={(e) => handleDelete(e, item.url)}
                   className="bg-black"
@@ -95,7 +104,6 @@ export const DiaryPage = () => {
           className="border-pink-400 border-4"
         />
         <button type="submit" className="btn-writeUI">
-          {" "}
           New Diary
         </button>
       </form>
