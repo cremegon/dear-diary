@@ -49,12 +49,17 @@ export const DiaryPage = () => {
   return (
     <div className="h-full h-min-screen">
       <div
-        className={`top-1/2 left-1/2 bg-yellow-300 ${loading ? "block" : "hidden"} absolute`}
+        className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
+      >
+        Any Error Occured...
+      </div>
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
       >
         Loading...
       </div>
       <div
-        className={`w-full h-full flex-col flex-1 ${loading ? "hidden" : "block"}`}
+        className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
       >
         <h1 className="text-4xl">Write Your Diary</h1>
         <h2 className="text-4xl text-yellow-500">

@@ -56,12 +56,17 @@ export const ChapterPage = () => {
   return (
     <div className={`w-full h-full min-h-screen flex flex-col`}>
       <div
-        className={`top-1/2 left-1/2 bg-yellow-300 ${loading ? "block" : "hidden"} absolute`}
+        className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
+      >
+        An Error Occured...
+      </div>
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
       >
         Loading...
       </div>
       <div
-        className={`w-full h-full flex-col flex-1 ${loading ? "hidden" : "block"}`}
+        className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
       >
         <h1 className="text-4xl">Write Your Chapters</h1>
         <h2 className="text-4xl text-yellow-500">
