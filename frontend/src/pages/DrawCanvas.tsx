@@ -16,6 +16,7 @@ export const Drawing = () => {
   const [eraser, setEraser] = useState(false);
   const [color, setColor] = useState("black");
 
+  const referenceRef = useRef<HTMLCanvasElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -192,9 +193,12 @@ export const Drawing = () => {
 
   async function handleUploadImage(diaryId: string) {
     const image = canvasRef.current?.toDataURL() as string;
-    console.log("imageURL!", image);
+    const reference = referenceRef.current?.toDataURL() as string;
+    if (image === reference) return;
+    console.log("no sir...");
     const response = await saveCoverArt(image, diaryId);
     if (response) {
+      drawImageToCanvas(referenceRef, image);
       queryParam.set("edit", "true");
       setQueryParam(queryParam);
     }
@@ -263,6 +267,21 @@ export const Drawing = () => {
             top: 0,
             left: 0,
             zIndex: 1,
+          }}
+        />
+        <canvas
+          id="referenceLayer"
+          ref={referenceRef}
+          width={300}
+          height={460}
+          style={{
+            backgroundColor: bgColor,
+            borderColor: "salmon",
+            borderWidth: 2,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 0,
           }}
         />
       </div>
