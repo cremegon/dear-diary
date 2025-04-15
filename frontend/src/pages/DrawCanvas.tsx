@@ -5,7 +5,7 @@ import { drawImageToCanvas } from "../util/client.ts";
 
 export const Drawing = () => {
   const param = useParams();
-  const [queryParam] = useSearchParams();
+  const [queryParam, setQueryParam] = useSearchParams();
   const edit = queryParam.get("edit") === "true";
   const diaryURL = param.diaryId;
   const bgColor = "white";
@@ -35,7 +35,7 @@ export const Drawing = () => {
     }
     if (!edit) return;
     getCoverArt();
-  }, [cover, diaryURL]);
+  }, [cover, diaryURL, edit]);
 
   // ---- Reset the Canvas Colors etc
   useEffect(() => {
@@ -190,11 +190,14 @@ export const Drawing = () => {
     }
   }
 
-  async function handleDownloadImage(diaryId: string) {
+  async function handleUploadImage(diaryId: string) {
     const image = canvasRef.current?.toDataURL() as string;
-    console.log("params!", diaryId, image);
+    console.log("imageURL!", image);
     const response = await saveCoverArt(image, diaryId);
-    console.log(response);
+    if (response) {
+      queryParam.set("edit", "true");
+      setQueryParam(queryParam);
+    }
   }
 
   return (
@@ -222,7 +225,7 @@ export const Drawing = () => {
           className="w-20 h-20 mr-4"
         />
         <button
-          onClick={() => handleDownloadImage(diaryURL as string)}
+          onClick={() => handleUploadImage(diaryURL as string)}
           className="btn-writeUI"
         >
           Save Image
