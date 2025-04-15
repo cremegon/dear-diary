@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { checkChapter, deleteChapter, handleChapter } from "../util/diary.ts";
 
 interface ChapterEntry {
@@ -23,12 +17,11 @@ export const ChapterPage = () => {
   const [entry, setEntry] = useState<ChapterEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const location = useLocation();
 
   const navigate = useNavigate();
   const params = useParams().diaryId as string;
 
-  async function checkAndRender() {
+  async function fetchChapterData() {
     try {
       const response = await checkChapter(params);
       setEntry(response.data);
@@ -52,32 +45,24 @@ export const ChapterPage = () => {
   async function handleDelete(e: React.MouseEvent, diaryId: string) {
     await deleteChapter(e, diaryId);
     console.log("frontend chapter delete");
-    checkAndRender();
+    fetchChapterData();
   }
 
   // ---- Load in Available Chapter Entries
   useEffect(() => {
-    if (params) checkAndRender();
+    if (params) fetchChapterData();
   }, [params]);
 
-  if (location.pathname === `${params}/chapter` && loading)
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <p>Loading...</p>
-      </div>
-    );
-
-  if (location.pathname === `${params}/chapter` && error)
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <p>{error}</p>
-      </div>
-    );
-
   return (
-    <div className="w-full h-full flex flex-col">
-      <Outlet />
-      <div className="flex-1">
+    <div className={`w-full h-full min-h-screen flex flex-col`}>
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading ? "block" : "hidden"} absolute`}
+      >
+        Loading...
+      </div>
+      <div
+        className={`w-full h-full flex-col flex-1 ${loading ? "hidden" : "block"}`}
+      >
         <h1 className="text-4xl">Write Your Chapters</h1>
         <h2 className="text-4xl text-yellow-500">
           {entry
