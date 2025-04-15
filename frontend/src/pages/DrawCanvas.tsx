@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { fetchCoverArt, saveCoverArt } from "../util/diary.ts";
 import { drawImageToCanvas } from "../util/client.ts";
 
 export const Drawing = () => {
   const param = useParams();
+  const [queryParam] = useSearchParams();
+  const edit = queryParam.get("edit") === "true";
   const diaryURL = param.diaryId;
   const bgColor = "white";
   const [isDrawing, setIsDrawing] = useState(false);
@@ -31,6 +33,7 @@ export const Drawing = () => {
         drawImageToCanvas(canvasRef, coverArtURL);
       }
     }
+    if (!edit) return;
     getCoverArt();
   }, [cover, diaryURL]);
 
@@ -259,10 +262,6 @@ export const Drawing = () => {
             zIndex: 1,
           }}
         />
-      </div>
-
-      <div id="showcase" className={`${cover ? "block" : "hidden"}`}>
-        <img src={cover ? cover : "#"} alt="cover art" />
       </div>
     </div>
   );
