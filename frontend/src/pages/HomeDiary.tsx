@@ -60,7 +60,7 @@ export const DiaryPage = () => {
     );
 
   return (
-    <div className="h-screen">
+    <div className="h-full">
       <Outlet />
       <h1 className="text-4xl">Write Your Diary</h1>
       <h2 className="text-4xl text-yellow-500">

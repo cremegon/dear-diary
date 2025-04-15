@@ -60,7 +60,6 @@ export const Drawing = () => {
     if (!brush && !eraser) return;
 
     setIsDrawing(true);
-    console.log("drawing...", contextRef.current!);
 
     contextRef.current!.beginPath();
     contextRef.current!.moveTo(
@@ -205,7 +204,7 @@ export const Drawing = () => {
   }
 
   return (
-    <div>
+    <div className="h-full">
       <div id="toolbar" className="flex flex-row ">
         <div
           onClick={(e) => handleToggle(e.target)}
