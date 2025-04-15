@@ -153,3 +153,16 @@ export async function fetchCoverArt(diaryId: string) {
   const coverArt = await response.json();
   return coverArt.data;
 }
+
+export async function finishDiary(diaryURL: string) {
+  const response = await fetch(
+    `http://localhost:5000/finish-diary/${diaryURL}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) return null;
+}
