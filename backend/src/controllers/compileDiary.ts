@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../config";
 import { JSDOM } from "jsdom";
-import { Puppeteer } from "puppeteer";
+import puppeteer, { Puppeteer } from "puppeteer";
 
 const pool = new Pool(config.db);
 
@@ -49,7 +49,16 @@ export const compileDiary = async (
     document.body.appendChild(h1);
     document.body.appendChild(div);
   }
-  console.log(document.body.innerHTML);
+  const htmlContent = DOM.serialize();
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+  const page = await browser.newPage();
+  await page.setContent(htmlContent);
+  await page.pdf({ path: "output.pdf", format: "A4" });
+  await browser.close();
 
   return res.status(200).json({
     data: data,
