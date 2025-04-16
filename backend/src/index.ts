@@ -16,6 +16,7 @@ import { deleteDiary } from "./controllers/deleteDiary";
 import { deleteChapter } from "./controllers/deleteChapter";
 import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
+import { compileDiary } from "./controllers/compileDiary";
 
 const app = express();
 app.use(express.json());
@@ -68,6 +69,8 @@ app.post("/save-cover-art/:diaryURL", saveCoverArt);
 
 // ---------------------- Load Cover Art
 app.get("/load-cover-art/:diaryURL", loadCoverArt);
+
+app.get("/finish-diary/:diaryURL", compileDiary);
 
 //Server Listen
 const PORT = config.serverPort;
