@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { checkChapter, deleteChapter, handleChapter } from "../util/diary.ts";
+import {
+  checkChapter,
+  deleteChapter,
+  finishDiary,
+  handleChapter,
+} from "../util/diary.ts";
 
 interface ChapterEntry {
   id: number;
@@ -87,12 +92,16 @@ export const ChapterPage = () => {
               ))
             : "nothing..."}
         </h2>
-        <form action="post" onSubmit={(e) => createChapter(e, params)}>
-          <button type="submit" className="btn-writeUI">
-            {" "}
-            New Chapter
+        <div className="flex flex-row justify-evenly">
+          <form action="post" onSubmit={(e) => createChapter(e, params)}>
+            <button type="submit" className="btn-writeUI">
+              New Chapter
+            </button>
+          </form>
+          <button onClick={() => finishDiary(params)} className="btn-writeUI">
+            Complete Diary
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

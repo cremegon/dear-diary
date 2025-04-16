@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../config";
+import { decryptUserId } from "../utils/security";
 
 const pool = new Pool(config.db);
 
@@ -9,14 +10,19 @@ export const compileDiary = async (
   res: Response
 ): Promise<any> => {
   const { diaryURL } = req.params;
-  console.log("compiling diary...");
+  console.log("finishing diary...", diaryURL);
 
-  const query = await pool.query("SELECT * from chapters WHERE url = $1", [
-    diaryURL,
-  ]);
+  const decryptedDiaryId = decryptUserId(diaryURL);
+  console.log("decrypted diary id", decryptedDiaryId);
+
+  const query = await pool.query(
+    "SELECT * from chapters WHERE diary_id = (SELECT diary_id FROM chapters WHERE url = $1) AND content IS NOT NULL ORDER BY id ASC",
+    [diaryURL]
+  );
   if (query.rows.length < 1)
     return res.status(404).json({ message: "No Cover Art Found Found" });
   const data = query.rows[0];
+  console.log(data);
 
   return res.status(200).json({
     data: data,
