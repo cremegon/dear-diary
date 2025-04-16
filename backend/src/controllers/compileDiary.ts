@@ -41,10 +41,11 @@ export const compileDiary = async (
 
     h1.innerHTML = title;
     h1.style.fontFamily = font_family;
-    h1.style.fontSize = font_size;
+    h1.style.fontSize = "3rem";
+    h1.style.textAlign = "center";
     div.innerHTML = content;
     div.style.fontFamily = font_family;
-    div.style.fontSize = font_size;
+    div.style.fontSize = String(font_size) + "px";
 
     document.body.appendChild(h1);
     document.body.appendChild(div);
