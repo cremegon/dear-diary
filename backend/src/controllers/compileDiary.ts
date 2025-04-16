@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../config";
 import { JSDOM } from "jsdom";
+import { Puppeteer } from "puppeteer";
 
 const pool = new Pool(config.db);
 
@@ -37,8 +38,14 @@ export const compileDiary = async (
   } of data) {
     const h1 = document.createElement("h1");
     const div = document.createElement("div");
+
     h1.innerHTML = title;
+    h1.style.fontFamily = font_family;
+    h1.style.fontSize = font_size;
     div.innerHTML = content;
+    div.style.fontFamily = font_family;
+    div.style.fontSize = font_size;
+
     document.body.appendChild(h1);
     document.body.appendChild(div);
   }
