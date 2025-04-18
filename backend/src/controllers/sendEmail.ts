@@ -11,10 +11,10 @@ export const send_PDF_Email = async (
 ): Promise<any> => {
   console.log("testing email...");
 
-  const token = randomBytes(16).toString("hex");
-  const userEmail = "tyreese@acrewgame.com";
+  const token = randomBytes(16).toString("hex").slice(0, 6);
+  const userEmail = "xasix32265@cotigz.com";
   const senderEmail = "hussain.artist.ahmed@gmail.com";
-  const senderPassword = "ilikenarnia1100";
+  const senderPassword = "ubuwfvkgcromspsr";
 
   const transporter = createTransport({
     service: "gmail",
@@ -24,11 +24,16 @@ export const send_PDF_Email = async (
   const mailOptions = {
     from: senderEmail,
     to: userEmail,
-    subject: "Hello from the Backend",
-    html: `<p>this is our first point of contact brother...${token}</p>`,
+    subject: "Hello from the Backend 2",
+    html: `<p>this is our second point of contact brother...${token}</p>`,
   };
 
-  transporter.sendMail(mailOptions);
+  try {
+    transporter.sendMail(mailOptions);
+    console.log("send successful");
+  } catch (error) {
+    console.log(error);
+  }
 
   return res.status(200).json({ message: "We in This" });
 };

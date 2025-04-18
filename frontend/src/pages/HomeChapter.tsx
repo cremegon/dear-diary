@@ -6,6 +6,7 @@ import {
   finishDiary,
   handleChapter,
 } from "../util/diary.ts";
+import { testEmail } from "../util/client.ts";
 
 interface ChapterEntry {
   id: number;
@@ -100,6 +101,9 @@ export const ChapterPage = () => {
           </form>
           <button onClick={() => finishDiary(params)} className="btn-writeUI">
             Complete Diary
+          </button>
+          <button onClick={() => testEmail()} className="btn-writeUI">
+            Test Email
           </button>
         </div>
       </div>

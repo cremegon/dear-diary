@@ -75,7 +75,7 @@ app.get("/load-cover-art/:diaryURL", loadCoverArt);
 app.get("/finish-diary/:diaryURL", compileDiary);
 
 // ---------------------- Test Email
-app.get("test-email", send_PDF_Email);
+app.get("/test-email", send_PDF_Email);
 
 //Server Listen
 const PORT = config.serverPort;
