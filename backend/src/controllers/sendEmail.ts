@@ -9,6 +9,8 @@ export const send_PDF_Email = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  console.log("testing email...");
+
   const token = randomBytes(16).toString("hex");
   const userEmail = "tyreese@acrewgame.com";
   const senderEmail = "hussain.artist.ahmed@gmail.com";
