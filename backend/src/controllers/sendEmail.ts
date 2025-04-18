@@ -4,6 +4,8 @@ import { config } from "../config";
 import { randomBytes } from "crypto";
 import { createTransport } from "nodemailer";
 const pool = new Pool(config.db);
+const serverEmail = config.serverEmail;
+const serverPassword = config.serverPassword;
 
 export const send_PDF_Email = async (
   req: Request,
@@ -13,8 +15,8 @@ export const send_PDF_Email = async (
 
   const token = randomBytes(16).toString("hex").slice(0, 6);
   const userEmail = "xasix32265@cotigz.com";
-  const senderEmail = "hussain.artist.ahmed@gmail.com";
-  const senderPassword = "ubuwfvkgcromspsr";
+  const senderEmail = serverEmail;
+  const senderPassword = serverPassword;
 
   const transporter = createTransport({
     service: "gmail",

@@ -24,5 +24,7 @@ export const config = {
   },
   jwtSecret: process.env.JWT_SECRETKEY,
   cryptoSecret: process.env.CRYPTO_SECREYKEY,
+  serverEmail: process.env.SERVER_EMAIL,
+  serverPassword: process.env.SERVER_PASSWORD,
   serverPort: Number(process.env.PORT) || 5000,
 };
