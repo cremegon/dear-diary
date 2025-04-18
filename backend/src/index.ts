@@ -17,6 +17,7 @@ import { deleteChapter } from "./controllers/deleteChapter";
 import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
 import { compileDiary } from "./controllers/compileDiary";
+import { send_PDF_Email } from "./controllers/sendEmail";
 
 const app = express();
 app.use(express.json());
@@ -70,7 +71,11 @@ app.post("/save-cover-art/:diaryURL", saveCoverArt);
 // ---------------------- Load Cover Art
 app.get("/load-cover-art/:diaryURL", loadCoverArt);
 
+// ---------------------- Compile Diary to PDF
 app.get("/finish-diary/:diaryURL", compileDiary);
+
+// ---------------------- Test Email
+app.get("http://localhost:5000/test-email", send_PDF_Email);
 
 //Server Listen
 const PORT = config.serverPort;

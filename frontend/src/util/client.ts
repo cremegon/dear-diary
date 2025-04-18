@@ -168,3 +168,13 @@ export function drawImageToCanvas(
   };
   newImage.src = coverArtURL;
 }
+
+export async function testEmail() {
+  const response = await fetch("http://localhost:5000/test-email", {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) return "failed";
+  const data = response.json();
+  console.log(data);
+}
