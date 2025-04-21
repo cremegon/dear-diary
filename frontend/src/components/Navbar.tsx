@@ -18,8 +18,8 @@ export const Navbar = () => {
           Home
         </NavLink>
 
-        <NavLink to={"/about"} className="ml-24 hover:font-black">
-          What is a Death Diary?
+        <NavLink to={"/archive"} className="ml-24 hover:font-black">
+          Archive
         </NavLink>
 
         <div className="flex flex-row mr-8 w-40 justify-evenly">

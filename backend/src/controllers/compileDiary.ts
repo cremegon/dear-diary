@@ -13,6 +13,14 @@ export const compileDiary = async (
   const { diaryURL } = req.params;
   console.log("finishing diary...", diaryURL);
 
+  const now = new Date();
+  const formattedDateNow = now.toISOString().replace("T", " ").slice(0, 23);
+
+  await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
+    formattedDateNow,
+    diaryURL,
+  ]);
+
   const query = await pool.query(
     "SELECT * from chapters WHERE diary_id = (SELECT id FROM diaries WHERE url = $1) AND content IS NOT NULL ORDER BY id ASC",
     [diaryURL]

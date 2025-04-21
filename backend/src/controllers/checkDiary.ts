@@ -18,7 +18,7 @@ export const checkDiary = async (req: Request, res: Response): Promise<any> => {
   const userId = decoded.userId;
 
   const diaryEntry = await pool.query(
-    "SELECT * FROM diaries WHERE user_id = $1",
+    "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NULL",
     [userId]
   );
 

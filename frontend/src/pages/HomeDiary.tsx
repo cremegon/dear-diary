@@ -41,6 +41,11 @@ export const DiaryPage = () => {
     setRefresh(!refresh);
   }
 
+  async function handleFinishDiary(URL: string) {
+    finishDiary(URL);
+    setRefresh(!refresh);
+  }
+
   async function refreshCreateDiary(e: React.FormEvent) {
     await handleDiary(e, title);
     console.log("created new diary");
@@ -98,7 +103,7 @@ export const DiaryPage = () => {
                   </div>
 
                   <button
-                    onClick={() => finishDiary(item.url)}
+                    onClick={() => handleFinishDiary(item.url)}
                     className="bg-black w-40 h-20 text-lg font-bold"
                   >
                     Conclude Diary
