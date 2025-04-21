@@ -53,14 +53,19 @@ export const ArchiveChapterPage = () => {
         className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
       >
         <h1 className="text-4xl">Read Your Chapters</h1>
-        <h2 className="text-4xl text-yellow-500">
+        <h2 className="text-4xl text-yellow-500 w-full">
           {entry
             ? entry.map((item) => (
-                <ul key={item.id} className="flex flex-row justify-evenly">
-                  <Link to={`${item.url}`}>
-                    <li>{`chapter-${item.title}`}</li>
-                  </Link>
-                  <li>{new Date(item.created_at).toLocaleDateString()}</li>
+                <ul key={item.id} className="flex flex-row justify-between">
+                  <li className="ml-20">
+                    <Link to={`${item.url}`}>
+                      {item.title ? `${item.title}` : `chapter-${item.title}`}
+                    </Link>
+                  </li>
+
+                  <li className="mr-20">
+                    {new Date(item.created_at).toLocaleDateString()}
+                  </li>
                 </ul>
               ))
             : "nothing..."}

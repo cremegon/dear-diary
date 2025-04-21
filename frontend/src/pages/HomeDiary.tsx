@@ -82,7 +82,9 @@ export const DiaryPage = () => {
                   key={item.id}
                   className="flex flex-row justify-evenly items-center"
                 >
-                  <div className={`${item.cover ? "block" : "hidden"}`}>
+                  <div
+                    className={`${item.cover ? "block" : "hidden"} border-black border-8`}
+                  >
                     <img
                       src={item.cover}
                       width={100}

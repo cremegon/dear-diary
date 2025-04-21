@@ -75,7 +75,9 @@ export const ChapterPage = () => {
             ? entry.map((item) => (
                 <ul key={item.id} className="flex flex-row justify-evenly">
                   <Link to={`${item.url}/write-session?create=false`}>
-                    <li>{`chapter-${item.title}`}</li>
+                    <li>
+                      {item.title ? `${item.title}` : `chapter-${item.title}`}
+                    </li>
                   </Link>
                   <li>{new Date(item.created_at).toLocaleDateString()}</li>
                   <button
