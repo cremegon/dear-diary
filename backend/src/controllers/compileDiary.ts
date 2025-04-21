@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../config";
 import { JSDOM } from "jsdom";
-import puppeteer, { Puppeteer } from "puppeteer";
+import puppeteer from "puppeteer";
 
 const pool = new Pool(config.db);
 
@@ -68,9 +68,12 @@ export const compileDiary = async (
   });
   const page = await browser.newPage();
   await page.setContent(htmlContent);
-  await page.pdf({ path: "output.pdf", format: "A4" });
+  const pdfBuffer = await page.pdf({ path: "output.pdf", format: "A4" });
   await browser.close();
 
+  console.log("this is the page", pdfBuffer);
+
+  console.log("Successfully Created Diary PDF");
   return res.status(200).json({
     data: data,
     message: "Found All Relevant Chapters in Diary",

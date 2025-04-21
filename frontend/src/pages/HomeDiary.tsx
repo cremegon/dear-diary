@@ -7,6 +7,7 @@ interface DiaryEntry {
   user_id: number;
   title: string;
   created_at: Date;
+  completed_at: Date;
   url: string;
   cover: string;
 }
