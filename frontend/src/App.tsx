@@ -17,6 +17,7 @@ import ChapterPage from "./pages/HomeChapter.tsx";
 import EditorPageLayout from "./pages/EditorLayout.tsx";
 import ArchivePage from "./pages/HomeArchive.tsx";
 import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
+import Reader from "./pages/Reader.tsx";
 
 function App() {
   useEffect(() => {
@@ -65,6 +66,10 @@ function App() {
               <Route
                 path="diary/:diaryId/chapter/:chapterId/write-session"
                 element={<Editor />}
+              />
+              <Route
+                path="archive/:archiveDiaryId/chapter/:archiveChapterId"
+                element={<Reader />}
               />
             </Route>
           </Route>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { loadFromDatabase } from "../util/diary";
+import { loadFromDatabase } from "../util/diary.ts";
 
 const Reader = () => {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -41,13 +41,13 @@ const Reader = () => {
       <div
         className={`w-full h-full flex flex-col items-center ${loading ? "hidden" : "block"}`}
       >
-        <h1 className="text-4xl font-bold">{title}</h1>
+        <h1 className="text-5xl font-bold my-6">{title}</h1>
         <div
+          className="w-3/4"
           contentEditable="false"
           id="father"
           style={{
             fontSize: `${fontSize}px`,
-            textAlign: `${textAlign}`,
             fontFamily: `${selectedFont}`,
           }}
           ref={editorRef}

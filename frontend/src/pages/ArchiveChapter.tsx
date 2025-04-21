@@ -52,12 +52,12 @@ export const ArchiveChapterPage = () => {
       <div
         className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
       >
-        <h1 className="text-4xl">Write Your Chapters</h1>
+        <h1 className="text-4xl">Read Your Chapters</h1>
         <h2 className="text-4xl text-yellow-500">
           {entry
             ? entry.map((item) => (
                 <ul key={item.id} className="flex flex-row justify-evenly">
-                  <Link to={`${item.url}/write-session?create=false`}>
+                  <Link to={`${item.url}`}>
                     <li>{`chapter-${item.title}`}</li>
                   </Link>
                   <li>{new Date(item.created_at).toLocaleDateString()}</li>
