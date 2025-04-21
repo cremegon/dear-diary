@@ -42,7 +42,8 @@ export const DiaryPage = () => {
   }
 
   async function handleFinishDiary(URL: string) {
-    finishDiary(URL);
+    await finishDiary(URL);
+    setEntry([]);
     setRefresh(!refresh);
   }
 
@@ -55,6 +56,7 @@ export const DiaryPage = () => {
   // ---- Load in Available Diary Entries
   useEffect(() => {
     fetchDiaryData();
+    console.log("refreshed!");
   }, [loading, refresh]);
 
   return (
