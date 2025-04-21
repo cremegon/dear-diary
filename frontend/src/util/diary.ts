@@ -166,3 +166,19 @@ export async function finishDiary(diaryURL: string) {
 
   if (!response.ok) return null;
 }
+
+export async function fetchArchives() {
+  console.log("checking archives...");
+
+  const response = await fetch(`http://localhost:5000/check-archives`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) return `NO Archives Found`;
+
+  const data = await response.json();
+
+  return data;
+}

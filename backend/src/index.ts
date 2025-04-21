@@ -18,6 +18,7 @@ import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
 import { compileDiary } from "./controllers/compileDiary";
 import { send_PDF_Email } from "./controllers/sendEmail";
+import { checkArchives } from "./controllers/checkArchives";
 
 const app = express();
 app.use(express.json());
@@ -58,6 +59,9 @@ app.get("/check-diary", checkDiary);
 
 // ---------------------- Check Chapter
 app.get("/check-chapter", checkChapter);
+
+// ---------------------- Check Archives
+app.get("/check-archives", checkArchives);
 
 // ---------------------- Save Content
 app.post("/save-to-db", saveContent);

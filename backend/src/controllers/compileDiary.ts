@@ -79,8 +79,6 @@ export const compileDiary = async (
   const pdfBuffer = await page.pdf({ path: "output.pdf", format: "A4" });
   await browser.close();
 
-  console.log("this is the page", pdfBuffer);
-
   console.log("Successfully Created Diary PDF");
   return res.status(200).json({
     data: data,

@@ -15,6 +15,8 @@ import Editor from "./pages/Write2.tsx";
 import DiaryPage from "./pages/HomeDiary.tsx";
 import ChapterPage from "./pages/HomeChapter.tsx";
 import EditorPageLayout from "./pages/EditorLayout.tsx";
+import ArchivePage from "./pages/HomeArchive.tsx";
+import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
 
 function App() {
   useEffect(() => {
@@ -51,6 +53,11 @@ function App() {
 
               <Route index path="/" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/archive" element={<ArchivePage />} />
+              <Route
+                path="archive/:archiveDiaryId/chapter"
+                element={<ArchiveChapterPage />}
+              />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
