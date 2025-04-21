@@ -678,7 +678,7 @@ export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
-  if (!father.innerHTML) {
+  if (!father.innerHTML || father.innerHTML === "<br>") {
     father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");
@@ -699,4 +699,28 @@ export function checkOrPlaceCaret(father: Element) {
   }
   console.log(father.innerHTML);
   return;
+}
+
+export function handlePaste(e: React.ClipboardEvent) {
+  console.log("pasting content...");
+  e.preventDefault();
+  const pastedContent = e.clipboardData.getData("text");
+
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return;
+  const currentRange = selection.getRangeAt(0);
+  let current = currentRange.startContainer;
+  while (current.firstChild && current.nodeName !== "SPAN") {
+    current = current.firstChild;
+  }
+
+  current.textContent = pastedContent;
+  console.log("text content length:", current.textContent.length, current);
+
+  if (!current.firstChild) return;
+  const newRange = document.createRange();
+  newRange.setStart(current.firstChild, current.textContent.length || 0);
+  newRange.setEnd(current.firstChild, current.textContent.length || 0);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
 }

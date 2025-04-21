@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import {
-  checkChapter,
-  deleteChapter,
-  finishDiary,
-  handleChapter,
-} from "../util/diary.ts";
+import { checkChapter, deleteChapter, handleChapter } from "../util/diary.ts";
 import { testEmail } from "../util/client.ts";
 
 interface ChapterEntry {
@@ -99,9 +94,7 @@ export const ChapterPage = () => {
               New Chapter
             </button>
           </form>
-          <button onClick={() => finishDiary(params)} className="btn-writeUI">
-            Complete Diary
-          </button>
+
           <button onClick={() => testEmail()} className="btn-writeUI">
             Test Email
           </button>

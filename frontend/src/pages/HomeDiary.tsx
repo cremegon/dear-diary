@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { checkDiary, deleteDiary, handleDiary } from "../util/diary.ts";
+import {
+  checkDiary,
+  deleteDiary,
+  finishDiary,
+  handleDiary,
+} from "../util/diary.ts";
 
 interface DiaryEntry {
   id: number;
@@ -48,36 +53,30 @@ export const DiaryPage = () => {
   }, [loading, refresh]);
 
   return (
-    <div className="h-full h-min-screen">
+    <div className="min-h-screen">
       <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
       >
         Any Error Occured...
       </div>
+
       <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
       >
         Loading...
       </div>
+
       <div
-        className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
+        className={`w-full h-full flex-col ${loading || error ? "hidden" : "block"}`}
       >
-        <h1 className="text-4xl">Write Your Diary</h1>
+        <h1 className="text-4xl mb-10">Write Your Diary</h1>
         <h2 className="text-4xl text-yellow-500">
           {entry
             ? entry.map((item) => (
-                <ul key={item.id} className="flex flex-row justify-evenly">
-                  <Link to={`${item.url}/chapter`}>
-                    <li>{item.title}</li>
-                  </Link>
-                  <li>{new Date(item.created_at).toLocaleDateString()}</li>
-                  <div className="bg-lime-400 w-20 h-20 flex items-center justify-center">
-                    <Link
-                      to={`${item.url}/draw?edit=${item.cover ? "true" : "false"}`}
-                    >
-                      <div className="bg-slate-800 rounded-full w-8 h-8" />
-                    </Link>
-                  </div>
+                <ul
+                  key={item.id}
+                  className="flex flex-row justify-evenly items-center"
+                >
                   <div className={`${item.cover ? "block" : "hidden"}`}>
                     <img
                       src={item.cover}
@@ -86,9 +85,28 @@ export const DiaryPage = () => {
                       alt="thebiggay"
                     />
                   </div>
+                  <Link to={`${item.url}/chapter`}>
+                    <li>{item.title}</li>
+                  </Link>
+
+                  <div className="bg-lime-400 w-20 h-20 flex items-center justify-center">
+                    <Link
+                      to={`${item.url}/draw?edit=${item.cover ? "true" : "false"}`}
+                    >
+                      <div className="bg-slate-800 rounded-full w-8 h-8" />
+                    </Link>
+                  </div>
+
+                  <button
+                    onClick={() => finishDiary(item.url)}
+                    className="bg-black w-40 h-20 text-lg font-bold"
+                  >
+                    Conclude Diary
+                  </button>
+
                   <button
                     onClick={(e) => handleDelete(e, item.url)}
-                    className="bg-black"
+                    className=" text-black bg-red-600 w-28 h-20 text-lg font-bold"
                   >
                     Delete
                   </button>
@@ -96,18 +114,21 @@ export const DiaryPage = () => {
               ))
             : "nothing..."}
         </h2>
-        <form action="post" onSubmit={(e) => refreshCreateDiary(e)}>
-          <input
-            type="text"
-            value={title}
-            placeholder="Add your Title"
-            onChange={(e) => setTitle(e.target.value)}
-            className="border-pink-400 border-4"
-          />
-          <button type="submit" className="btn-writeUI">
-            New Diary
-          </button>
-        </form>
+
+        <div className={`${entry.length > 0 ? "hidden" : "block"}`}>
+          <form action="post" onSubmit={(e) => refreshCreateDiary(e)}>
+            <input
+              type="text"
+              value={title}
+              placeholder="Add your Title"
+              onChange={(e) => setTitle(e.target.value)}
+              className="border-pink-400 border-4"
+            />
+            <button type="submit" className="btn-writeUI">
+              New Diary
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

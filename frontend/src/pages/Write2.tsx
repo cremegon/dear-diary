@@ -5,6 +5,7 @@ import {
   exitCurrentTag,
   findToggleState2,
   findToggleVariation,
+  handlePaste,
   insertBlankTag,
   removeFailedTag,
   treeWalkerSearch,
@@ -243,6 +244,7 @@ export const Editor = () => {
           ref={editorRef}
           contentEditable="true"
           suppressContentEditableWarning
+          onPaste={handlePaste}
           onKeyDown={(e) => handleKeyboard(e)}
           onClick={() => checkOrPlaceCaret(father as Element)}
           style={{
