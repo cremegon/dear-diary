@@ -48,19 +48,21 @@ export const ArchivePage = () => {
       </div>
 
       <div
-        className={`w-full h-full flex-col ${loading || error ? "hidden" : "block"}`}
+        className={`w-full h-full flex flex-col items-center  ${loading || error ? "hidden" : "block"}`}
       >
-        <h1 className="text-4xl mb-10">Read Your Archived Diary</h1>
-        <h2 className="text-4xl text-yellow-500">
+        <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
+        <div className="mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
           {entry
             ? entry.map((item) => (
                 <ul
                   key={item.id}
-                  className="flex flex-row justify-evenly items-center"
+                  className="flex flex-row justify-between items-center"
                 >
-                  <div
-                    className={`${item.cover ? "block" : "hidden"}  border-black border-8`}
-                  >
+                  <Link to={`${item.url}/chapter`}>
+                    <li>{item.title}</li>
+                  </Link>
+
+                  <div className={`${item.cover ? "block" : "hidden"}`}>
                     <img
                       src={item.cover}
                       width={100}
@@ -68,13 +70,10 @@ export const ArchivePage = () => {
                       alt="thebiggay"
                     />
                   </div>
-                  <Link to={`${item.url}/chapter`}>
-                    <li>{item.title}</li>
-                  </Link>
                 </ul>
               ))
             : "nothing..."}
-        </h2>
+        </div>
       </div>
     </div>
   );
