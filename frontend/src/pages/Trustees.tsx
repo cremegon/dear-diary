@@ -24,6 +24,7 @@ export const EntrusteePage = () => {
       try {
         const response = await fetchDiary(diaryURL);
         setEntry(response.data);
+        console.log(entry, response);
       } catch (error) {
         setError(error);
       } finally {
@@ -31,23 +32,41 @@ export const EntrusteePage = () => {
       }
     }
     fetchCompiledDiaryData(diaryURL);
-    console.log(entry[0]);
-  }, [refresh]);
+  }, [loading, refresh]);
   return (
     <div className="min-h-screen">
-      <div className="my-10 mx-10 flex flex-row w-full h-full">
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
+      >
+        Any Error Occured...
+      </div>
+
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
+      >
+        Loading...
+      </div>
+
+      <div
+        className={`${loading || error ? "hidden" : "block"} my-10 mx-10 flex flex-row w-full h-full`}
+      >
         <div>
           <h1 className="text-xl font-bold text-center mb-5">
-            {entry[0].title}
+            {entry
+              ? entry.map((item) => <h1 key={item.id}>{item.title}</h1>)
+              : "Loading..."}
           </h1>
-          <img
-            src={entry[0].cover}
-            alt="thebiggay"
-            style={{ width: 300, height: 460 }}
-          />
         </div>
+
         <div className="ml-10">
-          <h1 className="text-2xl font-bold">Add your Trustees</h1>
+          {entry
+            ? entry.map((item) => (
+                <div key={item.id}>
+                  <h1 className="text-2xl font-bold">Add your Trustees</h1>{" "}
+                  <h1>{item.title}</h1>
+                </div>
+              ))
+            : "Loading..."}
         </div>
       </div>
     </div>
