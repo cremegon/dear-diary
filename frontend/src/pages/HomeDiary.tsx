@@ -24,6 +24,7 @@ export const DiaryPage = () => {
   const [title, setTitle] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
+  const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
 
   async function fetchDiaryData() {
     try {
@@ -47,6 +48,7 @@ export const DiaryPage = () => {
   async function handleFinishDiary(URL: string) {
     await finishDiary(URL);
     setEntry([]);
+    setConclude([false, ""]);
     setRefresh(!refresh);
   }
 
@@ -77,7 +79,7 @@ export const DiaryPage = () => {
       </div>
 
       <div
-        className={`relative w-full h-full flex-col ${loading || error ? "hidden" : "block"} ${modal[1] ? "backdrop-blur-sm bg-white/30" : "bg-inherit"}`}
+        className={`relative w-full h-full flex-col ${loading || error ? "hidden" : "block"} ${modal[1] || conclude[1] ? "backdrop-blur-sm bg-white/30" : "bg-inherit"}`}
       >
         <div
           className={`${modal[1] ? "block" : "hidden"} absolute top-1/2 left-1/3 bg-pink-700 w-1/3 h-1/2 flex flex-col items-center justify-center`}
@@ -95,6 +97,28 @@ export const DiaryPage = () => {
             <button
               className="btn-writeUI"
               onClick={() => setModal([false, ""])}
+            >
+              No
+            </button>
+          </div>
+        </div>
+
+        <div
+          className={`${conclude[1] ? "block" : "hidden"} absolute top-1/2 left-1/3 bg-cyan-300 w-1/3 h-1/2 flex flex-col items-center justify-center`}
+        >
+          <h1 className="font-bold my-4 text-cyan-500">
+            Are you sure you want to finish this diary?
+          </h1>
+          <div className="flex flex-row">
+            <button
+              className="btn-writeUI"
+              onClick={() => handleFinishDiary(conclude[1])}
+            >
+              Yes
+            </button>
+            <button
+              className="btn-writeUI"
+              onClick={() => setConclude([false, ""])}
             >
               No
             </button>
@@ -129,7 +153,7 @@ export const DiaryPage = () => {
                   </div>
 
                   <button
-                    onClick={() => handleFinishDiary(item.url)}
+                    onClick={() => setConclude([true, item.url])}
                     className="bg-black w-40 h-20 text-lg font-bold"
                   >
                     Conclude Diary
