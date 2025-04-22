@@ -23,7 +23,7 @@ export const DiaryPage = () => {
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [refresh, setRefresh] = useState(true);
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState<[boolean, string]>([false, ""]);
 
   async function fetchDiaryData() {
     try {
@@ -37,8 +37,10 @@ export const DiaryPage = () => {
   }
 
   async function handleDelete(e: React.MouseEvent, diaryId: string) {
+    console.log(diaryId);
     await deleteDiary(e, diaryId);
     console.log("frontend diary delete");
+    setModal([false, ""]);
     setRefresh(!refresh);
   }
 
@@ -75,15 +77,25 @@ export const DiaryPage = () => {
       </div>
 
       <div
-        className={`relative w-full h-full flex-col ${loading || error ? "hidden" : "block"} ${modal ? "backdrop-blur-sm bg-white/30" : "bg-inherit"}`}
+        className={`relative w-full h-full flex-col ${loading || error ? "hidden" : "block"} ${modal[1] ? "backdrop-blur-sm bg-white/30" : "bg-inherit"}`}
       >
         <div
-          className={`${modal ? "block" : "hidden"} absolute top-1/2 left-1/3 bg-pink-700 w-1/3 h-1/2`}
+          className={`${modal[1] ? "block" : "hidden"} absolute top-1/2 left-1/3 bg-pink-700 w-1/3 h-1/2 flex flex-col items-center justify-center`}
         >
-          Are you sure you want to delete this diary?
+          <h1 className="font-bold my-4 text-pink-100">
+            Are you sure you want to delete this diary?
+          </h1>
           <div className="flex flex-row">
-            <button className="btn-writeUI">Yes</button>
-            <button className="btn-writeUI" onClick={() => setModal(false)}>
+            <button
+              className="btn-writeUI"
+              onClick={(e) => handleDelete(e, modal[1])}
+            >
+              Yes
+            </button>
+            <button
+              className="btn-writeUI"
+              onClick={() => setModal([false, ""])}
+            >
               No
             </button>
           </div>
@@ -96,9 +108,7 @@ export const DiaryPage = () => {
                   key={item.id}
                   className="flex flex-row justify-evenly items-center"
                 >
-                  <div
-                    className={`${item.cover ? "block" : "hidden"} border-black border-8`}
-                  >
+                  <div className={`${item.cover ? "block" : "hidden"}`}>
                     <img
                       src={item.cover}
                       width={100}
@@ -126,7 +136,7 @@ export const DiaryPage = () => {
                   </button>
 
                   <button
-                    onClick={() => setModal(true)}
+                    onClick={() => setModal([true, item.url])}
                     className=" text-black bg-red-600 w-28 h-20 text-lg font-bold"
                   >
                     Delete
