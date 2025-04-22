@@ -23,6 +23,7 @@ export const DiaryPage = () => {
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [refresh, setRefresh] = useState(true);
+  const [modal, setModal] = useState(false);
 
   async function fetchDiaryData() {
     try {
@@ -74,8 +75,19 @@ export const DiaryPage = () => {
       </div>
 
       <div
-        className={`w-full h-full flex-col ${loading || error ? "hidden" : "block"}`}
+        className={`relative w-full h-full flex-col ${loading || error ? "hidden" : "block"} ${modal ? "backdrop-blur-sm bg-white/30" : "bg-inherit"}`}
       >
+        <div
+          className={`${modal ? "block" : "hidden"} absolute top-1/2 left-1/3 bg-pink-700 w-1/3 h-1/2`}
+        >
+          Are you sure you want to delete this diary?
+          <div className="flex flex-row">
+            <button className="btn-writeUI">Yes</button>
+            <button className="btn-writeUI" onClick={() => setModal(false)}>
+              No
+            </button>
+          </div>
+        </div>
         <h1 className="text-4xl mb-10">Write Your Diary</h1>
         <h2 className="text-4xl text-yellow-500">
           {entry
@@ -114,7 +126,7 @@ export const DiaryPage = () => {
                   </button>
 
                   <button
-                    onClick={(e) => handleDelete(e, item.url)}
+                    onClick={() => setModal(true)}
                     className=" text-black bg-red-600 w-28 h-20 text-lg font-bold"
                   >
                     Delete

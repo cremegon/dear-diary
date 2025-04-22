@@ -563,7 +563,7 @@ export function addNewLine() {
   // ---- Create new Div and Span to Insert
   const div = document.createElement("div");
   const span = document.createElement("span");
-  span.innerHTML = "&nbsp;";
+  span.innerHTML = "\u00A0";
   div.appendChild(span);
 
   // ---- New Line: If Caret is at the very beginning of the Line
@@ -678,7 +678,11 @@ export function checkOrPlaceCaret(father: Element) {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
-  if (!father.innerHTML || father.innerHTML === "<br>") {
+  if (
+    !father.innerHTML ||
+    father.innerHTML === "<br>" ||
+    father.innerHTML === "<div><br></div>"
+  ) {
     father.innerHTML = "";
     const span = document.createElement("span");
     const div = document.createElement("div");
