@@ -182,3 +182,20 @@ export async function fetchArchives() {
 
   return data;
 }
+
+export async function fetchDiary(diaryURL: string) {
+  const response = await fetch(
+    `http://localhost:5000/fetch-diary/${diaryURL}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) return `NO Archives Found`;
+
+  const data = await response.json();
+
+  return data;
+}

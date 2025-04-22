@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   checkDiary,
   deleteDiary,
@@ -18,6 +18,7 @@ interface DiaryEntry {
 }
 
 export const DiaryPage = () => {
+  const navigate = useNavigate();
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -46,10 +47,11 @@ export const DiaryPage = () => {
   }
 
   async function handleFinishDiary(URL: string) {
-    await finishDiary(URL);
-    setEntry([]);
-    setConclude([false, ""]);
-    setRefresh(!refresh);
+    // await finishDiary(URL);
+    // setEntry([]);
+    // setConclude([false, ""]);
+    // setRefresh(!refresh);
+    navigate(`${URL}/entrustees`);
   }
 
   async function refreshCreateDiary(e: React.FormEvent) {

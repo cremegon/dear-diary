@@ -18,6 +18,7 @@ import EditorPageLayout from "./pages/EditorLayout.tsx";
 import ArchivePage from "./pages/HomeArchive.tsx";
 import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
 import Reader from "./pages/Reader.tsx";
+import { EntrusteePage } from "./pages/Trustees.tsx";
 
 function App() {
   useEffect(() => {
@@ -51,6 +52,10 @@ function App() {
               <Route path="diary" element={<DiaryPage />} />
               <Route path="diary/:diaryId/draw" element={<Drawing />} />
               <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
+              <Route
+                path="/diary/:diaryId/entrustees"
+                element={<EntrusteePage />}
+              />
 
               <Route index path="/" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />

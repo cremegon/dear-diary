@@ -19,6 +19,7 @@ import { loadCoverArt } from "./controllers/loadCoverArt";
 import { compileDiary } from "./controllers/compileDiary";
 import { send_PDF_Email } from "./controllers/sendEmail";
 import { checkArchives } from "./controllers/checkArchives";
+import { fetchDiary } from "./controllers/fetchDiary";
 
 const app = express();
 app.use(express.json());
@@ -56,6 +57,9 @@ app.delete("/delete-chapter/:chapterURL", deleteChapter);
 
 // ---------------------- Check Diary
 app.get("/check-diary", checkDiary);
+
+// ---------------------- Fetch a Diary
+app.get("/fetch-diary/:diaryURL", fetchDiary);
 
 // ---------------------- Check Chapter
 app.get("/check-chapter", checkChapter);
