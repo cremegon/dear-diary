@@ -52,21 +52,24 @@ export const EntrusteePage = () => {
       >
         <div>
           <h1 className="text-xl font-bold text-center mb-5">
-            {entry
-              ? entry.map((item) => <h1 key={item.id}>{item.title}</h1>)
-              : "Loading..."}
+            {entry && entry.length > 0 ? entry[0].title : "Loading..."}
           </h1>
+          {entry && entry.length > 0 ? (
+            <img
+              src={entry[0].cover}
+              alt="thebiggay"
+              style={{ width: 300, height: 460 }}
+            />
+          ) : (
+            <div
+              style={{ width: 300, height: 460, backgroundColor: "salmon" }}
+            />
+          )}
         </div>
 
         <div className="ml-10">
-          {entry
-            ? entry.map((item) => (
-                <div key={item.id}>
-                  <h1 className="text-2xl font-bold">Add your Trustees</h1>{" "}
-                  <h1>{item.title}</h1>
-                </div>
-              ))
-            : "Loading..."}
+          <h1 className="text-2xl font-bold">Add your Trustees</h1>
+          input
         </div>
       </div>
     </div>
