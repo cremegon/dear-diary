@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchDiary } from "../util/diary.ts";
+import { fetchDiary, finishDiary } from "../util/diary.ts";
 import { useParams } from "react-router-dom";
 
 interface DiaryEntry {
@@ -83,6 +83,7 @@ export const EntrusteePage = () => {
           {userData
             ? userData.map((item, idx) => (
                 <div className="flex flex-col justify-evenly" key={idx}>
+                  <h1 className="mt-4 text-xl">{`Trustee ${idx + 1}`}</h1>
                   <input
                     className="border-pink-400 border-4 mt-4"
                     type="text"
@@ -107,7 +108,12 @@ export const EntrusteePage = () => {
               ))
             : "nothing"}
           <div className="flex flex-row justify-between mt-6">
-            <button className="btn-writeUI">Finish</button>
+            <button
+              className="btn-writeUI"
+              onClick={() => finishDiary(diaryURL)}
+            >
+              Finish
+            </button>
             <button className="btn-writeUI" onClick={handleAddTrustee}>
               Add Entrustee
             </button>
