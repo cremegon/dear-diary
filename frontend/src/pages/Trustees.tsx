@@ -14,10 +14,20 @@ interface DiaryEntry {
 
 export const EntrusteePage = () => {
   const diaryURL = useParams().diaryId as string;
+  const [userData, setUserData] = useState([
+    { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
+  ]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [refresh, setRefresh] = useState(false);
+
+  function handleAddTrustee() {
+    setUserData((prev) => [
+      ...prev,
+      { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
+    ]);
+  }
 
   useEffect(() => {
     async function fetchCompiledDiaryData(diaryURL: string) {
@@ -33,6 +43,7 @@ export const EntrusteePage = () => {
     }
     fetchCompiledDiaryData(diaryURL);
   }, [loading, refresh]);
+
   return (
     <div className="min-h-screen">
       <div
@@ -69,7 +80,38 @@ export const EntrusteePage = () => {
 
         <div className="ml-10">
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
-          input
+          {userData
+            ? userData.map((item, idx) => (
+                <div className="flex flex-col justify-evenly" key={idx}>
+                  <input
+                    className="border-pink-400 border-4 mt-4"
+                    type="text"
+                    placeholder="enter entrustee name"
+                  />
+                  <input
+                    className="border-pink-400 border-4 mt-4"
+                    type="text"
+                    placeholder="enter email"
+                  />
+                  <input
+                    className="border-pink-400 border-4 mt-4"
+                    type="text"
+                    placeholder="enter entrustee address"
+                  />
+                  <input
+                    className="border-pink-400 border-4 mt-4"
+                    type="tel"
+                    placeholder="enter entrustee phone number"
+                  />
+                </div>
+              ))
+            : "nothing"}
+          <div className="flex flex-row justify-between mt-6">
+            <button className="btn-writeUI">Finish</button>
+            <button className="btn-writeUI" onClick={handleAddTrustee}>
+              Add Entrustee
+            </button>
+          </div>
         </div>
       </div>
     </div>
