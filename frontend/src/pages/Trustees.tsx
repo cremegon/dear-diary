@@ -29,6 +29,18 @@ export const EntrusteePage = () => {
     ]);
   }
 
+  function handleEntrusteeDetails(value: string, id: string, i: number) {
+    const updatedItem = userData.map((item, idx) => {
+      if (idx === i) {
+        return { ...item, [id]: value };
+      }
+      return item;
+    });
+
+    setUserData(updatedItem);
+    console.log(userData);
+  }
+
   useEffect(() => {
     async function fetchCompiledDiaryData(diaryURL: string) {
       try {
@@ -88,21 +100,41 @@ export const EntrusteePage = () => {
                     className="border-pink-400 border-4 mt-4"
                     type="text"
                     placeholder="enter entrustee name"
+                    id="name"
+                    value={userData[idx]["name"]}
+                    onChange={(e) =>
+                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                    }
                   />
                   <input
                     className="border-pink-400 border-4 mt-4"
                     type="text"
                     placeholder="enter email"
+                    id="email"
+                    value={userData[idx]["email"]}
+                    onChange={(e) =>
+                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                    }
                   />
                   <input
                     className="border-pink-400 border-4 mt-4"
                     type="text"
                     placeholder="enter entrustee address"
+                    id="address"
+                    value={userData[idx]["address"]}
+                    onChange={(e) =>
+                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                    }
                   />
                   <input
                     className="border-pink-400 border-4 mt-4"
                     type="tel"
                     placeholder="enter entrustee phone number"
+                    id="phone"
+                    value={userData[idx]["phone"]}
+                    onChange={(e) =>
+                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                    }
                   />
                 </div>
               ))
