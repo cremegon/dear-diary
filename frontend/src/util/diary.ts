@@ -154,12 +154,14 @@ export async function fetchCoverArt(diaryId: string) {
   return coverArt.data;
 }
 
-export async function finishDiary(diaryURL: string) {
+export async function finishDiary(diaryURL: string, trustees: object[]) {
+  console.log("sending compile request...");
   const response = await fetch(
     `http://localhost:5000/finish-diary/${diaryURL}`,
     {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trustees }),
       credentials: "include",
     }
   );

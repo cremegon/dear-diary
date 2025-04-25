@@ -14,7 +14,7 @@ interface DiaryEntry {
 
 export const EntrusteePage = () => {
   const diaryURL = useParams().diaryId as string;
-  const [userData, setUserData] = useState([
+  const [trustees, setTrustees] = useState([
     { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
   ]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
@@ -23,22 +23,22 @@ export const EntrusteePage = () => {
   const [refresh, setRefresh] = useState(false);
 
   function handleAddTrustee() {
-    setUserData((prev) => [
+    setTrustees((prev) => [
       ...prev,
       { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
     ]);
   }
 
   function handleEntrusteeDetails(value: string, id: string, i: number) {
-    const updatedItem = userData.map((item, idx) => {
+    const updatedItem = trustees.map((item, idx) => {
       if (idx === i) {
         return { ...item, [id]: value };
       }
       return item;
     });
 
-    setUserData(updatedItem);
-    console.log(userData);
+    setTrustees(updatedItem);
+    console.log(trustees);
   }
 
   useEffect(() => {
@@ -92,8 +92,8 @@ export const EntrusteePage = () => {
 
         <div className="ml-10">
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
-          {userData
-            ? userData.map((item, idx) => (
+          {trustees
+            ? trustees.map((item, idx) => (
                 <div className="flex flex-col justify-evenly" key={idx}>
                   <h1 className="mt-4 text-xl">{`Trustee ${idx + 1}`}</h1>
                   <input
@@ -101,7 +101,7 @@ export const EntrusteePage = () => {
                     type="text"
                     placeholder="enter entrustee name"
                     id="name"
-                    value={userData[idx]["name"]}
+                    value={trustees[idx]["name"]}
                     onChange={(e) =>
                       handleEntrusteeDetails(e.target.value, e.target.id, idx)
                     }
@@ -111,7 +111,7 @@ export const EntrusteePage = () => {
                     type="text"
                     placeholder="enter email"
                     id="email"
-                    value={userData[idx]["email"]}
+                    value={trustees[idx]["email"]}
                     onChange={(e) =>
                       handleEntrusteeDetails(e.target.value, e.target.id, idx)
                     }
@@ -121,7 +121,7 @@ export const EntrusteePage = () => {
                     type="text"
                     placeholder="enter entrustee address"
                     id="address"
-                    value={userData[idx]["address"]}
+                    value={trustees[idx]["address"]}
                     onChange={(e) =>
                       handleEntrusteeDetails(e.target.value, e.target.id, idx)
                     }
@@ -131,7 +131,7 @@ export const EntrusteePage = () => {
                     type="tel"
                     placeholder="enter entrustee phone number"
                     id="phone"
-                    value={userData[idx]["phone"]}
+                    value={trustees[idx]["phone"]}
                     onChange={(e) =>
                       handleEntrusteeDetails(e.target.value, e.target.id, idx)
                     }
@@ -142,7 +142,7 @@ export const EntrusteePage = () => {
           <div className="flex flex-row justify-between mt-6">
             <button
               className="btn-writeUI"
-              onClick={() => finishDiary(diaryURL)}
+              onClick={() => finishDiary(diaryURL, trustees)}
             >
               Finish
             </button>

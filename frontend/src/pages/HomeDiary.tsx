@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  checkDiary,
-  deleteDiary,
-  finishDiary,
-  handleDiary,
-} from "../util/diary.ts";
+import { checkDiary, deleteDiary, handleDiary } from "../util/diary.ts";
 
 interface DiaryEntry {
   id: number;

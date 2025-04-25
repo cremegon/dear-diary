@@ -80,7 +80,7 @@ app.post("/save-cover-art/:diaryURL", saveCoverArt);
 app.get("/load-cover-art/:diaryURL", loadCoverArt);
 
 // ---------------------- Compile Diary to PDF
-app.get("/finish-diary/:diaryURL", compileDiary);
+app.post("/finish-diary/:diaryURL", compileDiary);
 
 // ---------------------- Test Email
 app.get("/test-email", send_PDF_Email);
