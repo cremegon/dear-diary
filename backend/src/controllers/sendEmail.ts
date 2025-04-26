@@ -15,7 +15,7 @@ export const send_PDF_Email = async (
   console.log("testing email...");
 
   const token = randomBytes(16).toString("hex").slice(0, 6);
-  const userEmail = "hussain.artist.ahmed@gmail.com";
+  const userEmail = "hussainahmed.s.shaikh@gmail.com";
 
   const transporter = createTransport({
     host: "smtp-relay.brevo.com",
@@ -26,10 +26,10 @@ export const send_PDF_Email = async (
   });
 
   const mailOptions = {
-    from: serverEmail,
+    from: "hussain.artist.ahmed@gmail.com",
     to: userEmail,
     subject: "Hello from the Backend 2",
-    html: `<p>this is our second point of contact brother...${token}</p>`,
+    text: `<p>this is our second point of contact brother...${token}</p>`,
   };
 
   try {
