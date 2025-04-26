@@ -20,7 +20,6 @@ export const EntrusteePage = () => {
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [refresh, setRefresh] = useState(false);
 
   function handleAddTrustee() {
     setTrustees((prev) => [
@@ -54,7 +53,7 @@ export const EntrusteePage = () => {
       }
     }
     fetchCompiledDiaryData(diaryURL);
-  }, [loading, refresh]);
+  }, [loading]);
 
   return (
     <div className="min-h-screen">

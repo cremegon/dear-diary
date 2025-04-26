@@ -15,28 +15,28 @@ export const send_PDF_Email = async (
   console.log("testing email...");
 
   const token = randomBytes(16).toString("hex").slice(0, 6);
-  const userEmail = "cerabiy484@cyluna.com";
-  const senderEmail = serverEmail;
-  const senderPassword = serverPassword;
+  const userEmail = "hussain.artist.ahmed@gmail.com";
 
   const transporter = createTransport({
     host: "smtp-relay.brevo.com",
     port: 587,
-    auth: { user: senderEmail, pass: senderPassword },
+    secure: false,
+    requireTLS: true,
+    auth: { user: serverEmail, pass: serverPassword },
   });
 
   const mailOptions = {
-    from: senderEmail,
+    from: serverEmail,
     to: userEmail,
     subject: "Hello from the Backend 2",
     html: `<p>this is our second point of contact brother...${token}</p>`,
   };
 
   try {
-    transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
     console.log("send successful");
   } catch (error) {
-    console.log(error);
+    console.log("error", error);
   }
 
   return res.status(200).json({ message: "We in This" });
