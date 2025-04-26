@@ -20,8 +20,8 @@ export const compileDiary = async (
   for (const { diaryId, name, email, address, phone } of trustees) {
     console.log(diaryId, name, email, address, phone);
     await pool.query(
-      "INSERT INTO trustees(name,email,address,phone) VALUES ($1,$2,$3,$4) WHERE diary_id = (SELECT id FROM diaries WHERE url = $5)",
-      [name, email, address, phone, diaryURL]
+      "INSERT INTO trustees(diary_id,name,email,address,phone) VALUES ((SELECT id FROM diaries WHERE url = $1),$2,$3,$4,$5)",
+      [diaryURL, name, email, address, phone]
     );
   }
 

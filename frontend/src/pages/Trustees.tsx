@@ -15,7 +15,7 @@ interface DiaryEntry {
 export const EntrusteePage = () => {
   const diaryURL = useParams().diaryId as string;
   const [trustees, setTrustees] = useState([
-    { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
+    { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
   ]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ export const EntrusteePage = () => {
   function handleAddTrustee() {
     setTrustees((prev) => [
       ...prev,
-      { diaryId: diaryURL, name: "", email: "", address: "", phone: 0 },
+      { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
     ]);
   }
 
@@ -128,7 +128,7 @@ export const EntrusteePage = () => {
                   />
                   <input
                     className="border-pink-400 border-4 mt-4"
-                    type="tel"
+                    type="text"
                     placeholder="enter entrustee phone number"
                     id="phone"
                     value={trustees[idx]["phone"]}
