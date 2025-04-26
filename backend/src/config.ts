@@ -27,4 +27,5 @@ export const config = {
   serverEmail: process.env.SERVER_EMAIL,
   serverPassword: process.env.SERVER_PASSWORD,
   serverPort: Number(process.env.PORT) || 5000,
+  senderEmail: process.env.SENDER_EMAIL,
 };
