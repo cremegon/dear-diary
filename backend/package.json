@@ -24,7 +24,8 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.10.1",
     "pg": "^8.13.1",
-    "puppeteer": "^24.6.1"
+    "puppeteer": "^24.6.1",
+    "resend": "^4.4.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",

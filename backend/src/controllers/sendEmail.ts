@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import { config } from "../config";
 import { randomBytes } from "crypto";
 import { createTransport } from "nodemailer";
+
 const pool = new Pool(config.db);
 const serverEmail = config.serverEmail;
 const serverPassword = config.serverPassword;
@@ -14,12 +15,13 @@ export const send_PDF_Email = async (
   console.log("testing email...");
 
   const token = randomBytes(16).toString("hex").slice(0, 6);
-  const userEmail = "xasix32265@cotigz.com";
+  const userEmail = "cerabiy484@cyluna.com";
   const senderEmail = serverEmail;
   const senderPassword = serverPassword;
 
   const transporter = createTransport({
-    service: "gmail",
+    host: "smtp-relay.brevo.com",
+    port: 587,
     auth: { user: senderEmail, pass: senderPassword },
   });
 
