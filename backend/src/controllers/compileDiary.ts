@@ -27,16 +27,20 @@ export const compileDiary = async (
     );
   }
 
-  await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
-    formattedDateNow,
-    diaryURL,
-  ]);
-
   const diaryDetails = await pool.query(
     "SELECT user_id,title FROM diaries WHERE url = $1",
     [diaryURL]
   );
-  console.log("dont mind me...", diaryDetails.rows[0]);
+
+  const { user_id, title } = diaryDetails.rows[0];
+  console.log("dont mind me...", user_id, title);
+
+  return;
+
+  await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
+    formattedDateNow,
+    diaryURL,
+  ]);
 
   const query = await pool.query(
     "SELECT * from chapters WHERE diary_id = (SELECT id FROM diaries WHERE url = $1) AND content IS NOT NULL ORDER BY id ASC",
