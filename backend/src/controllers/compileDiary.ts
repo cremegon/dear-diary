@@ -35,6 +35,13 @@ export const compileDiary = async (
   const { user_id, title } = diaryDetails.rows[0];
   console.log("dont mind me...", user_id, title);
 
+  const username = await pool.query("SELECT name FROM users WHERE id = $1", [
+    user_id,
+  ]);
+  const { name } = username.rows[0];
+
+  console.log("name and title!", name, title);
+
   return;
 
   await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
