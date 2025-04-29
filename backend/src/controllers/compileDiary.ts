@@ -3,6 +3,8 @@ import { Pool } from "pg";
 import { config } from "../config";
 import { JSDOM } from "jsdom";
 import puppeteer from "puppeteer";
+import { send_PDF_Email } from "./sendEmail";
+import { format } from "path";
 
 const pool = new Pool(config.db);
 
@@ -29,6 +31,13 @@ export const compileDiary = async (
     formattedDateNow,
     diaryURL,
   ]);
+
+  const diaryDetails = await pool.query(
+    "SELECT from diaries(user_id,title) WHERE url = $1",
+    [diaryURL]
+  );
+  const [user_id, title] = diaryDetails.rows[0];
+  console.log("dont mind me...", user_id, title);
 
   const query = await pool.query(
     "SELECT * from chapters WHERE diary_id = (SELECT id FROM diaries WHERE url = $1) AND content IS NOT NULL ORDER BY id ASC",
@@ -86,12 +95,22 @@ export const compileDiary = async (
   const page = await browser.newPage();
   await page.setContent(htmlContent);
   const pdfFile = await page.pdf({ path: "output.pdf", format: "A4" });
+  const pdfBuffer = Buffer.from(pdfFile);
   await browser.close();
 
   await pool.query("UPDATE diaries SET pdf = $1 WHERE url = $2", [
     pdfFile,
     diaryURL,
   ]);
+
+  for (let i = 0; i < trustees.length; i++) {
+    const sendingPDF = send_PDF_Email(
+      trustees[i].email,
+      "mad test",
+      "the neggachin",
+      pdfBuffer
+    );
+  }
 
   console.log("Successfully Created Diary PDF");
   return res.status(200).json({
