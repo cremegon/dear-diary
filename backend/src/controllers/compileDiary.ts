@@ -33,11 +33,10 @@ export const compileDiary = async (
   ]);
 
   const diaryDetails = await pool.query(
-    "SELECT from diaries(user_id,title) WHERE url = $1",
+    "SELECT user_id,title FROM diaries WHERE url = $1",
     [diaryURL]
   );
-  const [user_id, title] = diaryDetails.rows[0];
-  console.log("dont mind me...", user_id, title);
+  console.log("dont mind me...", diaryDetails.rows[0]);
 
   const query = await pool.query(
     "SELECT * from chapters WHERE diary_id = (SELECT id FROM diaries WHERE url = $1) AND content IS NOT NULL ORDER BY id ASC",
