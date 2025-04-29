@@ -155,7 +155,7 @@ export async function fetchCoverArt(diaryId: string) {
 }
 
 export async function finishDiary(diaryURL: string, trustees: object[]) {
-  console.log("sending compile request...");
+  console.log("sending compile request...", trustees);
   const response = await fetch(
     `http://localhost:5000/finish-diary/${diaryURL}`,
     {

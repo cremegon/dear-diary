@@ -14,7 +14,7 @@ export const compileDiary = async (
 ): Promise<any> => {
   const { diaryURL } = req.params;
   const { trustees } = req.body;
-  console.log("finishing diary...", diaryURL);
+  console.log("finishing diary...", trustees);
 
   const now = new Date();
   const formattedDateNow = now.toISOString().replace("T", " ").slice(0, 23);
@@ -104,12 +104,7 @@ export const compileDiary = async (
   ]);
 
   for (let i = 0; i < trustees.length; i++) {
-    const sendingPDF = send_PDF_Email(
-      trustees[i].email,
-      "mad test",
-      "the neggachin",
-      pdfBuffer
-    );
+    send_PDF_Email(trustees[i].email, "mad test", "the neggachin", pdfBuffer);
   }
 
   console.log("Successfully Created Diary PDF");
