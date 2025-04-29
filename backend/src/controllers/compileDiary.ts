@@ -38,7 +38,7 @@ export const compileDiary = async (
   const username = await pool.query("SELECT name FROM users WHERE id = $1", [
     user_id,
   ]);
-  const { name } = username.rows[0];
+  const { author } = username.rows[0];
 
   console.log("name and title!", name, title);
 
@@ -112,7 +112,7 @@ export const compileDiary = async (
   ]);
 
   for (let i = 0; i < trustees.length; i++) {
-    send_PDF_Email(trustees[i].email, "mad test", "the neggachin", pdfBuffer);
+    send_PDF_Email(trustees[i].email, title, author, pdfBuffer);
   }
 
   console.log("Successfully Created Diary PDF");
