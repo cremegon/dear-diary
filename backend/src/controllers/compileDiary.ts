@@ -42,8 +42,6 @@ export const compileDiary = async (
 
   console.log("name and title!", name, title);
 
-  return;
-
   await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
     formattedDateNow,
     diaryURL,
