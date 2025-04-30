@@ -4,7 +4,6 @@ import { config } from "../config";
 import { JSDOM } from "jsdom";
 import puppeteer from "puppeteer";
 import { send_PDF_Email } from "./sendEmail";
-import { format } from "path";
 
 const pool = new Pool(config.db);
 
@@ -38,9 +37,9 @@ export const compileDiary = async (
   const username = await pool.query("SELECT name FROM users WHERE id = $1", [
     user_id,
   ]);
-  const { author } = username.rows[0];
+  const author = username.rows[0];
 
-  console.log("name and title!", name, title);
+  console.log("name and title!", author, title);
 
   await pool.query("UPDATE diaries SET completed_at = $1 WHERE url = $2", [
     formattedDateNow,
