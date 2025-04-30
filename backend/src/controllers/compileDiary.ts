@@ -37,7 +37,7 @@ export const compileDiary = async (
   const username = await pool.query("SELECT name FROM users WHERE id = $1", [
     user_id,
   ]);
-  const author = username.rows[0];
+  const author = username.rows[0].name;
 
   console.log("name and title!", author, title);
 
