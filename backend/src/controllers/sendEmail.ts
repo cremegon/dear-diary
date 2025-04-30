@@ -42,7 +42,7 @@ export const send_PDF_Email = async (
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("send successful");
+    console.log(`send successful to ${receipientEmail}`);
   } catch (error) {
     console.log("error", error);
     return false;
