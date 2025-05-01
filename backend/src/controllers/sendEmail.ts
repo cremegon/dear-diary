@@ -1,10 +1,7 @@
-import { Request, Response } from "express";
-import { Pool } from "pg";
 import { config } from "../config";
 import { randomBytes } from "crypto";
 import { createTransport } from "nodemailer";
 
-const pool = new Pool(config.db);
 const serverEmail = config.serverEmail;
 const serverPassword = config.serverPassword;
 const senderEmail = config.senderEmail;
