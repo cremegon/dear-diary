@@ -134,7 +134,15 @@ export const Login = () => {
                 placeholder="enter password"
                 required
                 onChange={(e) => setResetPass1(e.target.value)}
-                ref={emailRef}
+                ref={resetRef1}
+                className="border-black border-2 mt-8"
+              />
+              <input
+                type="password"
+                placeholder="enter password"
+                required
+                onChange={(e) => setResetPass2(e.target.value)}
+                ref={resetRef2}
                 className="border-black border-2 mt-8"
               />
 
@@ -143,7 +151,7 @@ export const Login = () => {
                 className="mt-6 border-black border-2 bg-pink-400"
                 type="submit"
               >
-                Send Code
+                Reset Password
               </button>
               <Link to={"/signup"} className="text-center text-blue-800 mt-6">
                 Go to Signup
