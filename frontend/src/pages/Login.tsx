@@ -4,9 +4,12 @@ import { LoginUser } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 
 export const Login = () => {
+  // ---- Login Modal
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string[]>([]);
+
+  // ---- Send Code to Reset Password Modal
 
   const { setAuth } = useAuth();
 
@@ -42,31 +45,32 @@ export const Login = () => {
     >
       <div className="flex justify-center align-middle w-full h-full">
         <div className="flex flex-col justify-center align-middle w-1/3">
-          <h1 className="text-7xl font-extrabold text-center">Login</h1>
-
-          <input
-            type="email"
-            placeholder="enter email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            ref={emailRef}
-            className="border-black border-2 mt-8"
-          />
-          <input
-            type="password"
-            placeholder="enter password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            ref={passwordRef}
-            className="border-black border-2 mt-4"
-          />
-          {error ? <div>{error[1]}</div> : null}
-          <button
-            className="mt-6 border-black border-2 bg-pink-400"
-            type="submit"
-          >
-            Login
-          </button>
+          <div className="flex flex-col">
+            <h1 className="text-7xl font-extrabold text-center">Login</h1>
+            <input
+              type="email"
+              placeholder="enter email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              ref={emailRef}
+              className="border-black border-2 mt-8"
+            />
+            <input
+              type="password"
+              placeholder="enter password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordRef}
+              className="border-black border-2 mt-4"
+            />
+            {error ? <div>{error[1]}</div> : null}
+            <button
+              className="mt-6 border-black border-2 bg-pink-400"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
           <Link to={"/signup"} className="text-center text-blue-800 mt-6">
             Go to Signup
           </Link>

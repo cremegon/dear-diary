@@ -7,7 +7,7 @@ const senderEmail = config.senderEmail;
 
 export const send_forgot_Email = async (
   receipientEmail: string,
-  token: number
+  token: string
 ): Promise<any> => {
   console.log("testing email...");
 
