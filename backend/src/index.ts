@@ -17,7 +17,7 @@ import { deleteChapter } from "./controllers/deleteChapter";
 import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
 import { compileDiary } from "./controllers/compileDiary";
-import { send_PDF_Email } from "./controllers/sendEmail";
+import { send_PDF_Email } from "./middleware/sendEmail";
 import { checkArchives } from "./controllers/checkArchives";
 import { fetchDiary } from "./controllers/fetchDiary";
 

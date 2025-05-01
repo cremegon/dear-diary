@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { config } from "../config";
 import { JSDOM } from "jsdom";
 import puppeteer from "puppeteer";
-import { send_PDF_Email } from "./sendEmail";
+import { send_PDF_Email } from "../middleware/sendEmail";
 
 const pool = new Pool(config.db);
 
