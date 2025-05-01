@@ -3,6 +3,7 @@ import { Pool } from "pg";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
 import { randomBytes } from "crypto";
+import { send_forgot_Email } from "../middleware/sendForgotEmail";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
@@ -21,6 +22,10 @@ export const forgotPassword = async (
   }
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.userId;
+
+  const resetPass = send_forgot_Email(receipientEmail, token);
+  if (!resetPass)
+    return res.status(404).json({ message: "Forgot Email Failed..." });
 
   await pool.query("UPDATE users SET forgottoken = $1 WHERE id = $2", [
     encryptedToken,
