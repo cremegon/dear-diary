@@ -22,7 +22,7 @@ export const forgotPassword = async (
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.userId;
 
-  await pool.query("INSERT $1 into TABLE users WHERE id = $2", [
+  await pool.query("UPDATE users SET forgottoken = $1 WHERE id = $2", [
     encryptedToken,
     userId,
   ]);
