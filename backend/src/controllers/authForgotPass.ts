@@ -18,10 +18,19 @@ export const forgotPassword = async (
 
   if (!token) {
     console.log("Token Error at checkDiary");
-    return res.status(404).json({ message: "No Valid Session" });
+    return res.status(404).json({ message: "No Valid Session", data: false });
   }
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.userId;
+
+  const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [
+    receipientEmail,
+  ]);
+  if (!userExists.rows.length) {
+    return res
+      .status(400)
+      .json({ message: "No Such Email Exists", data: false });
+  }
 
   const resetPass = send_forgot_Email(receipientEmail, token);
   if (!resetPass)
@@ -34,5 +43,6 @@ export const forgotPassword = async (
 
   return res.status(200).json({
     message: "New Forgot Token Generated...",
+    data: true,
   });
 };
