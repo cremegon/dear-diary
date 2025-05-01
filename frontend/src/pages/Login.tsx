@@ -22,6 +22,9 @@ export const Login = () => {
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const codeRef = useRef<HTMLInputElement>(null);
+  const resetRef1 = useRef<HTMLInputElement>(null);
+  const resetRef2 = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (error) {
@@ -130,7 +133,7 @@ export const Login = () => {
                 type="password"
                 placeholder="enter password"
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setResetPass1(e.target.value)}
                 ref={emailRef}
                 className="border-black border-2 mt-8"
               />
