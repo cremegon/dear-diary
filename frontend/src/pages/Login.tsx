@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoginUser } from "../util/client.ts";
+import { LoginUser, resetCodeCheck } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 import { passwordResetEmail } from "../util/client.ts";
 
@@ -60,13 +60,24 @@ export const Login = () => {
       setError(["email code", response.message]);
       return;
     }
-    setModal("code");
+    setModal("email code");
   }
 
   async function handleResetCode(e: React.MouseEvent) {
     e.preventDefault();
     setError([]);
     const response = await resetCodeCheck(emailCode);
+    if (!response.data) {
+      setError(["email code", response.message]);
+      return;
+    }
+    setModal("code");
+  }
+
+  async function handlePasswordReset(e: React.MouseEvent) {
+    e.preventDefault();
+    setError([]);
+    const response = await resetPassword(resetPass1, resetPass2);
     if (!response.data) {
       setError(["email code", response.message]);
       return;
@@ -215,7 +226,7 @@ export const Login = () => {
             {error ? <div>{error[1]}</div> : null}
             <button
               className="mt-6 border-black border-2 bg-pink-400"
-              type="submit"
+              onClick={(e) => handlePasswordReset(e)}
             >
               Reset Password
             </button>
