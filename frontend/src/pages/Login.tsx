@@ -48,12 +48,15 @@ export const Login = () => {
   }, [error]);
 
   useEffect(() => {
-    if (resetPass1 && resetPass2 && resetPass1 !== resetPass2) {
-      if (resetRef1.current && resetRef2.current) {
+    if (resetPass1 && resetPass2 && resetRef1.current && resetRef2.current) {
+      if (resetPass1 !== resetPass2) {
         resetRef1.current.focus();
         resetRef2.current.focus();
         resetRef1.current.style.borderColor = "red";
         resetRef2.current.style.borderColor = "red";
+      } else {
+        resetRef1.current.style.borderColor = "green";
+        resetRef2.current.style.borderColor = "green";
       }
     }
   }, [resetPass1, resetPass2]);

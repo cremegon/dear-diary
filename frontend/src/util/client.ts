@@ -208,12 +208,12 @@ export async function resetCodeCheck(code: string) {
   return data;
 }
 
-export async function resetPassword(pass: string, code: string) {
-  console.log("sending email request to frontend...", pass, code);
+export async function resetPassword(password: string, forgotToken: string) {
+  console.log("sending email request to frontend...", password, forgotToken);
   const response = await fetch(`http://localhost:5000/reset-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pass, code }),
+    body: JSON.stringify({ password, forgotToken }),
     credentials: "include",
   });
   const data = await response.json();
