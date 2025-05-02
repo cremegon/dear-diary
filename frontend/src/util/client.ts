@@ -65,7 +65,14 @@ export function verifyPassword(password: string) {
 }
 
 export function verifyResetPassword(pass1: string, pass2: string) {
-  return pass1 === pass2;
+  if (pass1 !== pass2) {
+    return { error: true, message: "Passwords do not match" };
+  }
+  const isPasswordValid = verifyPassword(pass1);
+  if (isPasswordValid.error) {
+    return { error: true, message: isPasswordValid.message };
+  }
+  return { error: false, message: "Password Successful!" };
 }
 // ============================ Slice First Name from Username
 export function getName(name: string) {

@@ -32,7 +32,7 @@ export const Navbar = () => {
           </p>
 
           <div
-            className={`absolute top-24 w-72 h-min bg-yellow-300 ${isOpen ? "block" : "hidden"}`}
+            className={`absolute z-10 top-24 w-72 h-min bg-yellow-300 ${isOpen ? "block" : "hidden"}`}
           >
             <ul className="text-black m-8 leading-loos">
               <p>

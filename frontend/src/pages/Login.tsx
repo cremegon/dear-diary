@@ -50,8 +50,6 @@ export const Login = () => {
   useEffect(() => {
     if (resetPass1 && resetPass2 && resetRef1.current && resetRef2.current) {
       if (resetPass1 !== resetPass2) {
-        resetRef1.current.focus();
-        resetRef2.current.focus();
         resetRef1.current.style.borderColor = "red";
         resetRef2.current.style.borderColor = "red";
       } else {
@@ -98,8 +96,8 @@ export const Login = () => {
     setError([]);
     const matchingPasswords = verifyResetPassword(resetPass1, resetPass2);
 
-    if (!matchingPasswords) {
-      setError(["password match", "Passwords Do not Match"]);
+    if (matchingPasswords.error) {
+      setError(["password match", matchingPasswords.message]);
       return;
     }
 
@@ -147,11 +145,13 @@ export const Login = () => {
             <Link to={"/signup"} className="text-center text-blue-800 mt-6">
               Go to Signup
             </Link>
-            <div
-              onClick={() => setModal("email code")}
-              className="text-red-600 text-center"
-            >
-              Forgot Password?
+            <div className="text-red-600 text-center border-pink-500 border-4">
+              <p
+                onClick={() => setModal("email code")}
+                className="cursor-pointer"
+              >
+                Forgot Password?
+              </p>
             </div>
           </div>
         ) : null}
