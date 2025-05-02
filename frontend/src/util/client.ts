@@ -193,11 +193,24 @@ export async function passwordResetEmail(email: string) {
 }
 
 export async function resetCodeCheck(code: string) {
-  console.log("sending email request to frontend...", code);
+  console.log("checking reset code from frontend...", code);
   const response = await fetch(`http://localhost:5000/check-reset-code`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code }),
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  return data;
+}
+
+export async function resetPassword(pass: string, code: string) {
+  console.log("sending email request to frontend...", pass, code);
+  const response = await fetch(`http://localhost:5000/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pass, code }),
     credentials: "include",
   });
   const data = await response.json();
