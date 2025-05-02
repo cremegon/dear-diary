@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoginUser, resetCodeCheck } from "../util/client.ts";
+import { LoginUser, resetCodeCheck, resetPassword } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 import { passwordResetEmail } from "../util/client.ts";
 
@@ -77,7 +77,7 @@ export const Login = () => {
   async function handlePasswordReset(e: React.MouseEvent) {
     e.preventDefault();
     setError([]);
-    const response = await resetPassword(resetPass1, resetPass2);
+    const response = await resetPassword(resetPass1, emailCode);
     if (!response.data) {
       setError(["email code", response.message]);
       return;
