@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoginUser, resetCodeCheck, resetPassword } from "../util/client.ts";
+import {
+  LoginUser,
+  resetCodeCheck,
+  resetPassword,
+  verifyResetPassword,
+} from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 import { passwordResetEmail } from "../util/client.ts";
 
@@ -11,6 +16,7 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string[]>([]);
+  const [status, setStatus] = useState("");
 
   // ---- Send Reset to Email
   const [resetEmail, setResetEmail] = useState("");
@@ -87,17 +93,28 @@ export const Login = () => {
   async function handlePasswordReset(e: React.MouseEvent) {
     e.preventDefault();
     setError([]);
-    const response = await resetPassword(resetPass1, emailCode);
-    if (!response.data) {
-      setError(["email code", response.message]);
+    const matchingPasswords = verifyResetPassword(resetPass1, resetPass2);
+
+    if (!matchingPasswords) {
+      setError(["password match", "Passwords Do not Match"]);
       return;
     }
-    setModal("code");
+
+    const response = await resetPassword(resetPass1, emailCode);
+    setStatus(response.message);
+    setModal("login");
   }
 
   return (
     <div className="flex justify-center align-middle w-full h-full">
       <div className="flex flex-col justify-center align-middle w-1/3">
+        {status ? (
+          <div className="text-green-500 text-center">{status}</div>
+        ) : null}
+        {error ? (
+          <div className="text-red-700 text-center">{error[1]}</div>
+        ) : null}
+
         {modal === "login" ? (
           <div className="flex flex-col">
             <h1 className="text-7xl font-extrabold text-center">Login</h1>
@@ -117,7 +134,7 @@ export const Login = () => {
               ref={passwordRef}
               className="border-black border-2 mt-4"
             />
-            {error ? <div>{error[1]}</div> : null}
+
             <button
               className="mt-6 border-black border-2 bg-pink-400"
               onClick={handleLogin}
@@ -149,7 +166,6 @@ export const Login = () => {
               className="border-black border-2 mt-8"
             />
 
-            {error ? <div>{error[1]}</div> : null}
             <button
               className="mt-6 border-black border-2 bg-pink-400"
               onClick={(e) => handleEmailReset(e)}
@@ -187,7 +203,6 @@ export const Login = () => {
               className="border-black border-2 mt-8"
             />
 
-            {error ? <div>{error[1]}</div> : null}
             <button
               className="mt-6 border-black border-2 bg-pink-400"
               onClick={(e) => handleResetCode(e)}
@@ -233,7 +248,6 @@ export const Login = () => {
               className="border-black border-2 mt-8"
             />
 
-            {error ? <div>{error[1]}</div> : null}
             <button
               className="mt-6 border-black border-2 bg-pink-400"
               onClick={(e) => handlePasswordReset(e)}
