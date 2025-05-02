@@ -20,6 +20,7 @@ import { compileDiary } from "./controllers/compileDiary";
 import { send_PDF_Email } from "./middleware/sendEmail";
 import { checkArchives } from "./controllers/checkArchives";
 import { fetchDiary } from "./controllers/fetchDiary";
+import { forgotPassword } from "./controllers/authForgotPass";
 
 const app = express();
 app.use(express.json());
@@ -81,6 +82,9 @@ app.get("/load-cover-art/:diaryURL", loadCoverArt);
 
 // ---------------------- Compile Diary to PDF
 app.post("/finish-diary/:diaryURL", compileDiary);
+
+// ---------------------- Send Reset Password
+app.post("/forgot-password", forgotPassword);
 
 //Server Listen
 const PORT = config.serverPort;
