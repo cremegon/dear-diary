@@ -64,6 +64,9 @@ export function verifyPassword(password: string) {
   }
 }
 
+export function verifyResetPassword(pass1: string, pass2: string) {
+  return pass1 === pass2;
+}
 // ============================ Slice First Name from Username
 export function getName(name: string) {
   let space = 0;
