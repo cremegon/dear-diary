@@ -253,7 +253,11 @@ export const Editor = () => {
             fontFamily: `${selectedFont}`,
             height: `${windowHeight}px`,
           }}
-        ></div>
+        >
+          <div>
+            <span>&nbsp;</span>
+          </div>
+        </div>
       </div>
     </div>
   );

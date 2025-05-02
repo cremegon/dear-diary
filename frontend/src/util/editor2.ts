@@ -578,9 +578,8 @@ export function addNewLine() {
 
   // ---- New Line: If Caret is in-between a Text Node
   else if (startOffset > 0 && endOffset - startOffset > 1) {
-    console.log("Caret in Between...");
-    const range = selection.getRangeAt(0);
-    console.log(range);
+    console.log("Caret in Between...", "currentRange:", currentRange);
+    console.log("divparent:", divParent, "spanparent:", spanParent);
 
     // ---- Go Up and record every Element Node
     const elementArray: string[] = [];
@@ -588,6 +587,7 @@ export function addNewLine() {
 
     if (current.nodeName === "SPAN") {
       divParent?.parentNode?.appendChild(div);
+      console.log("poopdog");
 
       const newRange = document.createRange();
       newRange.setStart(span, 0);
@@ -600,6 +600,8 @@ export function addNewLine() {
       elementArray.push(current.parentNode.nodeName);
       current = current.parentNode;
     }
+
+    console.log("element array:", elementArray);
 
     // ---- Slice the Text for the New Line
     const newLineText = currentRange.startContainer.textContent?.slice(
@@ -619,13 +621,14 @@ export function addNewLine() {
     let wrappedNode: Node = newTextNode;
 
     for (const element of elementArray.reverse()) {
+      console.log("inheriting tags!", wrappedNode);
       const newElement = document.createElement(element.toLowerCase());
       newElement.appendChild(wrappedNode);
       wrappedNode = newElement;
     }
 
     // ---- Append newTextNode to Span
-    span.appendChild(newTextNode);
+    span.appendChild(wrappedNode);
 
     // ---- Append the rest of the Nodes after the newTextNode
     while (selectionParent.nextSibling) {
