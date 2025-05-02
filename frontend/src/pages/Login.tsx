@@ -71,12 +71,12 @@ export const Login = () => {
   async function handleEmailReset(e: React.MouseEvent) {
     e.preventDefault();
     setError([]);
-    const response = await passwordResetEmail(emailCode);
+    const response = await passwordResetEmail(resetEmail);
     if (!response.data) {
       setError(["email code", response.message]);
       return;
     }
-    setModal("email code");
+    setModal("code");
   }
 
   async function handleResetCode(e: React.MouseEvent) {
@@ -84,10 +84,10 @@ export const Login = () => {
     setError([]);
     const response = await resetCodeCheck(emailCode);
     if (!response.data) {
-      setError(["email code", response.message]);
+      setError(["ecode", response.message]);
       return;
     }
-    setModal("code");
+    setModal("reset");
   }
 
   async function handlePasswordReset(e: React.MouseEvent) {
@@ -258,7 +258,7 @@ export const Login = () => {
               Go to Signup
             </Link>
             <div
-              onClick={() => setModal("login")}
+              onClick={() => setModal("code")}
               className="text-red-600 text-center"
             >
               Go Back

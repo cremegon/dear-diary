@@ -8,7 +8,8 @@ export const confirmForgotPassword = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const userToken = req.body;
+  const userToken = req.body.code;
+  console.log("checking matching usertoken", userToken);
 
   const checkToken = await pool.query(
     "SELECT * FROM users WHERE forgottoken = $1",

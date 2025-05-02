@@ -10,6 +10,7 @@ export const resetPassword = async (
   res: Response
 ): Promise<any> => {
   const { password, forgotToken } = req.body;
+  console.log("creating new password", password, forgotToken);
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await pool.query("UPDATE users SET password = $1 WHERE forgottoken = $2", [

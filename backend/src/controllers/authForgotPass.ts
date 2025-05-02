@@ -10,12 +10,14 @@ export const forgotPassword = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const receipientEmail = req.body;
+  const receipientEmail = req.body.email;
   const encryptedToken = randomBytes(16).toString("hex").slice(0, 6);
+  console.log("checking email to send password to", receipientEmail);
 
   const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [
     receipientEmail,
   ]);
+
   if (!userExists.rows.length) {
     return res
       .status(400)
