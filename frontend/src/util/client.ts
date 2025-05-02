@@ -178,3 +178,29 @@ export async function testEmail() {
   const data = response.json();
   console.log(data);
 }
+
+export async function passwordResetEmail(email: string) {
+  console.log("sending email request to frontend...", email);
+  const response = await fetch(`http://localhost:5000/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  return data;
+}
+
+export async function resetCodeCheck(code: string) {
+  console.log("sending email request to frontend...", code);
+  const response = await fetch(`http://localhost:5000/check-reset-code`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  return data;
+}

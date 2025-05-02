@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoginUser } from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
-import { passwordResetEmail } from "../util/diary.ts";
+import { passwordResetEmail } from "../util/client.ts";
 
 export const Login = () => {
   const [modal, setModal] = useState("login");
@@ -63,6 +63,17 @@ export const Login = () => {
     setModal("code");
   }
 
+  async function handleResetCode(e: React.MouseEvent) {
+    e.preventDefault();
+    setError([]);
+    const response = await resetCodeCheck(emailCode);
+    if (!response.data) {
+      setError(["email code", response.message]);
+      return;
+    }
+    setModal("code");
+  }
+
   return (
     <div className="flex justify-center align-middle w-full h-full">
       <div className="flex flex-col justify-center align-middle w-1/3">
@@ -113,7 +124,7 @@ export const Login = () => {
               placeholder="enter email"
               required
               onChange={(e) => setResetEmail(e.target.value)}
-              ref={codeRef}
+              ref={emailCodeRef}
               className="border-black border-2 mt-8"
             />
 
@@ -158,7 +169,7 @@ export const Login = () => {
             {error ? <div>{error[1]}</div> : null}
             <button
               className="mt-6 border-black border-2 bg-pink-400"
-              onClick={(e) => handleEmailReset(e)}
+              onClick={(e) => handleResetCode(e)}
             >
               Send Code
             </button>
