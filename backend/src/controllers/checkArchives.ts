@@ -6,6 +6,8 @@ import { config } from "../config";
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
+type trustedPersonsMap = { [key: number]: any[] };
+
 export const checkArchives = async (
   req: Request,
   res: Response
@@ -33,20 +35,21 @@ export const checkArchives = async (
   );
 
   console.log(diaryIds.rows);
-  const trustedPersons = {};
+  const trustedPersons: trustedPersonsMap = {};
   for (let i = 0; i < diaryIds.rows.length; i++) {
     const user_id = diaryIds.rows[i].id;
     const entrusted = await pool.query(
       `SELECT * FROM trustees WHERE diary_id = $1`,
       [user_id]
     );
-    if (entrusted) {
-      if (user_id in trustedPersons) {
-        trustedPersons[user_id] = entrusted;
+    if (entrusted && entrusted.rows.length > 0) {
+      if (!trustedPersons[user_id]) {
+        trustedPersons[user_id] = [];
       }
+      trustedPersons[user_id].push(...entrusted.rows);
     }
-    console.log("ENTRUSTED PERSON!", entrusted.rows);
   }
+  console.log("TRUSTED PEOPLE!", trustedPersons);
 
   return res.status(200).json({
     message: "Archived Diaries Found",
