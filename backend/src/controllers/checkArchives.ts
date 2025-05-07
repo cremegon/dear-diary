@@ -26,16 +26,24 @@ export const checkArchives = async (
     [userId]
   );
   console.log("checking entrusted...");
-  const entrusted = await pool.query(
-    "SELECT * FROM trustees WHERE diary_id = (SELECT id from diaries WHERE user_id = $1 AND completed_at IS NOT NULL)",
+
+  const diaryIds = await pool.query(
+    "SELECT DISTINCT id FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL",
     [userId]
   );
-  console.log("no man...");
-  console.log(entrusted);
+
+  console.log(diaryIds.rows);
+  for (let i = 0; i < diaryIds.rows.length; i++) {
+    const user_id = diaryIds.rows[i].id;
+    const entrusted = await pool.query(
+      `SELECT DISTINCT * FROM trustees WHERE diary_id = $1`,
+      [user_id]
+    );
+    console.log("ENTRUSTED PERSON!", entrusted.rows);
+  }
 
   return res.status(200).json({
     message: "Archived Diaries Found",
     data: diaryEntry.rows,
-    entrusted: entrusted.rows,
   });
 };
