@@ -26,6 +26,7 @@ export const ArchivePage = () => {
   const [trusted, setTrusted] = useState<{ [key: number]: TrusteeEntry[] }>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   const addNewRef = useRef<HTMLDivElement>(null);
   console.log(addNewRef.current?.className.includes("w-5"));
 
