@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchArchives } from "../util/diary.ts";
 
@@ -26,6 +26,8 @@ export const ArchivePage = () => {
   const [trusted, setTrusted] = useState<{ [key: number]: TrusteeEntry[] }>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const addNewRef = useRef<HTMLDivElement>(null);
+  console.log(addNewRef.current?.className.includes("w-5"));
 
   async function fetchArchivedData() {
     try {
@@ -92,8 +94,17 @@ export const ArchivePage = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="text-sm text-gray-500 ml-2">no one</div>
+                      <div className="text-sm text-gray-500 ml-2">none</div>
                     )}
+                    <div
+                      ref={addNewRef}
+                      className="w-5 h-5 ml-2 bg-pink-300 rounded-xl hover:w-20"
+                    >
+                      {addNewRef.current &&
+                      !addNewRef.current.className.includes("w-5") ? (
+                        <p className="ml-2 text-sm text-pink-500">Add New </p>
+                      ) : null}
+                    </div>
                   </div>
                 </ul>
               ))
