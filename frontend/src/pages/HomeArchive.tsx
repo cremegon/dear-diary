@@ -82,8 +82,13 @@ export const ArchivePage = () => {
                       alt="thebiggay"
                     />
                   </div>
-                  <div className="flex flex-row w-full">
-                    <div>Entrusted to: </div>
+                  <div className="flex flex-row">
+                    <div className="text-sm">Entrusted to: </div>
+                    {trusted
+                      ? trusted.map((item) => (
+                          <div key={item.id}>{item.name}</div>
+                        ))
+                      : "no one..."}
                   </div>
                 </ul>
               ))
