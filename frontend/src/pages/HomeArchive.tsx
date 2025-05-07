@@ -81,10 +81,10 @@ export const ArchivePage = () => {
                       alt="thebiggay"
                     />
                   </div>
-                  <div className="flex flex-row w-full">
+                  {/* <div className="flex flex-row w-full">
                     <div>Entrusted to: </div>
                     {trusted[idx].name}
-                  </div>
+                  </div> */}
                 </ul>
               ))
             : "nothing..."}
