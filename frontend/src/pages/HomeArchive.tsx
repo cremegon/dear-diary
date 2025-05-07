@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchArchives } from "../util/diary.ts";
 
@@ -25,10 +25,8 @@ export const ArchivePage = () => {
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [trusted, setTrusted] = useState<{ [key: number]: TrusteeEntry[] }>([]);
   const [loading, setLoading] = useState(true);
+  const [addHover, setAddHover] = useState([false, 0]);
   const [error, setError] = useState("");
-
-  const addNewRef = useRef<HTMLDivElement>(null);
-  console.log(addNewRef.current?.className.includes("w-5"));
 
   async function fetchArchivedData() {
     try {
@@ -68,7 +66,7 @@ export const ArchivePage = () => {
         <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
         <div className=" mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
           {entry
-            ? entry.map((item) => (
+            ? entry.map((item, idx) => (
                 <ul key={item.id} className="flex flex-col w-full">
                   <div className="flex flex-row justify-between items-center">
                     <Link to={`${item.url}/chapter`}>
@@ -98,11 +96,11 @@ export const ArchivePage = () => {
                       <div className="text-sm text-gray-500 ml-2">none</div>
                     )}
                     <div
-                      ref={addNewRef}
-                      className="w-5 h-5 ml-2 bg-pink-300 rounded-xl hover:w-20"
+                      onMouseEnter={() => setAddHover([true, idx])}
+                      onMouseLeave={() => setAddHover([false, idx])}
+                      className={`${addHover[0] && addHover[1] === idx ? "w-20" : "w-5"} h-5 ml-2 bg-pink-300 rounded-xl`}
                     >
-                      {addNewRef.current &&
-                      !addNewRef.current.className.includes("w-5") ? (
+                      {addHover[0] && addHover[1] === idx ? (
                         <p className="ml-2 text-sm text-pink-500">Add New </p>
                       ) : null}
                     </div>
