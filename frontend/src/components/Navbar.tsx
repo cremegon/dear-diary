@@ -22,6 +22,10 @@ export const Navbar = () => {
           Archive
         </NavLink>
 
+        <NavLink to={"/trustees"} className="ml-24 hover:font-black">
+          Trustees
+        </NavLink>
+
         <div className="flex flex-row mr-8 w-40 justify-evenly">
           <div className="bg-white w-12 h-12 rounded-full"></div>
           <p

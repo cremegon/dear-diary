@@ -19,6 +19,7 @@ import ArchivePage from "./pages/HomeArchive.tsx";
 import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
 import Reader from "./pages/Reader.tsx";
 import { EntrusteePage } from "./pages/Trustees.tsx";
+import { TrusteeHome } from "./pages/TrusteeList.tsx";
 
 function App() {
   useEffect(() => {
@@ -59,6 +60,7 @@ function App() {
 
               <Route index path="/" element={<Homepage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/trustees" element={<TrusteeHome />} />
               <Route path="/archive" element={<ArchivePage />} />
               <Route
                 path="archive/:archiveDiaryId/chapter"
