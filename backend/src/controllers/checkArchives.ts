@@ -36,7 +36,7 @@ export const checkArchives = async (
   for (let i = 0; i < diaryIds.rows.length; i++) {
     const user_id = diaryIds.rows[i].id;
     const entrusted = await pool.query(
-      `SELECT DISTINCT * FROM trustees WHERE diary_id = $1`,
+      `SELECT * FROM trustees WHERE diary_id = $1`,
       [user_id]
     );
     console.log("ENTRUSTED PERSON!", entrusted.rows);
