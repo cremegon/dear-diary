@@ -63,32 +63,37 @@ export const ArchivePage = () => {
         className={`w-full h-full flex flex-col items-center  ${loading || error ? "hidden" : "block"}`}
       >
         <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
-        <div className="mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
+        <div className=" mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
           {entry
             ? entry.map((item) => (
-                <ul
-                  key={item.id}
-                  className="flex flex-row justify-between items-center"
-                >
-                  <Link to={`${item.url}/chapter`}>
-                    <li>{item.title}</li>
-                  </Link>
-
-                  <div className={`${item.cover ? "block" : "hidden"}`}>
-                    <img
-                      src={item.cover}
-                      width={100}
-                      height={150}
-                      alt="thebiggay"
-                    />
+                <ul key={item.id} className="flex flex-col w-full">
+                  <div className="flex flex-row justify-between items-center">
+                    <Link to={`${item.url}/chapter`}>
+                      <li>{item.title}</li>
+                    </Link>
+                    <div className={`${item.cover ? "block" : "hidden"}`}>
+                      <img
+                        src={item.cover}
+                        width={100}
+                        height={150}
+                        alt="thebiggay"
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-row">
-                    <div className="text-sm">Entrusted to: </div>
-                    {trusted
-                      ? trusted.map((item) => (
-                          <div key={item.id}>{item.name}</div>
-                        ))
-                      : "no one..."}
+                    <div className="text-sm">Entrusted to:</div>
+                    {trusted[item.id] && trusted[item.id].length > 0 ? (
+                      trusted[item.id].map((person) => (
+                        <div
+                          key={person.id}
+                          className="text-sm text-green-400 ml-2"
+                        >
+                          {person.name}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-sm text-gray-500 ml-2">no one</div>
+                    )}
                   </div>
                 </ul>
               ))
