@@ -70,6 +70,9 @@ export const ArchivePage = () => {
                       alt="thebiggay"
                     />
                   </div>
+                  <div className="flex flex-row w-full">
+                    <div>Entrusted to: </div>
+                  </div>
                 </ul>
               ))
             : "nothing..."}
