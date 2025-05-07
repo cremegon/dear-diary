@@ -54,5 +54,6 @@ export const checkArchives = async (
   return res.status(200).json({
     message: "Archived Diaries Found",
     data: diaryEntry.rows,
+    entrusted: trustedPersons,
   });
 };

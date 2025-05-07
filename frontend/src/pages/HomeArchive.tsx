@@ -37,6 +37,7 @@ export const ArchivePage = () => {
     } finally {
       setLoading(false);
     }
+    console.log(trusted);
   }
 
   // ---- Load in Available Diary Entries
@@ -64,7 +65,7 @@ export const ArchivePage = () => {
         <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
         <div className="mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
           {entry
-            ? entry.map((item, idx) => (
+            ? entry.map((item) => (
                 <ul
                   key={item.id}
                   className="flex flex-row justify-between items-center"
@@ -81,10 +82,9 @@ export const ArchivePage = () => {
                       alt="thebiggay"
                     />
                   </div>
-                  {/* <div className="flex flex-row w-full">
+                  <div className="flex flex-row w-full">
                     <div>Entrusted to: </div>
-                    {trusted[idx].name}
-                  </div> */}
+                  </div>
                 </ul>
               ))
             : "nothing..."}
