@@ -23,7 +23,7 @@ interface TrusteeEntry {
 
 export const ArchivePage = () => {
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
-  const [trusted, setTrusted] = useState<TrusteeEntry[]>([]);
+  const [trusted, setTrusted] = useState<{ [key: number]: TrusteeEntry[] }>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
