@@ -12,8 +12,18 @@ interface DiaryEntry {
   cover: string;
 }
 
+interface TrusteeEntry {
+  id: number;
+  diary_id: number;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+}
+
 export const ArchivePage = () => {
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
+  const [trusted, setTrusted] = useState<TrusteeEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,6 +31,7 @@ export const ArchivePage = () => {
     try {
       const response = await fetchArchives();
       setEntry(response.data);
+      setTrusted(response.entrusted);
     } catch (error) {
       setError(error);
     } finally {
@@ -38,7 +49,7 @@ export const ArchivePage = () => {
       <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
       >
-        Any Error Occured...
+        An Error Occured...
       </div>
 
       <div
@@ -53,7 +64,7 @@ export const ArchivePage = () => {
         <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
         <div className="mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
           {entry
-            ? entry.map((item) => (
+            ? entry.map((item, idx) => (
                 <ul
                   key={item.id}
                   className="flex flex-row justify-between items-center"
@@ -72,6 +83,7 @@ export const ArchivePage = () => {
                   </div>
                   <div className="flex flex-row w-full">
                     <div>Entrusted to: </div>
+                    {trusted[idx].name}
                   </div>
                 </ul>
               ))

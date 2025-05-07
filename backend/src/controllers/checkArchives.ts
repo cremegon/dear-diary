@@ -10,6 +10,7 @@ export const checkArchives = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  console.log("checking archives...");
   const token = req.cookies.authToken;
 
   if (!token) {
@@ -24,9 +25,17 @@ export const checkArchives = async (
     "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL",
     [userId]
   );
+  console.log("checking entrusted...");
+  const entrusted = await pool.query(
+    "SELECT * FROM trustees WHERE diary_id = (SELECT id from diaries WHERE user_id = $1 AND completed_at IS NOT NULL)",
+    [userId]
+  );
+  console.log("no man...");
+  console.log(entrusted);
 
   return res.status(200).json({
     message: "Archived Diaries Found",
     data: diaryEntry.rows,
+    entrusted: entrusted.rows,
   });
 };
