@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchArchives } from "../util/diary.ts";
 
 interface DiaryEntry {
@@ -27,6 +27,7 @@ export const ArchivePage = () => {
   const [loading, setLoading] = useState(true);
   const [addHover, setAddHover] = useState([false, 0]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   async function fetchArchivedData() {
     try {
@@ -101,9 +102,14 @@ export const ArchivePage = () => {
                       className={`${addHover[0] && addHover[1] === idx ? "w-20" : "w-5"} h-5 ml-2 bg-pink-300 rounded-xl`}
                     >
                       {addHover[0] && addHover[1] === idx ? (
-                        <Link to={`diary/${item.url}/entrustees`}>
-                          <p className="ml-2 text-sm text-pink-500">Add New </p>
-                        </Link>
+                        <p
+                          onClick={() =>
+                            navigate(`/diary/${item.url}/entrustees`)
+                          }
+                          className="ml-2 text-sm text-pink-500"
+                        >
+                          Add New{" "}
+                        </p>
                       ) : null}
                     </div>
                   </div>
