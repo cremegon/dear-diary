@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { fetchArchives } from "../util/diary.ts";
 
 interface DiaryEntry {
@@ -27,7 +27,6 @@ export const ArchivePage = () => {
   const [loading, setLoading] = useState(true);
   const [addHover, setAddHover] = useState([false, 0]);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   async function fetchArchivedData() {
     try {

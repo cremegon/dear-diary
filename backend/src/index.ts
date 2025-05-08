@@ -23,6 +23,7 @@ import { fetchDiary } from "./controllers/fetchDiary";
 import { forgotPassword } from "./controllers/authForgotPass";
 import { confirmForgotPassword } from "./controllers/confirmForgotPass";
 import { resetPassword } from "./controllers/resetPassword";
+import { addEntrustee } from "./controllers/addEntrustee";
 
 const app = express();
 app.use(express.json());
@@ -93,6 +94,9 @@ app.post("/check-reset-code", confirmForgotPassword);
 
 // ---------------------- Check Reset Code
 app.post("/reset-password", resetPassword);
+
+// ---------------------- Add New Entrustee
+app.post("/add-entrustee/:diaryURL", addEntrustee);
 
 //Server Listen
 const PORT = config.serverPort;

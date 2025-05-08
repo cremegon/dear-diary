@@ -169,6 +169,22 @@ export async function finishDiary(diaryURL: string, trustees: object[]) {
   if (!response.ok) return null;
 }
 
+export async function addEntrustee(diaryURL: string, trustees: object[]) {
+  console.log("adding new entrustee from frontend...");
+  const response = await fetch(
+    `http://localhost:5000/finish-diary/${diaryURL}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trustees }),
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) return false;
+  return true;
+}
+
 export async function fetchArchives() {
   console.log("checking archives...");
 

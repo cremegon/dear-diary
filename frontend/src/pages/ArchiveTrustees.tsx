@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchDiary, finishDiary } from "../util/diary.ts";
+import { addEntrustee, fetchDiary } from "../util/diary.ts";
 import { useParams } from "react-router-dom";
 
 interface DiaryEntry {
@@ -21,7 +21,9 @@ export const ArchiveEntrusteePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  function handleAddTrustee() {
+  function addNewEntrustee() {}
+
+  function handleNewTrustee() {
     setTrustees((prev) => [
       ...prev,
       { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
@@ -141,11 +143,11 @@ export const ArchiveEntrusteePage = () => {
           <div className="flex flex-row justify-between mt-6">
             <button
               className="btn-writeUI"
-              onClick={() => finishDiary(diaryURL, trustees)}
+              onClick={() => addEntrustee(diaryURL, trustees)}
             >
               Add Entrustee
             </button>
-            <button className="btn-writeUI" onClick={handleAddTrustee}>
+            <button className="btn-writeUI" onClick={handleNewTrustee}>
               New Entrustee
             </button>
           </div>
