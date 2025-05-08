@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { addEntrustee, fetchDiary } from "../util/diary.ts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface DiaryEntry {
   id: number;
@@ -13,6 +13,7 @@ interface DiaryEntry {
 }
 
 export const ArchiveEntrusteePage = () => {
+  const navigate = useNavigate();
   const diaryURL = useParams().diaryId as string;
   const [trustees, setTrustees] = useState([
     { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
@@ -21,7 +22,14 @@ export const ArchiveEntrusteePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  function addNewEntrustee() {}
+  function handleSubmitNewEntrustee(diaryURL: string, trustees: object[]) {
+    const entrustee_added = addEntrustee(diaryURL, trustees);
+    if (!entrustee_added) {
+      console.log("Error Adding Entrustee");
+      return;
+    }
+    navigate(-1);
+  }
 
   function handleNewTrustee() {
     setTrustees((prev) => [
@@ -143,7 +151,7 @@ export const ArchiveEntrusteePage = () => {
           <div className="flex flex-row justify-between mt-6">
             <button
               className="btn-writeUI"
-              onClick={() => addEntrustee(diaryURL, trustees)}
+              onClick={() => handleSubmitNewEntrustee(diaryURL, trustees)}
             >
               Add Entrustee
             </button>
