@@ -102,14 +102,9 @@ export const ArchivePage = () => {
                       className={`${addHover[0] && addHover[1] === idx ? "w-20" : "w-5"} h-5 ml-2 bg-pink-300 rounded-xl`}
                     >
                       {addHover[0] && addHover[1] === idx ? (
-                        <p
-                          onClick={() =>
-                            navigate(`/diary/${item.url}/entrustees`)
-                          }
-                          className="ml-2 text-sm text-white cursor-pointer"
-                        >
-                          Add New{" "}
-                        </p>
+                        <Link to={`${item.url}/entrustees`}>
+                          <p className="ml-2 text-sm text-white">Add New</p>
+                        </Link>
                       ) : null}
                     </div>
                   </div>

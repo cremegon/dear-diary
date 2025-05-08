@@ -20,6 +20,7 @@ import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
 import Reader from "./pages/Reader.tsx";
 import { EntrusteePage } from "./pages/Trustees.tsx";
 import { TrusteeHome } from "./pages/TrusteeList.tsx";
+import { ArchiveEntrusteePage } from "./pages/ArchiveTrustees.tsx";
 
 function App() {
   useEffect(() => {
@@ -66,6 +67,11 @@ function App() {
                 path="archive/:archiveDiaryId/chapter"
                 element={<ArchiveChapterPage />}
               />
+              <Route
+                path="archive/:diaryId/entrustees"
+                element={<ArchiveEntrusteePage />}
+              />
+
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
