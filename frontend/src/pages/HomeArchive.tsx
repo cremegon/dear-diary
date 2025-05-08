@@ -106,7 +106,7 @@ export const ArchivePage = () => {
                           onClick={() =>
                             navigate(`/diary/${item.url}/entrustees`)
                           }
-                          className="ml-2 text-sm text-pink-500"
+                          className="ml-2 text-sm text-white cursor-pointer"
                         >
                           Add New{" "}
                         </p>
