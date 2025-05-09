@@ -169,6 +169,19 @@ export async function finishDiary(diaryURL: string, trustees: object[]) {
   if (!response.ok) return null;
 }
 
+export async function fetchEntrustees() {
+  console.log("fetching new entrustee from frontend...");
+  const response = await fetch(`http://localhost:5000/fetch-trustees`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) return [];
+  const data = await response.json();
+  return data;
+}
+
 export async function addEntrustee(diaryURL: string, trustees: object[]) {
   console.log("adding new entrustee from frontend...");
   const response = await fetch(
