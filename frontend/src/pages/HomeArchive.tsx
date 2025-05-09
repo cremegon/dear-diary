@@ -64,14 +64,42 @@ export const ArchivePage = () => {
         className={`w-full h-full flex flex-col items-center  ${loading || error ? "hidden" : "block"}`}
       >
         <h1 className="text-4xl my-10 font-bold">Read Your Archived Diary</h1>
-        <div className=" mb-10 w-1/2 text-4xl text-yellow-500 flex flex-col">
+        <div className=" mb-10 w-1/2 text-4xl text-yellow-500">
           {entry
             ? entry.map((item, idx) => (
                 <ul key={item.id} className="flex flex-col w-full">
                   <div className="flex flex-row justify-between items-center">
-                    <Link to={`${item.url}/chapter`}>
-                      <li>{item.title}</li>
-                    </Link>
+                    <div className="flex flex-col">
+                      <Link to={`${item.url}/chapter`}>
+                        <li>{item.title}</li>
+                      </Link>
+                      <div className="mt-4 flex flex-row">
+                        <div className="text-sm">Entrusted to:</div>
+                        {trusted[item.id] && trusted[item.id].length > 0 ? (
+                          trusted[item.id].map((person) => (
+                            <div
+                              key={person.id}
+                              className="text-sm text-green-400 ml-2"
+                            >
+                              {person.name}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-sm text-gray-500 ml-2">none</div>
+                        )}
+                        <div
+                          onMouseEnter={() => setAddHover([true, idx])}
+                          onMouseLeave={() => setAddHover([false, idx])}
+                          className={`${addHover[0] && addHover[1] === idx ? "w-20" : "w-5"} h-5 ml-2 bg-pink-300 rounded-xl overflow-auto`}
+                        >
+                          {addHover[0] && addHover[1] === idx ? (
+                            <Link to={`${item.url}/entrustees`}>
+                              <p className="ml-2 text-sm text-white">Add New</p>
+                            </Link>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
                     <div className={`${item.cover ? "block" : "hidden"}`}>
                       <img
                         src={item.cover}
@@ -79,32 +107,6 @@ export const ArchivePage = () => {
                         height={150}
                         alt="thebiggay"
                       />
-                    </div>
-                  </div>
-                  <div className="flex flex-row">
-                    <div className="text-sm">Entrusted to:</div>
-                    {trusted[item.id] && trusted[item.id].length > 0 ? (
-                      trusted[item.id].map((person) => (
-                        <div
-                          key={person.id}
-                          className="text-sm text-green-400 ml-2"
-                        >
-                          {person.name}
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-sm text-gray-500 ml-2">none</div>
-                    )}
-                    <div
-                      onMouseEnter={() => setAddHover([true, idx])}
-                      onMouseLeave={() => setAddHover([false, idx])}
-                      className={`${addHover[0] && addHover[1] === idx ? "w-20" : "w-5"} h-5 ml-2 bg-pink-300 rounded-xl`}
-                    >
-                      {addHover[0] && addHover[1] === idx ? (
-                        <Link to={`${item.url}/entrustees`}>
-                          <p className="ml-2 text-sm text-white">Add New</p>
-                        </Link>
-                      ) : null}
                     </div>
                   </div>
                 </ul>

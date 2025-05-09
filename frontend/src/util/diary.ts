@@ -172,7 +172,7 @@ export async function finishDiary(diaryURL: string, trustees: object[]) {
 export async function addEntrustee(diaryURL: string, trustees: object[]) {
   console.log("adding new entrustee from frontend...");
   const response = await fetch(
-    `http://localhost:5000/finish-diary/${diaryURL}`,
+    `http://localhost:5000/add-entrustee/${diaryURL}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
