@@ -23,7 +23,7 @@ export const TrusteeHome = () => {
     fetchTrusteeData();
   }, []);
   return (
-    <div className="min-h-screen w-full flex flex-col items-center my-14">
+    <div className="min-h-screen w-full flex flex-col items-center mt-6 mb-14">
       <h1 className="text-4xl font-extrabold my-6">My Trustees</h1>
       {trusteesList && trusteesList.length > 0
         ? trusteesList.map((person) => (
