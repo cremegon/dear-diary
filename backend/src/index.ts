@@ -24,6 +24,7 @@ import { forgotPassword } from "./controllers/authForgotPass";
 import { confirmForgotPassword } from "./controllers/confirmForgotPass";
 import { resetPassword } from "./controllers/resetPassword";
 import { addEntrustee } from "./controllers/addEntrustee";
+import { fetchTrustees } from "./controllers/fetchTrustees";
 
 const app = express();
 app.use(express.json());
@@ -94,6 +95,9 @@ app.post("/check-reset-code", confirmForgotPassword);
 
 // ---------------------- Check Reset Code
 app.post("/reset-password", resetPassword);
+
+// ---------------------- Fetch All Trustees
+app.get("/fetch-trustees", fetchTrustees);
 
 // ---------------------- Add New Entrustee
 app.post("/add-entrustee/:diaryURL", addEntrustee);
