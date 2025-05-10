@@ -28,6 +28,7 @@ export const fetchTrustees = async (
       diaryToTrustees[diary_id].push(...relatedDiaries.rows);
     }
   }
+  console.log(diaryToTrustees);
 
   return res.status(200).json({
     message: "Trustees Found",

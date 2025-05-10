@@ -42,10 +42,6 @@ export const DiaryPage = () => {
   }
 
   async function handleFinishDiary(URL: string) {
-    // await finishDiary(URL);
-    // setEntry([]);
-    // setConclude([false, ""]);
-    // setRefresh(!refresh);
     navigate(`${URL}/entrustees`);
   }
 
