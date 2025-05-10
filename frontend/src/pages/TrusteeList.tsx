@@ -21,7 +21,7 @@ interface DiaryEntry {
 }
 
 export const TrusteeHome = () => {
-    const [diaries, setDiaries] = useState([])
+  const [diaries, setDiaries] = useState([]);
   const [trusteesList, setTrusteesList] = useState<Trustees[]>([]);
   const [diariesToTrustees, setDiariesToTrustees] = useState<{
     [key: number]: DiaryEntry[];
@@ -52,17 +52,16 @@ export const TrusteeHome = () => {
               <div className="">{person.address}</div>
               <div className="">{person.phone}</div>
               {diariesToTrustees[person.diary_id] &&
-              diariesToTrustees[person.diary_id].length > 0 
+              diariesToTrustees[person.diary_id].length > 0
                 ? diariesToTrustees[person.diary_id].map((related) => (
-                    {!diaries.includes({related.title}) ? (<div key={related.id} className="flex flex-row">
-                    <div>{related.title}</div>
-                    {diaries.push({related.title})}
-                  </div>)} ))
-                  
-                : "none"}
+                    <div key={related.id} className="flex flex-row">
+                      <div>{related.title}</div>
+                    </div>
+                  ))
+                : "no trustees found..."}
             </div>
           ))
-        : "no trustees found..."}
+        : null}
     </div>
   );
 };
