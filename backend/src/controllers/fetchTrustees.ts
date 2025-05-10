@@ -15,6 +15,7 @@ export const fetchTrustees = async (
   const trustees = await pool.query("SELECT * FROM trustees");
 
   const diaryToTrustees: relatedToTrustees = {};
+  const seen: string[] = [];
   for (let i = 0; i < trustees.rows.length; i++) {
     const diary_id = trustees.rows[i].diary_id;
     const relatedDiaries = await pool.query(
