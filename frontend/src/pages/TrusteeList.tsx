@@ -40,15 +40,26 @@ export const TrusteeHome = () => {
               <div className="">{person.email}</div>
               <div className="">{person.address}</div>
               <div className="">{person.phone}</div>
-              {diariesToTrustees[person.name] &&
-              diariesToTrustees[person.name].length > 0
-                ? diariesToTrustees[person.name].map((related, idx) => (
-                    <div key={idx} className="flex flex-row">
-                      <div>{related}</div>
-                      <div></div>
-                    </div>
-                  ))
-                : "no trustees found..."}
+              <ul className="flex flex-row">
+                {diariesToTrustees[person.name] &&
+                diariesToTrustees[person.name].length > 0
+                  ? diariesToTrustees[person.name].map(
+                      (related: string, idx: number) => (
+                        <div
+                          key={idx}
+                          className={`flex flex-row text-blue-500 ${idx > 0 ? "ml-2" : null}`}
+                        >
+                          <li className={`${idx > 0 ? "block" : "hidden"}`}>
+                            |
+                          </li>
+                          <li className={`${idx > 0 ? "ml-2" : null}`}>
+                            {related}
+                          </li>
+                        </div>
+                      )
+                    )
+                  : "no trustees found..."}
+              </ul>
             </div>
           ))
         : null}
