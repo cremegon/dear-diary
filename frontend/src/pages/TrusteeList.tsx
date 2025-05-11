@@ -10,21 +10,10 @@ interface Trustees {
   phone: string;
 }
 
-interface DiaryEntry {
-  id: number;
-  user_id: number;
-  title: string;
-  created_at: Date;
-  completed_at: Date;
-  url: string;
-  cover: string;
-}
-
 export const TrusteeHome = () => {
-  const [diaries, setDiaries] = useState([]);
   const [trusteesList, setTrusteesList] = useState<Trustees[]>([]);
   const [diariesToTrustees, setDiariesToTrustees] = useState<{
-    [key: number]: DiaryEntry[];
+    [key: number]: string[];
   }>([]);
 
   async function fetchTrusteeData() {
@@ -51,11 +40,12 @@ export const TrusteeHome = () => {
               <div className="">{person.email}</div>
               <div className="">{person.address}</div>
               <div className="">{person.phone}</div>
-              {diariesToTrustees[person.diary_id] &&
-              diariesToTrustees[person.diary_id].length > 0
-                ? diariesToTrustees[person.diary_id].map((related) => (
-                    <div key={related.id} className="flex flex-row">
-                      <div>{related.title}</div>
+              {diariesToTrustees[person.name] &&
+              diariesToTrustees[person.name].length > 0
+                ? diariesToTrustees[person.name].map((related, idx) => (
+                    <div key={idx} className="flex flex-row">
+                      <div>{related}</div>
+                      <div></div>
                     </div>
                   ))
                 : "no trustees found..."}
