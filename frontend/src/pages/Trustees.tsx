@@ -28,6 +28,11 @@ export const EntrusteePage = () => {
     ]);
   }
 
+  function handleRemoveTrustee(idx: number) {
+    setTrustees(trustees.slice(0, idx));
+    setTrustees(trustees.slice(idx + 1));
+    console.log(trustees);
+  }
   function handleEntrusteeDetails(value: string, id: string, i: number) {
     const updatedItem = trustees.map((item, idx) => {
       if (idx === i) {
@@ -98,7 +103,7 @@ export const EntrusteePage = () => {
                     <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
                     <button
                       className="bg-red-600 text-white w-20"
-                      onClick={() => console.log(trustees[idx])}
+                      onClick={() => handleRemoveTrustee(idx)}
                     >
                       delete
                     </button>
