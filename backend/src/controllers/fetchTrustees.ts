@@ -15,7 +15,7 @@ export const fetchTrustees = async (
   //   const distinctTrustees = await pool.query()
   const diaries = await pool.query("SELECT * FROM diaries;");
   const trustees = await pool.query(
-    "SELECT DISTINCT ON (name) * FROM ( SELECT *, COUNT(*) OVER (PARTITION BY name) AS name_count FROM trustees) sub ORDER BY name, name_count DESC;"
+    "SELECT DISTINCT ON (name) * FROM trustees GROUP BY name ORDER BY COUNT(name);"
   );
 
   const diary_to_trustees: relatedToTrustees = {};
