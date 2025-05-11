@@ -93,8 +93,16 @@ export const EntrusteePage = () => {
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
           {trustees
             ? trustees.map((item, idx) => (
-                <div className="flex flex-col justify-evenly" key={idx}>
-                  <h1 className="mt-4 text-xl">{`Trustee ${idx + 1}`}</h1>
+                <div className="mt-4 flex flex-col justify-evenly" key={idx}>
+                  <div className="flex flex-row justify-between align-bottom">
+                    <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
+                    <button
+                      className="bg-red-600 text-white w-20"
+                      onClick={() => console.log(trustees[idx])}
+                    >
+                      delete
+                    </button>
+                  </div>
                   <input
                     className="border-pink-400 border-4 mt-4"
                     type="text"
