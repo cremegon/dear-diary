@@ -27,7 +27,7 @@ export const Signup = () => {
     }
   }, [error]);
 
-  async function verifyInputs(email, password) {
+  async function verifyInputs(email: string, password: string) {
     const validUsername: { error: boolean; message: string } =
       verifyUsername(email);
     if (validUsername.error) {
@@ -157,14 +157,12 @@ export const Signup = () => {
             />
 
             <button
-              type="submit"
+              onClick={(e) => handleEmailVerifyCode(e)}
               className="mt-6 border-black border-2 bg-pink-400"
             >
               Sign Up
             </button>
-            <Link to={"/login"} className="text-center text-blue-800 mt-4">
-              Go to Login
-            </Link>
+            <div onClick={() => setModal("signup")}>Sign Up</div>
           </div>
         ) : null}
       </div>
