@@ -10,7 +10,7 @@ export const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string[]>([]);
 
-  const [emailCode, setEmailCode] = useState("");
+  const [verifyCode, setVerifyCode] = useState("");
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -27,12 +27,7 @@ export const Signup = () => {
     }
   }, [error]);
 
-  // --------------- Form Submission
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    console.log(name, email, password);
-
-    // ------------- Verify Username via Helper Function
+  async function verifyInputs(email, password) {
     const validUsername: { error: boolean; message: string } =
       verifyUsername(email);
     if (validUsername.error) {
@@ -49,7 +44,13 @@ export const Signup = () => {
       return;
     }
     setError([]);
+    setModal("code");
+    await sendSignupCode(email);
+  }
 
+  // --------------- Form Submission
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
     const response = await fetch("http://localhost:5000/signup", {
       method: "POST",
       headers: {
@@ -80,20 +81,9 @@ export const Signup = () => {
     }
   }
 
-  async function handleEmailCode() {
-    setModal("code");
-    const response = await sendEmailCode();
-    setError([]);
-    if (!response.data) {
-      setError(["code", response.message]);
-      setModal("signup");
-      return;
-    }
-    setModal("verify code");
-  }
-
   async function handleEmailVerifyCode(e: React.FormEvent, email_code: string) {
-    const response = await verifyEmailCode(email_code);
+    setModal("code");
+    const response = await verifySignupCode(email_code);
     setError([]);
     if (!response.data) {
       setError(["verify code", response.message]);
@@ -138,7 +128,7 @@ export const Signup = () => {
             />
             <div className="flex flex-col mt-6 justify-center">
               <button
-                onClick={() => handleEmailCode()}
+                onClick={() => verifyInputs(email, password)}
                 className=" border-black border-2 bg-pink-400"
               >
                 Sign Up
@@ -154,33 +144,18 @@ export const Signup = () => {
             <h3 className="text-7xl font-extrabold text-center">
               Verification Email
             </h3>
+            <p>
+              We have sent a verification email to the email account you
+              registered with. Kindly enter the verification code below:
+            </p>
             <input
-              type="name"
-              name="name"
+              type="text"
+              name="verify"
               id="name"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="enter name"
+              onChange={(e) => setVerifyCode(e.target.value)}
               className="border-black border-2 mt-8"
             />
 
-            <input
-              type="email"
-              name="email"
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="enter email"
-              ref={emailRef}
-              className="border-black border-2 mt-4"
-            />
-            <input
-              type="password"
-              name="password"
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="enter password"
-              ref={passwordRef}
-              className="border-black border-2 mt-4"
-            />
             <button
               type="submit"
               className="mt-6 border-black border-2 bg-pink-400"
