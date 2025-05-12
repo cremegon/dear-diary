@@ -5,7 +5,7 @@ const serverEmail = config.serverEmail;
 const serverPassword = config.serverPassword;
 const senderEmail = config.senderEmail;
 
-export const send_forgot_Email = async (
+export const send_signUpCode_Email = async (
   receipientEmail: string,
   token: string
 ): Promise<any> => {
@@ -22,7 +22,7 @@ export const send_forgot_Email = async (
   const mailOptions = {
     from: senderEmail,
     to: receipientEmail,
-    subject: "Reset your Dear Diary Password",
+    subject: "Verify Your Sign Up",
     html: `<p>You requested a signup code...here... have this...${token}</p>`,
   };
 
