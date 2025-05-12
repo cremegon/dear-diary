@@ -20,18 +20,20 @@ export const signUpCodeSend = async (
     [receipientEmail]
   );
 
+  console.log("verified selection!", verified.rows);
+
   if (verified.rows.length > 0 && !verified.rows[0].verified) {
     return res
       .status(400)
       .json({ message: "Email Already Marked as Unverified..." });
   }
 
-  const resetPass = send_signUpCode_Email(receipientEmail, encryptedToken);
-  if (!resetPass)
-    return res.status(404).json({ message: "Forgot Email Failed..." });
+  const signUpCode = send_signUpCode_Email(receipientEmail, encryptedToken);
+  if (!signUpCode)
+    return res.status(404).json({ message: "Signup Email Failed..." });
 
   await pool.query(
-    "INSERT INTO checkemails(email,signup_code,verified) VALUES = ($1,$2,$3)",
+    "INSERT INTO checkemails(email,signup_code,verified) VALUES($1,$2,$3)",
     [receipientEmail, encryptedToken, false]
   );
 

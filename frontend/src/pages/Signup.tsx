@@ -107,6 +107,7 @@ export const Signup = () => {
       setError(["verify code", response.message]);
       return;
     }
+    console.log("correct signup code!");
     await handleSubmit(name, email, password);
   }
 
