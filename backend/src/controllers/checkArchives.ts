@@ -21,7 +21,7 @@ export const checkArchives = async (
   }
 
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
-  const userId = decoded.userId;
+  const userId = decoded.id;
 
   const diaryEntry = await pool.query(
     "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL",
