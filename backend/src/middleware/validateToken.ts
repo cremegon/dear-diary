@@ -17,13 +17,14 @@ export const validateToken = async (
 
   // check if a token exists ; if not then a user isn't verified
   if (!token) {
+    console.log("no tokens found at verification");
     return res.status(403).json({ message: "No cookies found" });
   }
 
   // if user exists ; decode the token they have
   try {
     const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
-
+    console.log("decoded details form token:", decoded);
     // select the user connected to the token from the database
     const selectedUser = await pool.query(
       "SELECT email FROM users WHERE id = $1",
@@ -36,6 +37,7 @@ export const validateToken = async (
       return res.status(400).json({ message: "Verficiation Failed" });
     }
     // if the user matches, then the verification is successful
+    console.log("verification successful from validate token!");
     return res.status(200).json({
       message: "Verification Successful, redirecting...",
       content: user.name,
