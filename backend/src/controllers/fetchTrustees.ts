@@ -27,15 +27,13 @@ export const fetchTrustees = async (
   const diaries = await pool.query("SELECT * FROM diaries WHERE user_id = $1", [
     decoded.id,
   ]);
-  console.log("diaries = ", diaries.rows);
-  const diaryId_to_trustee = await pool.query(
-    "SELECT id FROM diaries WHERE user_id = $1",
+
+  const trustees = await pool.query(
+    "SELECT DISTINCT ON (t.name) t.* FROM trustees as t JOIN diaries AS d ON d.id = t.diary_id JOIN users as u ON u.id = d.user_id AND u.id = $1 ORDER BY t.name ASC;",
     [decoded.id]
   );
-  const trustees = await pool.query(
-    "SELECT DISTINCT ON (name) * FROM trustees WHERE diary_id = $1 ORDER BY name ASC;",
-    [diaryId_to_trustee.rows[0].id]
-  );
+
+  console.log("selected trustees = ", trustees.rows);
 
   const diary_to_trustees: relatedToTrustees = {};
 
