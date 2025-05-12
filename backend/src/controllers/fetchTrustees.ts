@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { Pool } from "pg";
+import jwt from "jsonwebtoken";
 import { config } from "../config";
 
 const pool = new Pool(config.db);
+const JWT_SECRET = config.jwtSecret;
 
 type relatedToTrustees = { [key: string]: any[] };
 
@@ -11,11 +13,28 @@ export const fetchTrustees = async (
   res: Response
 ): Promise<any> => {
   console.log("fetching trustees...");
+  const token = req.cookies.authToken;
 
-  //   const distinctTrustees = await pool.query()
-  const diaries = await pool.query("SELECT * FROM diaries;");
+  // check if a token exists ; if not then a user isn't verified
+  if (!token) {
+    console.log("no tokens found at fetching trustees");
+    return res.status(403).json({ message: "No cookies found" });
+  }
+
+  const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
+  console.log("fetched user_id:", decoded.id);
+
+  const diaries = await pool.query("SELECT * FROM diaries WHERE user_id = $1", [
+    decoded.id,
+  ]);
+  console.log("diaries = ", diaries.rows);
+  const diaryId_to_trustee = await pool.query(
+    "SELECT id FROM diaries WHERE user_id = $1",
+    [decoded.id]
+  );
   const trustees = await pool.query(
-    "SELECT DISTINCT ON (name) * FROM trustees ORDER BY name ASC;"
+    "SELECT DISTINCT ON (name) * FROM trustees WHERE diary_id = $1 ORDER BY name ASC;",
+    [diaryId_to_trustee.rows[0].id]
   );
 
   const diary_to_trustees: relatedToTrustees = {};
@@ -44,7 +63,7 @@ export const fetchTrustees = async (
 
   return res.status(200).json({
     message: "Trustees Found",
-    data: trustees.rows,
+    trustees: trustees.rows,
     diaries: diary_to_trustees,
   });
 };

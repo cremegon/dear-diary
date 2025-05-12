@@ -40,7 +40,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
 
   // if they do match, then this is the right user.
   // we generate a new token for them to verify their sessions with.
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET as string, {
+  const token = jwt.sign({ id: user.id }, JWT_SECRET as string, {
     expiresIn: "1h",
   });
 

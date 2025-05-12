@@ -19,8 +19,9 @@ export const TrusteeHome = () => {
   async function fetchTrusteeData() {
     const response = await fetchEntrustees();
     if (!response) return "error from backend finding entrustees...";
-    setTrusteesList(response.data);
+    setTrusteesList(response.trustees);
     setDiariesToTrustees(response.diaries);
+    console.log(response.trustees);
     console.log(response.diaries);
   }
 

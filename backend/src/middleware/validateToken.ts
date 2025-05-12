@@ -28,9 +28,10 @@ export const validateToken = async (
     // select the user connected to the token from the database
     const selectedUser = await pool.query(
       "SELECT email FROM users WHERE id = $1",
-      [decoded.userId]
+      [decoded.id]
     );
     const user = selectedUser.rows[0];
+    console.log("selected user from login: ", user);
 
     // if the user from the token does not match the user in the database, return False
     if (!user.email === decoded.email) {
