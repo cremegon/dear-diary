@@ -25,6 +25,8 @@ import { confirmForgotPassword } from "./controllers/confirmForgotPass";
 import { resetPassword } from "./controllers/resetPassword";
 import { addEntrustee } from "./controllers/addEntrustee";
 import { fetchTrustees } from "./controllers/fetchTrustees";
+import { signUpCodeSend } from "./controllers/authSignupCode";
+import { confirmSignupCode } from "./controllers/confirmSignupCode";
 
 const app = express();
 app.use(express.json());
@@ -38,6 +40,12 @@ app.use(
 );
 // ---------------------- Sign Up new Users
 app.post("/signup", signupUser);
+
+// ---------------------- Send SignUp Code
+app.post("/send-signup-code", signUpCodeSend);
+
+// ---------------------- Confirm SignUp Code
+app.post("/verify-signup-code", confirmSignupCode);
 
 // ---------------------- Verify new/existing Users
 app.get("/verify", validateToken);

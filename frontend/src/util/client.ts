@@ -191,10 +191,23 @@ export async function testEmail() {
 
 export async function sendSignupCode(email: string) {
   console.log("sending sign-up code to email from frontend...", email);
-  const response = await fetch(`http://localhost:5000/sign-up-code`, {
+  const response = await fetch(`http://localhost:5000/send-signup-code`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
+    credentials: "include",
+  });
+  const data = await response.json();
+
+  return data;
+}
+
+export async function signUpCodeCheck(code: string) {
+  console.log("checking signup code from frontend...", code);
+  const response = await fetch(`http://localhost:5000/verify-signup-code`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
     credentials: "include",
   });
   const data = await response.json();

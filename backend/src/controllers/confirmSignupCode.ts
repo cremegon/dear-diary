@@ -16,7 +16,9 @@ export const confirmSignupCode = async (
     [userToken]
   );
   if (!checkToken.rows.length)
-    return res.status(400).json({ message: "Incorrect Token", data: false });
+    return res
+      .status(400)
+      .json({ message: "Incorrect Signup Code", data: false });
 
   await pool.query("UPDATE checkemails SET verified = $1", [true]);
 
