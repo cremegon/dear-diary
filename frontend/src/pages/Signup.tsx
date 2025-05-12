@@ -112,8 +112,10 @@ export const Signup = () => {
   }
 
   return (
-    <div className="w-full h-full flex justify-center align-top">
-      {error ? <div>{error[1]}</div> : null}
+    <div className="flex flex-row justify-center align-middle">
+      {error ? (
+        <div className="text-red-600 text-center">{error[1]}</div>
+      ) : null}
       <div className="flex flex-col w-1/3 align-middle justify-center">
         {modal === "signup" ? (
           <div>
@@ -163,7 +165,7 @@ export const Signup = () => {
             <h3 className="text-7xl font-extrabold text-center">
               Verification Email
             </h3>
-            <p>
+            <p className="mt-4 text-center">
               We have sent a verification email to the email account you
               registered with. Kindly enter the verification code below:
             </p>
@@ -173,16 +175,21 @@ export const Signup = () => {
               name="verify"
               id="name"
               onChange={(e) => setVerifyCode(e.target.value)}
-              className="border-black border-2 mt-8"
+              className="border-black border-2 mt-8 w-full"
             />
 
             <button
               onClick={() => handleEmailVerifyCode(verifyCode)}
-              className="mt-6 border-black border-2 bg-pink-400"
+              className="mt-6 border-black border-2 bg-pink-400 w-full"
             >
               Verify
             </button>
-            <div onClick={() => setModal("signup")}>Sign Up</div>
+            <div
+              onClick={() => setModal("signup")}
+              className="text-center mt-4 text-blue-700 cursor-pointer"
+            >
+              Sign Up
+            </div>
           </div>
         ) : null}
       </div>
