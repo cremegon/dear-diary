@@ -8,7 +8,7 @@ const JWT_SECRET = config.jwtSecret;
 
 type trustedPersonsMap = { [key: number]: any[] };
 
-export const checkArchives = async (
+export const fetchArchives = async (
   req: Request,
   res: Response
 ): Promise<any> => {

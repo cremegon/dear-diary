@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
 import { Pool } from "pg";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
 
 const pool = new Pool(config.db);
-const JWT_SECRET = config.jwtSecret;
 
 export const fetchDiary = async (req: Request, res: Response): Promise<any> => {
   const token = req.cookies.authToken;

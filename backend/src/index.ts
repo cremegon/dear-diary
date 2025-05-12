@@ -9,7 +9,7 @@ import { logoutUser } from "./controllers/authLogout";
 import { createDiary } from "./controllers/createDiary";
 import { createChapter } from "./controllers/createChapter";
 import { checkDiary } from "./controllers/checkDiary";
-import { checkChapter } from "./controllers/checkChapter";
+import { fetchChapters } from "./controllers/fetchChapter";
 import { saveContent } from "./controllers/saveContent";
 import { loadContent } from "./controllers/loadContent";
 import { deleteDiary } from "./controllers/deleteDiary";
@@ -17,8 +17,7 @@ import { deleteChapter } from "./controllers/deleteChapter";
 import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
 import { compileDiary } from "./controllers/compileDiary";
-import { send_PDF_Email } from "./middleware/sendEmail";
-import { checkArchives } from "./controllers/checkArchives";
+import { fetchArchives } from "./controllers/fetchArchives";
 import { fetchDiary } from "./controllers/fetchDiary";
 import { forgotPassword } from "./controllers/authForgotPass";
 import { confirmForgotPassword } from "./controllers/confirmForgotPass";
@@ -75,10 +74,10 @@ app.get("/check-diary", checkDiary);
 app.get("/fetch-diary/:diaryURL", fetchDiary);
 
 // ---------------------- Check Chapter
-app.get("/check-chapter", checkChapter);
+app.get("/check-chapter", fetchChapters);
 
 // ---------------------- Check Archives
-app.get("/check-archives", checkArchives);
+app.get("/check-archives", fetchArchives);
 
 // ---------------------- Save Content
 app.post("/save-to-db", saveContent);

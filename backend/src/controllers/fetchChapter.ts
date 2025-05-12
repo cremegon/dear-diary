@@ -6,7 +6,7 @@ import { config } from "../config";
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
-export const checkChapter = async (
+export const fetchChapters = async (
   req: Request,
   res: Response
 ): Promise<any> => {
