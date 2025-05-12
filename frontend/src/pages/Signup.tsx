@@ -108,7 +108,7 @@ export const Signup = () => {
       return;
     }
     console.log("correct signup code!");
-    await handleSubmit(name, email, password);
+    handleSubmit(name, email, password);
   }
 
   return (

@@ -41,24 +41,13 @@ export const validateToken = async (
       content: user.name,
     });
   } catch (error) {
-    if (error === "TokenExpiredError") {
-      console.log("Token has Expired");
-      return res
-        .status(403)
-        .clearCookie("authToken", {
-          httpOnly: true,
-          sameSite: "strict",
-        })
-        .json({ message: "Token has Expired" });
-    } else {
-      console.log("Invalid Token");
-      return res
-        .status(403)
-        .clearCookie("authToken", {
-          httpOnly: true,
-          sameSite: "strict",
-        })
-        .json({ message: "Invalid Token" });
-    }
+    console.log("Invalid Token from Token Verification");
+    return res
+      .status(403)
+      .clearCookie("authToken", {
+        httpOnly: true,
+        sameSite: "strict",
+      })
+      .json({ message: "Invalid Token" });
   }
 };

@@ -44,12 +44,6 @@ export const AuthProvider = () => {
     };
 
     console.log("user verification:", auth);
-    // if (auth && user && JSON.parse(user).loggedIn === false) {
-    //   console.log("authenticating...");
-    //   verifyToken();
-    // } else {
-    //   return;
-    // }
     verifyToken();
   }, [auth, user]);
 
