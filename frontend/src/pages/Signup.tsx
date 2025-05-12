@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   getName,
   sendSignupCode,
+  signUpCodeCheck,
   verifyPassword,
   verifyUsername,
 } from "../util/client.ts";
@@ -10,24 +11,37 @@ import { Link } from "react-router-dom";
 
 export const Signup = () => {
   const [modal, setModal] = useState("signup");
+
+  // ---- Login Modal
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string[]>([]);
 
+  // ---- Verify SignUp Code Modal
   const [verifyCode, setVerifyCode] = useState("");
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const verifyCodeRef = useRef<HTMLInputElement>(null);
 
   const { setAuth } = useAuth();
 
   useEffect(() => {
     if (error) {
       if (error[0] === "email") {
-        emailRef.current?.focus();
+        if (emailRef && emailRef.current) {
+          emailRef.current?.focus();
+        }
+      } else if (error[0] === "password") {
+        if (passwordRef && passwordRef.current) {
+          passwordRef.current?.focus();
+        }
       } else {
-        passwordRef.current?.focus();
+        if (verifyCodeRef && verifyCodeRef.current) {
+          verifyCodeRef.current?.focus();
+          verifyCodeRef.current.style.borderColor = "red";
+        }
       }
     }
   }, [error]);
@@ -87,7 +101,7 @@ export const Signup = () => {
 
   async function handleEmailVerifyCode(email_code: string) {
     setModal("code");
-    const response = await verifySignupCode(email_code);
+    const response = await signUpCodeCheck(email_code);
     setError([]);
     if (!response.data) {
       setError(["verify code", response.message]);
@@ -153,6 +167,7 @@ export const Signup = () => {
               registered with. Kindly enter the verification code below:
             </p>
             <input
+              ref={verifyCodeRef}
               type="text"
               name="verify"
               id="name"
