@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getName, verifyPassword, verifyUsername } from "../util/client.ts";
+import {
+  getName,
+  sendSignupCode,
+  verifyPassword,
+  verifyUsername,
+} from "../util/client.ts";
 import { useAuth } from "../util/contextProvider.tsx";
 import { Link } from "react-router-dom";
 
@@ -49,8 +54,7 @@ export const Signup = () => {
   }
 
   // --------------- Form Submission
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleSubmit(name: string, email: string, password: string) {
     const response = await fetch("http://localhost:5000/signup", {
       method: "POST",
       headers: {
@@ -81,7 +85,7 @@ export const Signup = () => {
     }
   }
 
-  async function handleEmailVerifyCode(e: React.FormEvent, email_code: string) {
+  async function handleEmailVerifyCode(email_code: string) {
     setModal("code");
     const response = await verifySignupCode(email_code);
     setError([]);
@@ -89,7 +93,7 @@ export const Signup = () => {
       setError(["verify code", response.message]);
       return;
     }
-    handleSubmit(e);
+    await handleSubmit(name, email, password);
   }
 
   return (
@@ -157,10 +161,10 @@ export const Signup = () => {
             />
 
             <button
-              onClick={(e) => handleEmailVerifyCode(e)}
+              onClick={() => handleEmailVerifyCode(verifyCode)}
               className="mt-6 border-black border-2 bg-pink-400"
             >
-              Sign Up
+              Verify
             </button>
             <div onClick={() => setModal("signup")}>Sign Up</div>
           </div>
