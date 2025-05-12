@@ -1,31 +1,39 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import { config } from "./config";
+
+import { signUpCodeSend } from "./controllers/authSignupCode";
+import { confirmSignupCode } from "./controllers/confirmSignupCode";
+import { validateToken } from "./middleware/validateToken";
 import { signupUser } from "./controllers/authSignup";
 import { loginUser } from "./controllers/authLogin";
-import { validateToken } from "./middleware/validateToken";
 import { logoutUser } from "./controllers/authLogout";
+
 import { createDiary } from "./controllers/createDiary";
 import { createChapter } from "./controllers/createChapter";
 import { checkDiary } from "./controllers/checkDiary";
-import { fetchChapters } from "./controllers/fetchChapter";
+
 import { saveContent } from "./controllers/saveContent";
 import { loadContent } from "./controllers/loadContent";
-import { deleteDiary } from "./controllers/deleteDiary";
-import { deleteChapter } from "./controllers/deleteChapter";
 import { saveCoverArt } from "./controllers/saveCoverArt";
 import { loadCoverArt } from "./controllers/loadCoverArt";
-import { compileDiary } from "./controllers/compileDiary";
+
+import { deleteDiary } from "./controllers/deleteDiary";
+import { deleteChapter } from "./controllers/deleteChapter";
+
+import { addEntrustee } from "./controllers/addEntrustee";
 import { fetchArchives } from "./controllers/fetchArchives";
+import { fetchTrustees } from "./controllers/fetchTrustees";
 import { fetchDiary } from "./controllers/fetchDiary";
+import { fetchChapters } from "./controllers/fetchChapter";
+
+import { compileDiary } from "./controllers/compileDiary";
+
 import { forgotPassword } from "./controllers/authForgotPass";
 import { confirmForgotPassword } from "./controllers/confirmForgotPass";
 import { resetPassword } from "./controllers/resetPassword";
-import { addEntrustee } from "./controllers/addEntrustee";
-import { fetchTrustees } from "./controllers/fetchTrustees";
-import { signUpCodeSend } from "./controllers/authSignupCode";
-import { confirmSignupCode } from "./controllers/confirmSignupCode";
 
 const app = express();
 app.use(express.json());
