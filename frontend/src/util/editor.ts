@@ -1,3 +1,5 @@
+import React from "react";
+
 export function treeWalkerSearch(currentRange: Range) {
   function calculateRectDistance(rect1: DOMRect, rect2: DOMRect) {
     const center1 = {
@@ -18,8 +20,10 @@ export function treeWalkerSearch(currentRange: Range) {
   let closestDistance = Infinity;
   let closestTextNode: Text | null = null;
 
-  const actualTextSearch = currentRange.toString();
+  const actualTextSearch = currentRange.toString().trim();
   const actualRect = currentRange.getBoundingClientRect();
+
+  console.log("Finding True Node = ", actualTextSearch);
 
   const editableFather = document.getElementById("father");
 
@@ -47,51 +51,92 @@ export function treeWalkerSearch(currentRange: Range) {
     if (distance < closestDistance) {
       closestDistance = distance;
       closestTextNode = textNode;
+    } else if (distance > closestDistance) {
+      break;
     }
   }
-
-  return closestTextNode;
+  console.log("True Returned Node = ", closestTextNode);
+  return closestTextNode as Node;
 }
 
-export function findToggleVariation(currentRange: Range) {
+export function findToggleVariation(currentRange: Range, selection: Selection) {
   const hashmap = {};
 
+  // ---- Create a Document Fragment from the Selection
   const content = currentRange.cloneContents();
   const selectionArray = content.childNodes;
+
+  // ---- Count the Highest and Lowest Frequency Element/Text Node
   for (const element of selectionArray) {
     const ele = element.nodeName.toLocaleLowerCase();
     hashmap[ele] = (hashmap[ele] || 0) + 1;
   }
-  console.log("hello:3");
+
   const maxValue = Math.max(...(Object.values(hashmap) as number[]));
   const minValue = Math.min(...(Object.values(hashmap) as number[]));
   const minKey = Object.keys(hashmap).find((key) => hashmap[key] === minValue);
 
+  // ---- If the Max Value === Fragment Length => No Variation
   if (maxValue === selectionArray.length) return false;
 
-  for (let i = 0; i < selectionArray.length; i++) {
-    const element = selectionArray[i];
-    console.log(element, minKey);
-    if (element.nodeType !== Node.TEXT_NODE) {
-      const newElement = document.createTextNode(
-        element.lastChild?.textContent as string
-      );
-      content.replaceChild(newElement, element);
-    }
+  // ---- Build a String of All ChildNode textContents
+  let textContent = "";
+  for (const element of selectionArray) {
+    textContent +=
+      element.lastChild !== null
+        ? element.lastChild.textContent
+        : element.textContent;
   }
-  if (minKey === "#text") {
-    const newContent = content;
-    currentRange.deleteContents();
-    currentRange.insertNode(newContent);
-    return true;
-  }
-  const newContent = document.createElement(`${minKey}`);
-  newContent.append(content);
 
-  console.log("final content = ", newContent);
-
+  // ---- Create the TextNode & Remove Data Inside Range
+  const newContent = document.createTextNode(textContent);
   currentRange.deleteContents();
-  currentRange.insertNode(newContent);
+
+  if (minKey === "#text") {
+    currentRange.insertNode(newContent);
+  } else {
+    const newElement = document.createElement(`${minKey}`);
+    newElement.appendChild(newContent);
+    currentRange.insertNode(newElement);
+  }
+
+  // ---- Incase Not All the Data was deleted, Manually set
+  // ---- the range to the new TextNode and check left & right
+  const startOffset = 0;
+  const endOffset = textContent.length;
+  const trueContainer = treeWalkerSearch(currentRange);
+
+  if (!trueContainer) return;
+
+  // ---- Find Span Parent
+  let current = trueContainer;
+  while (current?.parentNode && current.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+
+  // ---- Adjust the Range to the Selected Node
+  selection.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStart(trueContainer, startOffset);
+  newRange.setEnd(trueContainer, endOffset);
+  selection.addRange(newRange);
+
+  // ---- Check for Left & Right Empty Elements
+  const previousTarget = trueContainer.previousSibling;
+  const nextTarget = trueContainer.nextSibling;
+
+  if (
+    previousTarget?.ELEMENT_NODE &&
+    previousTarget.textContent?.trim() === ""
+  ) {
+    current?.removeChild(previousTarget);
+  }
+
+  if (nextTarget?.ELEMENT_NODE && nextTarget.textContent?.trim() === "") {
+    current?.removeChild(nextTarget);
+  }
+
+  console.log("final content = ", document.getElementById("father")?.innerHTML);
   return true;
 }
 
@@ -147,11 +192,10 @@ export function findToggleState(
   return [false, null];
 }
 
-export function fineToggleState2(
-  currentRange: Range,
+export function findToggleState2(
   textNode: Node,
   format: string
-) {
+): [boolean, Node | null] {
   const targetTagName = format.toUpperCase();
   let current = textNode;
   while (
@@ -162,64 +206,88 @@ export function fineToggleState2(
     current = current.parentNode;
   }
 
+  if (!current.parentNode) return [false, null];
+
   if (current.parentNode?.nodeName === "SPAN") {
     return [false, current];
-  } else if (current.parentNode?.nodeName === targetTagName) {
+  } else {
     return [true, current.parentNode];
   }
 }
 
-export function getTrueOffset(target: Node, parent: Node) {
+export function getTrueOffset(target: Node) {
   let offset = 0;
   let current = target;
-  console.log("SEARCHING FOR TRUE OFFSET PARENT: ", parent);
 
-  while (current && current !== parent) {
-    console.log("SEARCH FOR TRUEOFFSET child: ", current);
-    if (current.previousSibling) {
-      current = current.previousSibling;
-      if (current.previousSibling?.textContent) {
-        offset += current.previousSibling?.textContent.length;
-      }
-    }
-    current = current.parentNode ? current.parentNode : current;
+  console.log("offset sibling = ", current.previousSibling);
+  while (
+    current.previousSibling &&
+    current.previousSibling !== null &&
+    current.previousSibling.nodeType === Node.TEXT_NODE
+  ) {
+    console.log("SEARCH FOR TRUEOFFSET child: ", current.previousSibling);
+
+    offset += current.previousSibling?.textContent
+      ? current.previousSibling.textContent.length
+      : 0;
+    current = current.previousSibling;
   }
+  console.log("returned offset = ", offset);
   return offset;
 }
 
 export function wrapAll(
   currentRange: Range,
   format: string,
-  selection: Selection
+  selection: Selection,
+  targetNode: Node,
+  color: string
 ) {
   console.log("Adding Tag...");
-  const endOffset = currentRange.endOffset - currentRange.startOffset;
-  if (currentRange) {
-    const wrappedNode = document.createElement(format);
-    const fragment = currentRange.extractContents();
+  console.log(targetNode);
+  console.log(currentRange);
+  let endOffset = 0;
+  const startOffset = 0;
 
-    wrappedNode.appendChild(fragment);
-
-    currentRange.insertNode(wrappedNode);
-    selection.removeAllRanges();
-
-    // ---- Define New Range
-    const newRange = document.createRange();
-    const trueContainer = wrappedNode.firstChild
-      ? wrappedNode.firstChild
-      : wrappedNode;
-
-    console.log("BITCH: ", 0, endOffset);
-
-    try {
-      newRange.setStart(trueContainer, 0);
-      newRange.setEnd(trueContainer, endOffset);
-
-      selection.addRange(newRange);
-    } catch (error) {
-      console.log(error);
-    }
+  if (currentRange.startContainer !== currentRange.endContainer) {
+    endOffset = currentRange.startContainer.textContent
+      ? currentRange.startContainer.textContent.length -
+        currentRange.startOffset
+      : 0;
+  } else {
+    endOffset = currentRange.endOffset - currentRange.startOffset;
   }
+
+  const wrappedNode = document.createElement(format);
+  const fragment = currentRange.extractContents();
+
+  if (wrappedNode.nodeName === "P") {
+    wrappedNode.style.display = "inline";
+    wrappedNode.style.color = color;
+  }
+
+  wrappedNode.appendChild(fragment);
+
+  currentRange.insertNode(wrappedNode);
+  selection.removeAllRanges();
+
+  // ---- Define New Range
+  const newRange = document.createRange();
+  const trueContainer = wrappedNode.lastChild
+    ? wrappedNode.lastChild
+    : wrappedNode;
+
+  console.log(trueContainer, startOffset, endOffset);
+  try {
+    newRange.setStart(trueContainer, startOffset);
+    newRange.setEnd(trueContainer, endOffset - startOffset);
+
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return trueContainer;
 }
 
 export function unwrapAll(
@@ -227,7 +295,6 @@ export function unwrapAll(
   format: string,
   selection: Selection,
   currentRange: Range,
-  parent: Node,
   setFormatting: (
     value: React.SetStateAction<{
       strong: boolean;
@@ -237,134 +304,84 @@ export function unwrapAll(
   ) => void,
   removeTag: boolean
 ) {
-  console.log("Removing Full Tag...");
-  let siblingTarget = true;
-  let startOffset = 0;
-  let endOffset = currentRange.endOffset - currentRange.startOffset;
-  const newEndOffset = currentRange.endOffset;
-  const targetTagName = format.toUpperCase();
-  const textNode = targetElement.lastChild;
+  console.log("Removing Full Tag...", targetElement);
 
-  while (targetElement.parentNode && targetElement.nodeName !== targetTagName) {
-    targetElement = targetElement.parentNode;
+  let parentNode = targetElement;
+  while (parentNode.parentNode && parentNode.nodeName !== "SPAN") {
+    parentNode = parentNode.parentNode;
   }
 
-  if (!targetElement) {
-    return {
-      trueContainer: null,
-      startOffset: null,
-      endOffset: null,
-    };
-  }
+  console.log("???", targetElement.childNodes);
 
-  if (parent?.nodeName === "SPAN") {
-    let seen = false;
-    const TargetElementArray = Array.from(targetElement.childNodes);
-    for (const element of TargetElementArray) {
-      if (element.nodeType !== Node.TEXT_NODE) {
-        seen = true;
-        break;
-      }
-    }
-    if (!seen) {
-      siblingTarget = false;
-    }
-  }
+  const trueOffset =
+    targetElement.firstChild?.nodeType === Node.TEXT_NODE
+      ? getTrueOffset(targetElement)
+      : 0;
+  const startOffset = currentRange.startOffset + trueOffset;
+  const endOffset = currentRange.endOffset + trueOffset;
+  const spanParent = targetElement?.parentNode;
 
-  const contentParent = targetElement?.parentNode;
-
+  // ---- Move Content Out of Tag Being Removed
   while (targetElement && targetElement.firstChild) {
-    targetElement.parentNode?.insertBefore(
-      targetElement.firstChild,
-      targetElement
-    );
+    // ---- Remove Empty Text Nodes
+    if (targetElement.firstChild.textContent?.trim() === "") {
+      targetElement.removeChild(targetElement.firstChild);
+    } else {
+      // ---- Throwback Everything that's a Node/Text Node
+      targetElement.parentNode?.insertBefore(
+        targetElement.firstChild,
+        targetElement
+      );
+    }
   }
 
-  if (!siblingTarget && contentParent) {
-    const trueOffset = getTrueOffset(targetElement, contentParent);
-    console.log(trueOffset, currentRange.endOffset);
-    startOffset = 0 + trueOffset;
-    endOffset = newEndOffset + trueOffset;
-  }
+  spanParent?.normalize();
+  const previousCurrent = targetElement.previousSibling;
 
   // ---- Remove Element & Cleanup Empty Space
-  contentParent?.removeChild(targetElement);
-  contentParent?.normalize();
+  spanParent?.removeChild(targetElement);
+  spanParent?.normalize();
   setFormatting((prev) => ({ ...prev, [format]: !removeTag }));
   selection.removeAllRanges();
 
-  // ---- Define the New Range
-  let trueContainer: Node | undefined = undefined;
+  // if the previous Sibling and current Nodes are both TextNodes
+  const trueContainer = previousCurrent?.lastChild?.textContent
+    ? previousCurrent.lastChild
+    : previousCurrent;
 
-  if (textNode) {
-    trueContainer =
-      contentParent?.childNodes[
-        Array.from(contentParent.childNodes).indexOf(textNode)
-      ];
-  } else {
-    trueContainer = undefined;
-  }
+  console.log(parentNode.childNodes);
+  console.log(trueContainer, startOffset, endOffset, trueOffset);
 
-  if (!trueContainer && contentParent?.childNodes) {
-    const NodeArray = Array.from(contentParent?.childNodes);
-    let fragmentSearch: number | undefined = undefined;
-
-    NodeArray.forEach((element, idx) => {
-      if (textNode?.textContent) {
-        fragmentSearch = element.textContent?.indexOf(textNode?.textContent);
-      } else {
-        fragmentSearch = -1;
-      }
-
-      if (fragmentSearch !== -1) {
-        trueContainer = contentParent?.childNodes[idx];
-        if (trueContainer?.nodeName !== "SPAN") {
-          while (trueContainer?.firstChild) {
-            trueContainer = trueContainer.firstChild;
-          }
-        }
-        console.log("RESULT FROM SEARCH: ", trueContainer);
-        return;
-      }
-    });
-  }
-
-  if (!trueContainer) {
-    return {
-      trueContainer: null,
-      startOffset: null,
-      endOffset: null,
-    };
-  }
-
-  console.log("CURRENT PARENT AFTER TAG REMOVAL", contentParent);
-  console.log(contentParent?.childNodes, textNode);
-  console.log("RANGE DETAILS: ", trueContainer, startOffset, endOffset);
-
-  return {
-    trueContainer: trueContainer,
-    startOffset: startOffset,
-    endOffset: endOffset,
-  };
+  if (!trueContainer) return;
 
   // ---- Programmatically Set & Select the New Range
-  //   console.log(trueContainer, startOffset, endOffset);
-  //   newRange.setStart(trueContainer, startOffset);
-  //   newRange.setEnd(trueContainer, endOffset);
+  try {
+    const newRange = document.createRange();
+    newRange.setStart(trueContainer, startOffset);
+    newRange.setEnd(trueContainer, endOffset);
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
+  }
 
-  //   selection.addRange(newRange);
+  return trueContainer;
 }
 
 export function unwrapStart(
   targetElement: Node,
   start: number,
   end: number,
-  parent: Node
+  parent: Node,
+  selection: Selection
 ) {
   if (!targetElement.textContent) {
     return;
   }
   console.log("UNBOLDEN START");
+
+  const trueOffset =
+    targetElement.childNodes.length < 2 ? getTrueOffset(targetElement) : 0;
+
   const textBefore = targetElement.textContent.slice(start, end);
   targetElement.textContent = targetElement.textContent.slice(
     end,
@@ -372,6 +389,14 @@ export function unwrapStart(
   );
   const textBeforeNode = document.createTextNode(textBefore);
   parent?.insertBefore(textBeforeNode, targetElement);
+
+  parent.normalize();
+
+  const newRange = document.createRange();
+  newRange.setStart(textBeforeNode, 0 + trueOffset);
+  newRange.setEnd(textBeforeNode, textBefore.length + trueOffset);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
 }
 
 export function unwrapEnd(
@@ -450,4 +475,259 @@ export function validSelection(currentRange: Range) {
     return false;
   }
   return true;
+}
+
+export function removeFailedTag(node: Node) {
+  let parent = node;
+  while (parent.parentNode && parent.parentNode.nodeName !== "SPAN") {
+    parent = parent.parentNode;
+  }
+
+  if (
+    parent.previousSibling?.nodeType === node.ELEMENT_NODE &&
+    parent.previousSibling.textContent?.trim() === "" &&
+    parent.previousSibling.nodeName !== "BR"
+  ) {
+    parent.removeChild(parent.previousSibling);
+  }
+  if (
+    parent.nextSibling?.nodeType === node.ELEMENT_NODE &&
+    parent.nextSibling.textContent?.trim() === "" &&
+    parent.nextSibling.nodeName !== "BR"
+  ) {
+    parent.removeChild(parent.nextSibling);
+  }
+
+  parent.normalize();
+}
+
+export function insertBlankTag(
+  currentRange: Range,
+  format: string,
+  selection: Selection
+) {
+  console.log("Inserting Empty Tag...");
+  const element = document.createElement(`${format}`);
+  currentRange.insertNode(element);
+  const trueContainer = element;
+
+  selection.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStart(trueContainer, 0);
+  newRange.setEnd(trueContainer, 0);
+  selection.addRange(newRange);
+}
+
+export function exitCurrentTag(currentRange: Range, selection: Selection) {
+  console.log("Exiting Current Tag...");
+  let current = currentRange.startContainer;
+  while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+  const newRange = document.createRange();
+  newRange.setStartAfter(current);
+  newRange.setEndAfter(current);
+  selection.removeAllRanges();
+  console.log(newRange);
+  selection.addRange(newRange);
+}
+
+export function addNewLine() {
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return;
+  const currentRange = selection.getRangeAt(0);
+
+  // ---- Find the Current Selection's Span Node and Div Node
+  let spanParent = currentRange.startContainer;
+  while (spanParent.parentNode && spanParent.nodeName !== "SPAN") {
+    spanParent = spanParent.parentNode;
+  }
+  const divParent = spanParent.parentNode;
+
+  // ---- Find the Outermost Node of the Selection Container
+  let selectionParent: Node | null = currentRange.startContainer;
+  while (
+    selectionParent.parentNode &&
+    selectionParent.parentNode.nodeName !== "SPAN"
+  ) {
+    selectionParent = selectionParent.parentNode;
+  }
+
+  // ---- Define Start Offset as the current Caret Position
+  // ---- Define End Offset as the Total Length of Container
+  const startOffset = currentRange.startOffset;
+  const endOffset = currentRange.startContainer.textContent
+    ? currentRange.startContainer.textContent.length
+    : 0;
+
+  // ---- Create new Div and Span to Insert
+  const div = document.createElement("div");
+  const span = document.createElement("span");
+  span.innerHTML = "\u00A0";
+  div.appendChild(span);
+
+  // ---- New Line: If Caret is at the very beginning of the Line
+  if (startOffset === 0 && !selectionParent.previousSibling) {
+    console.log("Caret at Left...");
+
+    while (spanParent.firstChild) {
+      span.appendChild(spanParent.firstChild);
+    }
+    spanParent.textContent = "\u00A0";
+  }
+
+  // ---- New Line: If Caret is in-between a Text Node
+  else if (startOffset > 0 && endOffset - startOffset > 1) {
+    console.log("Caret in Between...", "currentRange:", currentRange);
+    console.log("divparent:", divParent, "spanparent:", spanParent);
+
+    // ---- Go Up and record every Element Node
+    const elementArray: string[] = [];
+    let current = currentRange.startContainer;
+
+    if (current.nodeName === "SPAN") {
+      divParent?.parentNode?.appendChild(div);
+      console.log("poopdog");
+
+      const newRange = document.createRange();
+      newRange.setStart(span, 0);
+      newRange.setEnd(span, 0);
+      selection.removeAllRanges();
+      selection.addRange(newRange);
+      return;
+    }
+    while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
+      elementArray.push(current.parentNode.nodeName);
+      current = current.parentNode;
+    }
+
+    console.log("element array:", elementArray);
+
+    // ---- Slice the Text for the New Line
+    const newLineText = currentRange.startContainer.textContent?.slice(
+      startOffset,
+      endOffset
+    );
+
+    // ---- Slice the Text on the Current Line
+    const oldLineText = currentRange.startContainer.textContent?.slice(
+      0,
+      startOffset
+    );
+    currentRange.startContainer.textContent = oldLineText as string;
+
+    // ---- Build the NewTextNode with/without Element Tags
+    const newTextNode = document.createTextNode(newLineText as string);
+    let wrappedNode: Node = newTextNode;
+
+    for (const element of elementArray.reverse()) {
+      console.log("inheriting tags!", wrappedNode);
+      const newElement = document.createElement(element.toLowerCase());
+      newElement.appendChild(wrappedNode);
+      wrappedNode = newElement;
+    }
+
+    // ---- Append newTextNode to Span
+    span.appendChild(wrappedNode);
+
+    // ---- Append the rest of the Nodes after the newTextNode
+    while (selectionParent.nextSibling) {
+      span.appendChild(selectionParent.nextSibling);
+    }
+  }
+
+  // ---- New Line: If Caret is at the end of a Node
+  else if (
+    startOffset === endOffset - 1 ||
+    (startOffset === 0 && selectionParent.previousSibling)
+  ) {
+    console.log("Caret at Right...");
+    if (startOffset === endOffset - 1) {
+      while (selectionParent.nextSibling) {
+        span.appendChild(selectionParent.nextSibling);
+      }
+    } else {
+      while (selectionParent) {
+        span.appendChild(selectionParent);
+        selectionParent = selectionParent.nextSibling;
+      }
+    }
+  }
+
+  const trueContainer = divParent?.parentNode;
+
+  if (divParent?.nextSibling) {
+    console.log("In-between Line");
+    trueContainer?.insertBefore(div, divParent?.nextSibling);
+  } else {
+    console.log("New Line");
+    trueContainer?.appendChild(div);
+  }
+
+  try {
+    const newRange = document.createRange();
+    newRange.setStart(span, 0);
+    newRange.setEnd(span, 0);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+  } catch (error) {
+    console.log(error);
+  }
+
+  console.log(document.getElementById("father")?.childNodes);
+}
+
+export function checkOrPlaceCaret(father: Element) {
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return null;
+
+  if (
+    !father.innerHTML ||
+    father.innerHTML === "<br>" ||
+    father.innerHTML === "<div><br></div>"
+  ) {
+    father.innerHTML = "";
+    const span = document.createElement("span");
+    const div = document.createElement("div");
+    span.innerHTML = "\u00A0";
+
+    div.appendChild(span);
+    father?.appendChild(div);
+
+    const newRange = document.createRange();
+    newRange.setStart(span, 0);
+    newRange.setEnd(span, 0);
+
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    console.log("father not present");
+  } else {
+    console.log("father present");
+  }
+  console.log(father.innerHTML);
+  return;
+}
+
+export function handlePaste(e: React.ClipboardEvent) {
+  console.log("pasting content...");
+  e.preventDefault();
+  const pastedContent = e.clipboardData.getData("text");
+
+  const selection = window.getSelection();
+  if (!selection || selection?.rangeCount < 1) return;
+  const currentRange = selection.getRangeAt(0);
+  let current = currentRange.startContainer;
+  while (current.firstChild && current.nodeName !== "SPAN") {
+    current = current.firstChild;
+  }
+
+  current.textContent = pastedContent;
+  console.log("text content length:", current.textContent.length, current);
+
+  if (!current.firstChild) return;
+  const newRange = document.createRange();
+  newRange.setStart(current.firstChild, current.textContent.length || 0);
+  newRange.setEnd(current.firstChild, current.textContent.length || 0);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
 }

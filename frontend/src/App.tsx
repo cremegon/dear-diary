@@ -1,26 +1,26 @@
 import React, { useEffect } from "react";
 import "./styles/App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Signup } from "./pages/Signup.tsx";
-import { AuthProvider } from "./util/contextProvider.tsx";
+import { Signup } from "./pages/auth/Signup.tsx";
+import { AuthProvider } from "./context/contextProvider.tsx";
 import { Homepage } from "./pages/Homepage.tsx";
-import { Login } from "./pages/Login.tsx";
-import { ProtectedRoute, PublicRoute } from "./util/RouteAuth.tsx";
-import HomePageLayout from "./pages/HomeLayout.tsx";
+import { Login } from "./pages/auth/Login.tsx";
+import { ProtectedRoute, PublicRoute } from "./context/RouteAuth.tsx";
+import HomePageLayout from "./pages/layouts/HomeLayout.tsx";
 import { ProfilePage } from "./pages/Profile.tsx";
 import SettingsPage from "./pages/Settings.tsx";
 import AboutPage from "./pages/About.tsx";
-import Drawing from "./pages/DrawCanvas.tsx";
-import Editor from "./pages/Write2.tsx";
-import DiaryPage from "./pages/HomeDiary.tsx";
-import ChapterPage from "./pages/HomeChapter.tsx";
-import EditorPageLayout from "./pages/EditorLayout.tsx";
-import ArchivePage from "./pages/HomeArchive.tsx";
-import ArchiveChapterPage from "./pages/ArchiveChapter.tsx";
-import Reader from "./pages/Reader.tsx";
-import { EntrusteePage } from "./pages/Trustees.tsx";
-import { TrusteeHome } from "./pages/TrusteeList.tsx";
-import { ArchiveEntrusteePage } from "./pages/ArchiveTrustees.tsx";
+import Drawing from "./pages/diary/DrawCanvas.tsx";
+import Editor from "./pages/diary/TextEditor.tsx";
+import DiaryPage from "./pages/diary/HomeDiary.tsx";
+import ChapterPage from "./pages/diary/HomeChapter.tsx";
+import EditorPageLayout from "./pages/layouts/EditorLayout.tsx";
+import ArchivePage from "./pages/archive/HomeArchive.tsx";
+import ArchiveChapterPage from "./pages/archive/ArchiveChapter.tsx";
+import Reader from "./pages/archive/Reader.tsx";
+import { EntrusteePage } from "./pages/trustees/Trustees.tsx";
+import { TrusteeHome } from "./pages/trustees/TrusteeList.tsx";
+import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
 
 function App() {
   useEffect(() => {

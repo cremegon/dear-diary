@@ -4,36 +4,36 @@ import cookieParser from "cookie-parser";
 
 import { config } from "./config";
 
-import { signUpCodeSend } from "./controllers/authSignupCode";
-import { confirmSignupCode } from "./controllers/confirmSignupCode";
+import { signUpCodeSend } from "./controllers/auth/authSignupCode";
+import { confirmSignupCode } from "./controllers/auth/confirmSignupCode";
 import { validateToken } from "./middleware/validateToken";
-import { signupUser } from "./controllers/authSignup";
-import { loginUser } from "./controllers/authLogin";
-import { logoutUser } from "./controllers/authLogout";
+import { signupUser } from "./controllers/auth/authSignup";
+import { loginUser } from "./controllers/auth/authLogin";
+import { logoutUser } from "./controllers/auth/authLogout";
 
-import { createDiary } from "./controllers/createDiary";
-import { createChapter } from "./controllers/createChapter";
-import { checkDiary } from "./controllers/checkDiary";
+import { createDiary } from "./controllers/diaries/createDiary";
+import { createChapter } from "./controllers/chapters/createChapter";
+import { checkDiary } from "./controllers/diaries/checkDiary";
 
-import { saveContent } from "./controllers/saveContent";
-import { loadContent } from "./controllers/loadContent";
-import { saveCoverArt } from "./controllers/saveCoverArt";
-import { loadCoverArt } from "./controllers/loadCoverArt";
+import { saveContent } from "./controllers/diaries/saveContent";
+import { loadContent } from "./controllers/diaries/loadContent";
+import { saveCoverArt } from "./controllers/cover-art/saveCoverArt";
+import { loadCoverArt } from "./controllers/cover-art/loadCoverArt";
 
-import { deleteDiary } from "./controllers/deleteDiary";
-import { deleteChapter } from "./controllers/deleteChapter";
+import { deleteDiary } from "./controllers/diaries/deleteDiary";
+import { deleteChapter } from "./controllers/chapters/deleteChapter";
 
-import { addEntrustee } from "./controllers/addEntrustee";
-import { fetchArchives } from "./controllers/fetchArchives";
-import { fetchTrustees } from "./controllers/fetchTrustees";
-import { fetchDiary } from "./controllers/fetchDiary";
-import { fetchChapters } from "./controllers/fetchChapter";
+import { addEntrustee } from "./controllers/entrustees/addEntrustee";
+import { fetchArchives } from "./controllers/archives/fetchArchives";
+import { fetchTrustees } from "./controllers/entrustees/fetchTrustees";
+import { fetchDiary } from "./controllers/diaries/fetchDiary";
+import { fetchChapters } from "./controllers/chapters/fetchChapter";
 
-import { compileDiary } from "./controllers/compileDiary";
+import { compileDiary } from "./controllers/diaries/compileDiary";
 
-import { forgotPassword } from "./controllers/authForgotPass";
-import { confirmForgotPassword } from "./controllers/confirmForgotPass";
-import { resetPassword } from "./controllers/resetPassword";
+import { forgotPassword } from "./controllers/auth/authForgotPass";
+import { confirmForgotPassword } from "./controllers/auth/confirmForgotPass";
+import { resetPassword } from "./controllers/auth/resetPassword";
 
 const app = express();
 app.use(express.json());

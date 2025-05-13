@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { handleLogout } from "../util/client.ts";
-import { useAuth } from "../util/contextProvider.tsx";
+import { useAuth } from "../context/contextProvider.tsx";
 
 export const Navbar = () => {
   const { setAuth } = useAuth();
