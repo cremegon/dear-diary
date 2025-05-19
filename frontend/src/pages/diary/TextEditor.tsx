@@ -15,6 +15,8 @@ import {
 import tailwindConfig from "../../tailwind.config.js";
 import { useParams } from "react-router-dom";
 import { loadFromDatabase, saveToDatabase } from "../../util/diary.ts";
+import rangy from "rangy/lib/rangy-core";
+import "rangy/lib/rangy-classapplier";
 
 export const Editor = () => {
   const [formatting, setFormatting] = useState({
@@ -41,6 +43,7 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
+  rangy.init();
 
   function toggleFormat(format: string) {
     let lastNode: Node | undefined | null = null;
@@ -126,7 +129,7 @@ export const Editor = () => {
       e.preventDefault();
       addNewLine();
     } else {
-      checkOrPlaceCaret(father as Element);
+      checkOrPlaceCaret(father as Element, rangy);
     }
   }
 
@@ -246,7 +249,7 @@ export const Editor = () => {
           suppressContentEditableWarning
           onPaste={handlePaste}
           onKeyDown={(e) => handleKeyboard(e)}
-          onClick={() => checkOrPlaceCaret(father as Element)}
+          onClick={() => checkOrPlaceCaret(father as Element, rangy)}
           style={{
             fontSize: `${fontSize}px`,
             textAlign: `${textAlign}`,

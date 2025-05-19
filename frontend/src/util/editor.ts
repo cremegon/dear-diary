@@ -677,8 +677,8 @@ export function addNewLine() {
   console.log(document.getElementById("father")?.childNodes);
 }
 
-export function checkOrPlaceCaret(father: Element) {
-  const selection = window.getSelection();
+export function checkOrPlaceCaret(father: Element, rangy: Window) {
+  const selection = rangy.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
 
   if (

@@ -25,12 +25,12 @@ export const createDiary = async (
 
   const query = await pool.query(
     "INSERT INTO diaries(user_id,title,cover) VALUES ($1,$2,$3) RETURNING id",
-    [decoded.userId, title, cover]
+    [decoded.id, title, cover]
   );
   const id = query.rows[0].id;
   const encryptedURL = encryptUserId(id);
 
-  await pool.query("UPDATE diaries SET url = $1 WHERE id = ($2)", [
+  await pool.query("UPDATE diaries SET url = $1 WHERE id = $2", [
     encryptedURL,
     id,
   ]);
