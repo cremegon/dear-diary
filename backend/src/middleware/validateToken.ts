@@ -14,7 +14,7 @@ export const validateToken = async (
 
   const token = req.cookies.authToken;
   console.log(req.cookies, "hey");
-  // new feature: set up a gateway process
+  // new feature: set up a gateway process in order to
   // check if a token exists ; if not then a user isn't verified
   if (!token) {
     console.log("no tokens found at verification");
