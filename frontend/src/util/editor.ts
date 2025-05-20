@@ -524,12 +524,20 @@ export function insertBlankTag(
 export function exitCurrentTag(currentRange: Range, selection: Selection) {
   console.log("Exiting Current Tag...");
   let current = currentRange.startContainer;
+  let dummyText: any = null;
   while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
     current = current.parentNode;
   }
+  if (!current.nextSibling) {
+    console.log("dummy time");
+    dummyText = document.createTextNode("\u00A0");
+    current.parentNode?.appendChild(dummyText);
+  }
+  console.log("before exiting, im here:", current);
   const newRange = document.createRange();
-  newRange.setStartAfter(current);
-  newRange.setEndAfter(current);
+  newRange.setStart(dummyText, 0);
+  newRange.setEnd(dummyText, 1);
+  newRange.collapse();
   selection.removeAllRanges();
   console.log(newRange);
   selection.addRange(newRange);
