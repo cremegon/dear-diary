@@ -528,7 +528,7 @@ export function exitCurrentTag(currentRange: Range, selection: Selection) {
   while (current.parentNode && current.parentNode.nodeName !== "SPAN") {
     current = current.parentNode;
   }
-  console.log("current exit:", current);
+  console.log("current exit:", current.nextSibling);
   if (!current.nextSibling) {
     console.log("dummy time");
     dummyText = document.createTextNode("\u00A0");
@@ -536,8 +536,8 @@ export function exitCurrentTag(currentRange: Range, selection: Selection) {
   }
   console.log("before exiting, im here:", current);
   const newRange = document.createRange();
-  newRange.setStartAfter(current);
-  newRange.setEndAfter(current);
+  newRange.setStart(current.nextSibling, 0);
+
   newRange.collapse();
   selection.removeAllRanges();
   console.log(newRange);
