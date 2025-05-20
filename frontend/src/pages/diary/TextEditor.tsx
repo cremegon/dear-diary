@@ -50,6 +50,7 @@ export const Editor = () => {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const currentRange = selection.getRangeAt(0);
+      console.log("the current range at hand", currentRange.startContainer);
 
       if (currentRange.collapsed) {
         if (

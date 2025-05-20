@@ -508,13 +508,14 @@ export function insertBlankTag(
 ) {
   console.log("Inserting Empty Tag...");
   const element = document.createElement(`${format}`);
+  element.innerHTML = "\u00A0";
   currentRange.insertNode(element);
   const trueContainer = element;
 
-  selection.removeAllRanges();
   const newRange = document.createRange();
   newRange.setStart(trueContainer, 0);
-  newRange.setEnd(trueContainer, 0);
+  newRange.collapse();
+  selection.removeAllRanges();
   selection.addRange(newRange);
 }
 
