@@ -508,12 +508,14 @@ export function insertBlankTag(
 ) {
   console.log("Inserting Empty Tag...");
   const element = document.createElement(`${format}`);
-  element.innerHTML = "\u00A0";
+  element.textContent = "\u00A0";
   currentRange.insertNode(element);
   const trueContainer = element;
+  console.log("true container's child = ", trueContainer.firstChild);
 
   const newRange = document.createRange();
-  newRange.setStart(trueContainer, 0);
+  newRange.setStart(trueContainer, 1);
+
   newRange.collapse();
   selection.removeAllRanges();
   selection.addRange(newRange);
