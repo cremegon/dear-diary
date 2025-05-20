@@ -243,7 +243,7 @@ export const Editor = () => {
           </button>
         </form>
         <div
-          className="bg-slate-400 w-2/3 min-h-screen break-words flex-1"
+          className="bg-slate-400 w-2/3 min-h-screen break-words flex-1 p-10"
           id="father"
           ref={editorRef}
           contentEditable="true"
