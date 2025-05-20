@@ -508,7 +508,7 @@ export function insertBlankTag(
 ) {
   console.log("Inserting Empty Tag...");
   const element = document.createElement(`${format}`);
-  element.textContent = "\u00A0";
+  element.textContent = "\u200B";
   currentRange.insertNode(element);
   const trueContainer = element;
   console.log("true container's child = ", trueContainer.firstChild);
@@ -530,15 +530,16 @@ export function exitCurrentTag(currentRange: Range, selection: Selection) {
   let next = current.nextSibling;
 
   if (!next) {
-    const dummyText = document.createTextNode("");
+    const dummyText = document.createTextNode("\u200B");
     current.parentNode?.appendChild(dummyText);
-  }
-
-  if (next?.nodeType !== Node.TEXT_NODE) {
+    next = dummyText;
+  } else if (next?.nodeType !== Node.TEXT_NODE) {
     const textNode = document.createTextNode("");
-    current.parentNode?.insertBefore(next, textNode);
+    current.parentNode?.insertBefore(textNode, next);
     next = textNode;
   }
+  const dummyNode = document.createTextNode("\u200B");
+  current.parentNode?.insertBefore(dummyNode, next);
   console.log("current exit next sibling:", current.nextSibling);
   console.log("before exiting, im here:", current);
   const newRange = document.createRange();
