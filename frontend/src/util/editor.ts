@@ -721,7 +721,18 @@ export function checkOrPlaceCaret(father: Element, rangy: Window) {
     selection.addRange(newRange);
     console.log("father not present");
   } else {
-    console.log("father present");
+    // For Line
+
+    const currentRange = selection.getRangeAt(0);
+    let current = currentRange.startContainer;
+    while (current.parentNode && current.nodeName !== "SPAN") {
+      current = current.parentNode;
+    }
+    if (current.textContent?.startsWith("\u200B")) {
+      if (current.textContent.length > 0) {
+        current.textContent = current.textContent.replace("\u200B", "");
+      }
+    }
   }
   console.log(father.innerHTML);
   return;
