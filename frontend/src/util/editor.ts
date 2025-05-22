@@ -501,6 +501,21 @@ export function removeFailedTag(node: Node) {
   parent.normalize();
 }
 
+export function removeEmptySpaceAtStart(selection: Selection) {
+  console.log("blank space detected at beginning");
+  const currentRange = selection.getRangeAt(0);
+  let current = currentRange.startContainer;
+  while (current.parentNode && current.nodeName !== "SPAN") {
+    current = current.parentNode;
+  }
+  console.log(current.firstChild?.textContent === "\u00A0");
+  if (current.firstChild && current.firstChild.textContent === "\u00A0") {
+    if (current.textContent && current.textContent.length > 0) {
+      current.firstChild.textContent = "";
+    }
+  }
+}
+
 export function insertBlankTag(
   currentRange: Range,
   format: string,
@@ -686,9 +701,10 @@ export function addNewLine() {
   try {
     const newRange = document.createRange();
     newRange.setStart(span, 0);
-    newRange.setEnd(span, 0);
+    newRange.collapse(true);
     selection.removeAllRanges();
     selection.addRange(newRange);
+    removeEmptySpaceAtStart(selection);
   } catch (error) {
     console.log(error);
   }
@@ -721,19 +737,7 @@ export function checkOrPlaceCaret(father: Element, rangy: Window) {
     selection.addRange(newRange);
     console.log("father not present");
   } else {
-    // For Line break with extra space in the beginning
-    console.log("extra lines hmmm?");
-    const currentRange = selection.getRangeAt(0);
-    let current = currentRange.startContainer;
-    while (current.parentNode && current.nodeName !== "SPAN") {
-      current = current.parentNode;
-    }
-    console.log(current.firstChild?.textContent === "\u00A0");
-    if (current.firstChild && current.firstChild.textContent === "\u00A0") {
-      if (current.textContent && current.textContent.length > 0) {
-        current.firstChild.textContent = "";
-      }
-    }
+    console.log("father present");
   }
   console.log(father.innerHTML);
   return;
