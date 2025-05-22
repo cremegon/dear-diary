@@ -722,15 +722,16 @@ export function checkOrPlaceCaret(father: Element, rangy: Window) {
     console.log("father not present");
   } else {
     // For Line break with extra space in the beginning
-
+    console.log("extra lines hmmm?");
     const currentRange = selection.getRangeAt(0);
     let current = currentRange.startContainer;
     while (current.parentNode && current.nodeName !== "SPAN") {
       current = current.parentNode;
     }
-    if (current.textContent?.startsWith("\u200B")) {
-      if (current.textContent.length > 0) {
-        current.textContent = current.textContent.replace("\u200B", "");
+    console.log(current.firstChild?.textContent === "\u00A0");
+    if (current.firstChild && current.firstChild.textContent === "\u00A0") {
+      if (current.textContent && current.textContent.length > 0) {
+        current.firstChild.textContent = "";
       }
     }
   }
