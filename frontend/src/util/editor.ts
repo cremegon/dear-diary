@@ -721,7 +721,7 @@ export function checkOrPlaceCaret(father: Element, rangy: Window) {
     selection.addRange(newRange);
     console.log("father not present");
   } else {
-    // For Line break with
+    // For Line break with extra
 
     const currentRange = selection.getRangeAt(0);
     let current = currentRange.startContainer;
