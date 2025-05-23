@@ -5,8 +5,9 @@ import Navbar from ".././layouts/HomeLayout.tsx";
 
 export const EditorPageLayout = () => {
   return (
-    <div className="min-h-screen justify-center items-center">
+    <div>
       <Navbar />
+
       <Outlet />
     </div>
   );

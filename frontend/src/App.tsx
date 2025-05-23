@@ -50,7 +50,7 @@ function App() {
             <Route index path="/signup" element={<Signup />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route element={<HomePageLayout />}>
+            <Route path="/" element={<HomePageLayout />}>
               <Route path="diary" element={<DiaryPage />} />
               <Route path="diary/:diaryId/draw" element={<Drawing />} />
               <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
@@ -60,9 +60,9 @@ function App() {
               />
 
               <Route index path="/" element={<Homepage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/trustees" element={<TrusteeHome />} />
-              <Route path="/archive" element={<ArchivePage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="trustees" element={<TrusteeHome />} />
+              <Route path="archive" element={<ArchivePage />} />
               <Route
                 path="archive/:archiveDiaryId/chapter"
                 element={<ArchiveChapterPage />}
@@ -72,14 +72,14 @@ function App() {
                 element={<ArchiveEntrusteePage />}
               />
 
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
-            <Route element={<EditorPageLayout />}>
-              <Route
-                path="diary/:diaryId/chapter/:chapterId/write-session"
-                element={<Editor />}
-              />
+            <Route
+              path="diary/:diaryId/chapter/:chapterId/"
+              element={<EditorPageLayout />}
+            >
+              <Route path="write-session" element={<Editor />} />
               <Route
                 path="archive/:archiveDiaryId/chapter/:archiveChapterId"
                 element={<Reader />}
