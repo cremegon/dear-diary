@@ -5,5 +5,7 @@ const chapContext = createContext(null);
 const chapterContext = ({ children }) => {
   const chapterArray = [];
 
-  return;
+  return (
+    <chapContext.Provider value={chapterArray}>{children}</chapContext.Provider>
+  );
 };
