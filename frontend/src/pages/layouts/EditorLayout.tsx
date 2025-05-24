@@ -6,7 +6,7 @@ import Navbar from ".././layouts/HomeLayout.tsx";
 export const EditorPageLayout = () => {
   return (
     <div>
-      <Navbar />
+      <div className="h-40 bg-pink-500" />
 
       <Outlet />
     </div>

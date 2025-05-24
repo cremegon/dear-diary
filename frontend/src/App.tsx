@@ -50,7 +50,7 @@ function App() {
             <Route index path="/signup" element={<Signup />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<HomePageLayout />}>
+            <Route element={<HomePageLayout />}>
               <Route path="diary" element={<DiaryPage />} />
               <Route path="diary/:diaryId/draw" element={<Drawing />} />
               <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
@@ -68,6 +68,10 @@ function App() {
                 element={<ArchiveChapterPage />}
               />
               <Route
+                path="archive/:archiveDiaryId/chapter/:archiveChapterId"
+                element={<Reader />}
+              />
+              <Route
                 path="archive/:diaryId/entrustees"
                 element={<ArchiveEntrusteePage />}
               />
@@ -80,10 +84,6 @@ function App() {
               element={<EditorPageLayout />}
             >
               <Route path="write-session" element={<Editor />} />
-              <Route
-                path="archive/:archiveDiaryId/chapter/:archiveChapterId"
-                element={<Reader />}
-              />
             </Route>
           </Route>
         </Route>
