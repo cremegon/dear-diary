@@ -21,6 +21,7 @@ import Reader from "./pages/archive/Reader.tsx";
 import { EntrusteePage } from "./pages/trustees/Trustees.tsx";
 import { TrusteeHome } from "./pages/trustees/TrusteeList.tsx";
 import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
+import { ChapterProvider } from "./context/chapterContext.tsx";
 
 function App() {
   useEffect(() => {
@@ -63,14 +64,16 @@ function App() {
               <Route path="about" element={<AboutPage />} />
               <Route path="trustees" element={<TrusteeHome />} />
               <Route path="archive" element={<ArchivePage />} />
-              <Route
-                path="archive/:archiveDiaryId/chapter"
-                element={<ArchiveChapterPage />}
-              />
-              <Route
-                path="archive/:archiveDiaryId/chapter/:archiveChapterId"
-                element={<Reader />}
-              />
+              <ChapterProvider>
+                <Route
+                  path="archive/:archiveDiaryId/chapter"
+                  element={<ArchiveChapterPage />}
+                />
+                <Route
+                  path="archive/:archiveDiaryId/chapter/:archiveChapterId"
+                  element={<Reader />}
+                />
+              </ChapterProvider>
               <Route
                 path="archive/:diaryId/entrustees"
                 element={<ArchiveEntrusteePage />}

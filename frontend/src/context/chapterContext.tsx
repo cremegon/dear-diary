@@ -7,7 +7,7 @@ type ChapterContextType = {
 
 const chapContext = createContext<ChapterContextType | null>(null);
 
-export const chapterContext = ({ children }) => {
+export const ChapterProvider = ({ children }) => {
   const [chapterArray, setChapterArray] = useState<object[]>([]);
 
   return (
