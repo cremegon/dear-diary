@@ -1,8 +1,15 @@
 import React from "react";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 export const EditorPageLayout = () => {
+  const location = useLocation()
+  const {chapterArray, currentChapIdx} = location.state || {}
+  function handlePrevious(){
+    if (currentChapIdx >= 1){
+      const chapterId = chapterArray[currentChapIdx - 1].
+    }
+  }
   return (
     <div>
       <div className="h-40 bg-pink-500 flex flex-row justify-between items-center">
