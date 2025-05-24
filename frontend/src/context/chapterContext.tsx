@@ -1,9 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 
-const chapContext = createContext(null);
+type ChapterContextType = {
+  chapterArray: object[];
+  setChapterArray: React.Dispatch<React.SetStateAction<object[]>>;
+};
+
+const chapContext = createContext<ChapterContextType | null>(null);
 
 export const chapterContext = ({ children }) => {
-  const [chapterArray, setChapterArray] = useState([]);
+  const [chapterArray, setChapterArray] = useState<object[]>([]);
 
   return (
     <chapContext.Provider value={{ chapterArray, setChapterArray }}>
