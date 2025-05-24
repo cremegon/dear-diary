@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const chapContext = createContext(null);
 
@@ -12,4 +12,4 @@ export const chapterContext = ({ children }) => {
   );
 };
 
-export const useChapterContext;
+export const useChapterContext = () => useContext(chapContext);
