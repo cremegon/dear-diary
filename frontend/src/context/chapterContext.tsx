@@ -1,12 +1,9 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 type ChapterContextType = {
   chapterArray: object[];
   setChapterArray: React.Dispatch<React.SetStateAction<object[]>>;
-};
-
-type ChapterProviderType = {
-  children: ReactNode;
 };
 
 const chapContext = createContext<ChapterContextType | null>(null);
@@ -22,3 +19,9 @@ export const ChapterProvider = ({ children }: ChapterProviderType) => {
 };
 
 export const useChapterContext = () => useContext(chapContext);
+
+export const ChapterLayout = () => {
+  <ChapterProvider>
+    <Outlet />
+  </ChapterProvider>;
+};

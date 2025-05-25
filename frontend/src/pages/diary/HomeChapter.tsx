@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, To, useParams, useNavigate } from "react-router-dom";
 import {
   checkChapter,
   deleteChapter,
@@ -31,6 +31,7 @@ export const ChapterPage = () => {
       const response = await checkChapter(params);
       setEntry(response.data);
       console.log("RESPONSES", response.data);
+      console.log(entry.length);
     } catch (error) {
       setError(error);
     } finally {
@@ -79,11 +80,13 @@ export const ChapterPage = () => {
             ? entry.map((item, idx) => (
                 <ul key={idx} className="flex flex-row justify-evenly">
                   <Link
-                    to={{
-                      pathname: `${item.url}/write-session`,
-                      search: "?create=false",
-                      state: { entry, idx },
-                    }}
+                    to={
+                      {
+                        pathname: `${item.url}/write-session`,
+                        search: "?create=false",
+                        state: { entry, idx },
+                      } as To
+                    }
                   >
                     <li>
                       {item.title ? `${item.title}` : `chapter-${item.title}`}

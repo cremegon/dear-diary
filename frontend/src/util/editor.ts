@@ -704,7 +704,7 @@ export function addNewLine() {
     newRange.collapse(true);
     selection.removeAllRanges();
     selection.addRange(newRange);
-    removeEmptySpaceAtStart(selection);
+    // removeEmptySpaceAtStart(selection);
   } catch (error) {
     console.log(error);
   }

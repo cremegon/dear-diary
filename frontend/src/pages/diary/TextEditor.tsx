@@ -13,7 +13,7 @@ import {
   wrapAll,
 } from "../../util/editor.ts";
 import tailwindConfig from "../../tailwind.config.js";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { loadFromDatabase, saveToDatabase } from "../../util/diary.ts";
 import rangy from "rangy/lib/rangy-core";
 import "rangy/lib/rangy-classapplier";
@@ -43,6 +43,8 @@ export const Editor = () => {
 
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
+  const location = useLocation();
+  console.log("STATE! = ", location.state);
   rangy.init();
 
   function toggleFormat(format: string) {

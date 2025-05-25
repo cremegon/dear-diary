@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export const EditorPageLayout = () => {
@@ -6,6 +5,7 @@ export const EditorPageLayout = () => {
   const navigate = useNavigate();
   const { chapterArray, currentChapIdx } = location.state || {};
   function handlePrevious() {
+    console.log(chapterArray, currentChapIdx);
     if (currentChapIdx >= 1) {
       const chapterId = chapterArray[currentChapIdx - 1].url;
       navigate(`${chapterId}/write-session?create=false`, {
