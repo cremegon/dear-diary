@@ -32,7 +32,7 @@ const Reader = () => {
     loadContent();
   }, [params]);
   return (
-    <div>
+    <div className="min-h-screen">
       <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${loading ? "block" : "hidden"} absolute`}
       >
