@@ -78,7 +78,13 @@ export const ChapterPage = () => {
           {entry
             ? entry.map((item, idx) => (
                 <ul key={idx} className="flex flex-row justify-evenly">
-                  <Link to={`${item.url}/write-session?create=false`}>
+                  <Link
+                    to={{
+                      pathname: `${item.url}/write-session`,
+                      search: "?create=false",
+                      state: { entry, idx },
+                    }}
+                  >
                     <li>
                       {item.title ? `${item.title}` : `chapter-${item.title}`}
                     </li>
