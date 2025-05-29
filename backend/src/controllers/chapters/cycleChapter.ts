@@ -24,6 +24,7 @@ export const cycleToPrevChapter = async (
     "SELECT prevchapterid FROM chapters WHERE url = $1",
     [chapterURL]
   );
+  console.log("first query", query.rows);
 
   if (query.rows.length < 1) {
     return res
@@ -31,15 +32,16 @@ export const cycleToPrevChapter = async (
       .json({ message: "No Prev Chapter Present", data: null });
   }
 
-  const id = query.rows[0].prevchapterid;
+  const id = query.rows[0];
   const chapterQuery = await pool.query(
     "SELECT url FROM chapters WHERE id = $1",
     [id]
   );
+  console.log(id);
 
   return res
     .status(200)
-    .json({ json: "Cycling to Prev Page", data: chapterQuery.rows[0].url });
+    .json({ json: "Cycling to Prev Page", data: chapterQuery.rows[0] });
 };
 
 export const cycleToNextChapter = async (
