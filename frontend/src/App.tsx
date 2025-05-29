@@ -80,10 +80,10 @@ function App() {
             </Route>
 
             <Route
-              path="diary/:diaryId/chapter/:chapterId/"
+              path="diary/:diaryId/chapter/:chapterId"
               element={<EditorPageLayout />}
             >
-              <Route path="write-session" element={<Editor />} />
+              <Route path="" element={<Editor />} />
             </Route>
 
             <Route

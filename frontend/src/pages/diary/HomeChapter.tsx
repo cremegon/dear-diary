@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, To, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   checkChapter,
   deleteChapter,
