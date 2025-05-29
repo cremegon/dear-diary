@@ -11,18 +11,14 @@ export const EditorPageLayout = () => {
     const response = await prevChapter(params);
     const chapterId = response.data;
     if (!chapterId) return;
-    navigate(
-      `/diary/${diaryId}/chapter/${chapterId}/write-session?create=false`
-    );
+    navigate(`/diary/${diaryId}/chapter/${chapterId}`);
   }
 
   async function handleNext() {
     const response = await nextChapter(params);
     const chapterId = response.data;
     if (!chapterId) return;
-    navigate(
-      `/diary/${diaryId}/chapter/${chapterId}/write-session?create=false`
-    );
+    navigate(`/diary/${diaryId}/chapter/${chapterId}`);
   }
   return (
     <div>
