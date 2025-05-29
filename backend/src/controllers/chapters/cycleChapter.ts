@@ -10,10 +10,10 @@ export const cycleToPrevChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { chapterURL } = req.query;
+  const { chapterURL } = req.params;
   const token = req.cookies.authToken;
 
-  console.log("Flipping Behind...");
+  console.log("Flipping Behind...", chapterURL);
 
   if (!token) {
     console.log("Token Error at chapterFlipBack");
@@ -24,7 +24,6 @@ export const cycleToPrevChapter = async (
     "SELECT prevchapterid FROM chapters WHERE url = $1",
     [chapterURL]
   );
-  console.log("first query", query.rows);
 
   if (query.rows.length < 1) {
     return res
@@ -32,7 +31,7 @@ export const cycleToPrevChapter = async (
       .json({ message: "No Prev Chapter Present", data: null });
   }
 
-  const id = query.rows[0];
+  const id = query.rows[0].prevchapterid;
   const chapterQuery = await pool.query(
     "SELECT url FROM chapters WHERE id = $1",
     [id]
@@ -41,14 +40,14 @@ export const cycleToPrevChapter = async (
 
   return res
     .status(200)
-    .json({ json: "Cycling to Prev Page", data: chapterQuery.rows[0] });
+    .json({ json: "Cycling to Prev Page", data: chapterQuery.rows[0].url });
 };
 
 export const cycleToNextChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { chapterURL } = req.query;
+  const { chapterURL } = req.params;
   const token = req.cookies.authToken;
 
   console.log("Flipping Forward...");
