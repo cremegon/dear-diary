@@ -4,12 +4,15 @@ import { nextChapter, prevChapter } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
   const params = useParams().chapterId as string;
+  const diaryId = useParams().diaryId as string;
   const navigate = useNavigate();
 
   async function handlePrevious() {
     const response = await prevChapter(params);
     const chapterId = response.data;
-    navigate(`${chapterId}/write-session?create=false`);
+    navigate(
+      `/diary/${diaryId}/chapter/${chapterId}/write-session?create=false`
+    );
   }
 
   async function handleNext() {
