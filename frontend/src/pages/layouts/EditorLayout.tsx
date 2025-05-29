@@ -1,32 +1,21 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { nextChapter, prevChapter } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
+  const params = useParams().chapterId as string;
   const navigate = useNavigate();
-  const currentChapIdx = 0;
-  const chapterArray = [];
-  function handlePrevious() {
-    if (currentChapIdx >= 1) {
-      const chapterId = chapterArray[currentChapIdx - 1];
-      navigate(`${chapterId}/write-session?create=false`, {
-        state: {
-          chapterArray,
-          currentChapIdx,
-        },
-      });
-    }
+
+  async function handlePrevious() {
+    const response = await prevChapter(params);
+    const chapterId = response.data;
+    navigate(`${chapterId}/write-session?create=false`);
   }
 
-  function handleNext() {
-    if (currentChapIdx < chapterArray.length - 1) {
-      const chapterId = chapterArray[currentChapIdx + 1];
-      navigate(`${chapterId}/write-session?create=false`, {
-        state: {
-          chapterArray,
-          currentChapIdx,
-        },
-      });
-    }
+  async function handleNext() {
+    const response = await nextChapter(params);
+    const chapterId = response.data;
+    navigate(`${chapterId}/write-session?create=false`);
   }
   return (
     <div>
