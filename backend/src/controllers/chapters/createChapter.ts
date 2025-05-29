@@ -25,12 +25,26 @@ export const createChapter = async (
   const diaryId = selectedRow.rows[0].id;
   console.log("selected diary id for chapters", diaryId);
 
+  const prevChapterId = await pool.query(
+    "SELECT id FROM chapters WHERE diary_id = $1 ORDER BY id DESC LIMIT 1",
+    [diaryId]
+  );
+
+  const prevchapterid = prevChapterId.rows[0].id;
+  console.log("previouschapterid = ", prevchapterid);
+
   const query = await pool.query(
-    "INSERT INTO chapters(diary_id,font_family,font_size,title) VALUES($1,$2,$3,$4) RETURNING *",
-    [diaryId, fontFamily, fontSize, "untitled"]
+    "INSERT INTO chapters(diary_id,font_family,font_size,title,prevchapterid) VALUES($1,$2,$3,$4,$5) RETURNING *",
+    [diaryId, fontFamily, fontSize, "untitled", prevchapterid]
   );
 
   const id = query.rows[0].id;
+
+  await pool.query("UPDATE chapters SET nextchapterid = $1 WHERE id = $2", [
+    id,
+    prevchapterid,
+  ]);
+
   console.log("encrypting...", id);
   const encryptedURL = encryptUserId(id);
 
@@ -41,6 +55,6 @@ export const createChapter = async (
   console.log("new chapter created");
   return res.status(200).json({
     message: "Chapter Created Successfully",
-    redirect: `${encryptedURL}/write-session?create=true`,
+    redirect: `${encryptedURL}`,
   });
 };
