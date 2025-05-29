@@ -25,7 +25,9 @@ export const cycleToPrevChapter = async (
     [chapterURL]
   );
 
-  if (query.rows.length < 1) {
+  console.log("current query: ", query.rows[0].prevchapterid);
+
+  if (!query.rows[0].prevchapterid) {
     return res
       .status(404)
       .json({ message: "No Prev Chapter Present", data: null });
@@ -62,7 +64,9 @@ export const cycleToNextChapter = async (
     [chapterURL]
   );
 
-  if (query.rows.length < 1) {
+  console.log("current query: ", query.rows.length);
+
+  if (!query.rows[0].nextchapterid) {
     return res
       .status(404)
       .json({ message: "No Next Chapter Present", data: null });

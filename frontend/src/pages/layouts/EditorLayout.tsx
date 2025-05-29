@@ -18,7 +18,9 @@ export const EditorPageLayout = () => {
   async function handleNext() {
     const response = await nextChapter(params);
     const chapterId = response.data;
-    navigate(`${chapterId}/write-session?create=false`);
+    navigate(
+      `/diary/${diaryId}/chapter/${chapterId}/write-session?create=false`
+    );
   }
   return (
     <div>
