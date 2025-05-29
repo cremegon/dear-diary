@@ -6,10 +6,6 @@ import {
   handleChapter,
 } from "../../util/diary.ts";
 import { testEmail } from "../../util/client.ts";
-import {
-  ChapterProvider,
-  useChapterContext,
-} from "../../context/chapterContext.tsx";
 
 interface ChapterEntry {
   id: number;
@@ -26,7 +22,6 @@ export const ChapterPage = () => {
   const [entry, setEntry] = useState<ChapterEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { chapterArray, setChapterArray } = useChapterContext();
 
   const navigate = useNavigate();
   const params = useParams().diaryId as string;
@@ -35,8 +30,6 @@ export const ChapterPage = () => {
     try {
       const response = await checkChapter(params);
       setEntry(response.data);
-      setChapterArray(response.data);
-      console.log(response.data);
     } catch (error) {
       setError(error);
     } finally {
@@ -65,64 +58,62 @@ export const ChapterPage = () => {
   }, [params]);
 
   return (
-    <ChapterProvider>
-      <div className={`w-full h-full min-h-screen flex flex-col`}>
-        <div
-          className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
-        >
-          An Error Occured...
-        </div>
-        <div
-          className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
-        >
-          Loading...
-        </div>
-        <div
-          className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
-        >
-          <h1 className="text-4xl">Write Your Chapters</h1>
-          <h2 className="text-4xl text-yellow-500">
-            {entry
-              ? entry.map((item, idx) => (
-                  <ul key={idx} className="flex flex-row justify-evenly">
-                    <Link
-                      to={
-                        {
-                          pathname: `${item.url}/write-session`,
-                          search: "?create=false",
-                          state: { entry, idx },
-                        } as To
-                      }
-                    >
-                      <li>
-                        {item.title ? `${item.title}` : `chapter-${item.title}`}
-                      </li>
-                    </Link>
-                    <li>{new Date(item.created_at).toLocaleDateString()}</li>
-                    <button
-                      onClick={(e) => handleDelete(e, item.url)}
-                      className="bg-black"
-                    >
-                      Delete
-                    </button>
-                  </ul>
-                ))
-              : "nothing..."}
-          </h2>
-          <div className="flex flex-row justify-evenly">
-            <form action="post" onSubmit={(e) => createChapter(e, params)}>
-              <button type="submit" className="btn-writeUI">
-                New Chapter
-              </button>
-            </form>
-
-            <button onClick={() => testEmail()} className="btn-writeUI">
-              Test Email
+    <div className={`w-full h-full min-h-screen flex flex-col`}>
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
+      >
+        An Error Occured...
+      </div>
+      <div
+        className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
+      >
+        Loading...
+      </div>
+      <div
+        className={`w-full h-full flex-col flex-1 ${loading || error ? "hidden" : "block"}`}
+      >
+        <h1 className="text-4xl">Write Your Chapters</h1>
+        <h2 className="text-4xl text-yellow-500">
+          {entry
+            ? entry.map((item, idx) => (
+                <ul key={idx} className="flex flex-row justify-evenly">
+                  <Link
+                    to={
+                      {
+                        pathname: `${item.url}/write-session`,
+                        search: "?create=false",
+                        state: { entry, idx },
+                      } as To
+                    }
+                  >
+                    <li>
+                      {item.title ? `${item.title}` : `chapter-${item.title}`}
+                    </li>
+                  </Link>
+                  <li>{new Date(item.created_at).toLocaleDateString()}</li>
+                  <button
+                    onClick={(e) => handleDelete(e, item.url)}
+                    className="bg-black"
+                  >
+                    Delete
+                  </button>
+                </ul>
+              ))
+            : "nothing..."}
+        </h2>
+        <div className="flex flex-row justify-evenly">
+          <form action="post" onSubmit={(e) => createChapter(e, params)}>
+            <button type="submit" className="btn-writeUI">
+              New Chapter
             </button>
-          </div>
+          </form>
+
+          <button onClick={() => testEmail()} className="btn-writeUI">
+            Test Email
+          </button>
         </div>
       </div>
-    </ChapterProvider>
+    </div>
   );
 };
 

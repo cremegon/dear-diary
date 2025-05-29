@@ -21,8 +21,6 @@ import Reader from "./pages/archive/Reader.tsx";
 import { EntrusteePage } from "./pages/trustees/Trustees.tsx";
 import { TrusteeHome } from "./pages/trustees/TrusteeList.tsx";
 import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
-import ChapterPageWrapper from "./pages/diary/HomeChapterWrapper.tsx";
-import TextEditorWrapper from "./pages/diary/TextEditorLayout.tsx";
 
 function App() {
   useEffect(() => {
@@ -51,14 +49,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route index path="/signup" element={<Signup />} />
           </Route>
+
           <Route element={<ProtectedRoute />}>
             <Route element={<HomePageLayout />}>
               <Route path="diary" element={<DiaryPage />} />
               <Route path="diary/:diaryId/draw" element={<Drawing />} />
-              <Route
-                path="diary/:diaryId/chapter"
-                element={<ChapterPageWrapper />}
-              />
+              <Route path="diary/:diaryId/chapter" element={<ChapterPage />} />
               <Route
                 path="/diary/:diaryId/entrustees"
                 element={<EntrusteePage />}
@@ -73,10 +69,6 @@ function App() {
                 path="archive/:archiveDiaryId/chapter"
                 element={<ArchiveChapterPage />}
               />
-              <Route
-                path="archive/:archiveDiaryId/chapter/:archiveChapterId"
-                element={<Reader />}
-              />
 
               <Route
                 path="archive/:diaryId/entrustees"
@@ -86,11 +78,19 @@ function App() {
               <Route path="profile" element={<ProfilePage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
+
             <Route
               path="diary/:diaryId/chapter/:chapterId/"
-              element={<TextEditorWrapper />}
+              element={<EditorPageLayout />}
             >
               <Route path="write-session" element={<Editor />} />
+            </Route>
+
+            <Route
+              path="archive/:archiveDiaryId/chapter"
+              element={<EditorPageLayout />}
+            >
+              <Route path=":archiveChapterId" element={<Reader />} />
             </Route>
           </Route>
         </Route>

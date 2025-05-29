@@ -13,7 +13,7 @@ import {
   wrapAll,
 } from "../../util/editor.ts";
 import tailwindConfig from "../../tailwind.config.js";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { loadFromDatabase, saveToDatabase } from "../../util/diary.ts";
 import rangy from "rangy/lib/rangy-core";
 import "rangy/lib/rangy-classapplier";

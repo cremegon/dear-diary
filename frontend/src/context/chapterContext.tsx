@@ -1,23 +1,21 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 interface ChapterContextType {
   chapterArray: Array<object>;
-  setChapterArray: (token: Array<object>) => void;
+  setChapterArray: (chapterArray: Array<object>) => void;
 }
-
-type ChapterProviderType = {
-  children: ReactNode;
-};
 
 const chapContext = createContext<ChapterContextType>(null!);
 
-export const ChapterProvider = ({ children }: ChapterProviderType) => {
-  const [chapterArray, setChapterArray] = useState<object[]>([]);
+export const ChapterProvider = () => {
+  const [chapterArray, setChapterArray] = useState<object[]>([
+    { poopy: "lez go" },
+  ]);
 
   return (
     <chapContext.Provider value={{ chapterArray, setChapterArray }}>
-      {children}
+      <Outlet />
     </chapContext.Provider>
   );
 };
