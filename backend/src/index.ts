@@ -34,6 +34,7 @@ import { compileDiary } from "./controllers/diaries/compileDiary";
 import { forgotPassword } from "./controllers/auth/authForgotPass";
 import { confirmForgotPassword } from "./controllers/auth/confirmForgotPass";
 import { resetPassword } from "./controllers/auth/resetPassword";
+import { cycleToPrevChapter } from "./controllers/chapters/cycleChapter";
 
 const app = express();
 app.use(express.json());
@@ -71,6 +72,9 @@ app.delete("/delete-diary/:diaryURL", deleteDiary);
 
 // ---------------------- Create Chapter
 app.post("/new-chapter", createChapter);
+
+// ---------------------- Cycle Between Chapter Pages
+app.get("/prev-chapter/:chapterURL", cycleToPrevChapter);
 
 // ---------------------- Delete Chapter
 app.delete("/delete-chapter/:chapterURL", deleteChapter);
