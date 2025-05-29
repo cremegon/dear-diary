@@ -87,6 +87,38 @@ export async function checkChapter(params: string) {
   return data;
 }
 
+export async function prevChapter(params: string) {
+  console.log("checking chapter entries...");
+
+  const response = await fetch(`http://localhost:5000/prev-chapter/${params}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) return `NO chapter Found`;
+
+  const data = await response.json();
+
+  return data;
+}
+
+export async function nextChapter(params: string) {
+  console.log("checking chapter entries...");
+
+  const response = await fetch(`http://localhost:5000/next-chapter/${params}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) return `NO chapter Found`;
+
+  const data = await response.json();
+
+  return data;
+}
+
 export async function saveToDatabase(
   title: string,
   content: string,
