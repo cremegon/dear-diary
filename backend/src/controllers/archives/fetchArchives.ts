@@ -24,7 +24,7 @@ export const fetchArchives = async (
   const userId = decoded.id;
 
   const diaryEntry = await pool.query(
-    "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL",
+    "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL ORDER BY completed_at DESC",
     [userId]
   );
   console.log("checking entrusted...");

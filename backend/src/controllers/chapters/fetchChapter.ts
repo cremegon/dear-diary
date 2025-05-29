@@ -25,12 +25,14 @@ export const fetchChapters = async (
   ]);
   const diaryId = query.rows[0].id;
   const diaryEntry = await pool.query(
-    "SELECT * FROM chapters WHERE diary_id = $1",
+    "SELECT * FROM chapters WHERE diary_id = $1 ORDER BY created_at DESC",
     [diaryId]
   );
 
+  const chapters = diaryEntry.rows;
+
   return res.status(200).json({
     message: "Diary Entries Found",
-    data: diaryEntry.rows,
+    data: chapters,
   });
 };
