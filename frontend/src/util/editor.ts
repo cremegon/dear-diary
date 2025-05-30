@@ -508,6 +508,7 @@ export function removeEmptySpaceAtStart(selection: Selection) {
   while (current.parentNode && current.nodeName !== "SPAN") {
     current = current.parentNode;
   }
+  console.log("the current CURRENT", current);
   console.log(current.firstChild?.textContent === "\u00A0");
   if (current.firstChild && current.firstChild.textContent === "\u00A0") {
     if (current.textContent && current.textContent.length > 0) {
@@ -689,12 +690,14 @@ export function addNewLine() {
   }
 
   const trueContainer = divParent?.parentNode;
+  let the_end = false;
 
   if (divParent?.nextSibling) {
     console.log("In-between Line");
     trueContainer?.insertBefore(div, divParent?.nextSibling);
   } else {
     console.log("New Line");
+    the_end = true;
     trueContainer?.appendChild(div);
   }
 
@@ -704,7 +707,10 @@ export function addNewLine() {
     newRange.collapse(true);
     selection.removeAllRanges();
     selection.addRange(newRange);
-    // removeEmptySpaceAtStart(selection);
+
+    console.log("THE END?", the_end);
+    const newSelection = window.getSelection();
+    removeEmptySpaceAtStart(newSelection as Selection);
   } catch (error) {
     console.log(error);
   }
