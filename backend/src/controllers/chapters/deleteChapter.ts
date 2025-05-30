@@ -21,24 +21,38 @@ export const deleteChapter = async (
   let prevId = null;
   let nextId = null;
 
-  const id = await pool.query("SELECT id FROM chapters WHERE url = $1", [
+  const id = await pool.query("SELECT * FROM chapters WHERE url = $1", [
     chapterURL,
   ]);
-  const currentId = id.rows[0].id;
-  const chapterIdBefore = await pool.query(
-    "SELECT id FROM chapters WHERE id < $1 ORDER BY created_at DESC LIMIT 1",
-    [currentId]
-  );
-  const chapterIdAfter = await pool.query(
-    "SELECT id FROM chapters WHERE id > $1 ORDER BY created_at DESC LIMIT 1",
-    [currentId]
-  );
+  const currentId = id.rows[0];
+  prevId = currentId.prevchapterid;
+  nextId = currentId.nextchapterid;
 
-  if (chapterIdBefore.rows[0])
-    console.log(chapterIdBefore.rows[0], chapterIdAfter.rows[0]);
+  if (nextId) {
+    await pool.query("UPDATE chapters SET prevchapterid = $1 WHERE id = $2", [
+      prevId,
+      nextId,
+    ]);
+  } else {
+    await pool.query("UPDATE chapters SET nextchapterId = $1 WHERE id = $2", [
+      nextId,
+      prevId,
+    ]);
+  }
+  if (prevId) {
+    await pool.query("UPDATE chapters SET nextchapterid = $1 WHERE id = $2", [
+      nextId,
+      prevId,
+    ]);
+  } else {
+    await pool.query("UPDATE capters SET prevchapterid = $1 WHERE id = $2", [
+      prevId,
+      nextId,
+    ]);
+  }
 
   try {
-    // await pool.query("DELETE FROM chapters WHERE url = $1", [chapterURL]);
+    await pool.query("DELETE FROM chapters WHERE url = $1", [chapterURL]);
   } catch (error) {
     console.log("No Relevant Chapter Found");
     return res.status(404).send();
