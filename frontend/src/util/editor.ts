@@ -571,6 +571,7 @@ export function addNewLine() {
   const selection = window.getSelection();
   if (!selection || selection?.rangeCount < 1) return;
   const currentRange = selection.getRangeAt(0);
+  let the_end = false;
 
   // ---- Find the Current Selection's Span Node and Div Node
   let spanParent = currentRange.startContainer;
@@ -676,12 +677,15 @@ export function addNewLine() {
     startOffset === endOffset - 1 ||
     (startOffset === 0 && selectionParent.previousSibling)
   ) {
+    the_end = true;
     console.log("Caret at Right...");
     if (startOffset === endOffset - 1) {
+      console.log("caret right first");
       while (selectionParent.nextSibling) {
         span.appendChild(selectionParent.nextSibling);
       }
     } else {
+      console.log("caret right second");
       while (selectionParent) {
         span.appendChild(selectionParent);
         selectionParent = selectionParent.nextSibling;
@@ -690,14 +694,12 @@ export function addNewLine() {
   }
 
   const trueContainer = divParent?.parentNode;
-  let the_end = false;
 
   if (divParent?.nextSibling) {
     console.log("In-between Line");
     trueContainer?.insertBefore(div, divParent?.nextSibling);
   } else {
     console.log("New Line");
-    the_end = true;
     trueContainer?.appendChild(div);
   }
 
@@ -709,8 +711,10 @@ export function addNewLine() {
     selection.addRange(newRange);
 
     console.log("THE END?", the_end);
-    const newSelection = window.getSelection();
-    removeEmptySpaceAtStart(newSelection as Selection);
+    if (!the_end) {
+      const newSelection = window.getSelection();
+      removeEmptySpaceAtStart(newSelection as Selection);
+    }
   } catch (error) {
     console.log(error);
   }
