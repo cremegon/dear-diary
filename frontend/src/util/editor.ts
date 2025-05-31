@@ -722,6 +722,26 @@ export function addNewLine() {
   console.log(document.getElementById("father")?.childNodes);
 }
 
+export function cacheBeforeBackspace() {
+  const selection = window.getSelection();
+  const currentRange = selection?.getRangeAt(0);
+
+  // ---- Select Span Container
+  let node = currentRange?.startContainer;
+  while (node && node.parentNode && node.nodeName !== "SPAN") {
+    node = node.parentNode;
+  }
+  const span = node;
+
+  if (
+    span?.firstChild === currentRange?.startContainer &&
+    currentRange?.startOffset === 0
+  ) {
+    return span;
+  }
+  return null;
+}
+
 export function checkOrPlaceCaret(father: Element, rangy: Window) {
   const selection = rangy.getSelection();
   if (!selection || selection?.rangeCount < 1) return null;
@@ -747,10 +767,10 @@ export function checkOrPlaceCaret(father: Element, rangy: Window) {
     selection.addRange(newRange);
     console.log("father not present");
   } else {
-    console.log("father present");
+    return cacheBeforeBackspace();
   }
   console.log(father.innerHTML);
-  return;
+  return null;
 }
 
 export function handlePaste(e: React.ClipboardEvent) {
@@ -775,4 +795,22 @@ export function handlePaste(e: React.ClipboardEvent) {
   newRange.setEnd(current.firstChild, current.textContent.length || 0);
   selection.removeAllRanges();
   selection.addRange(newRange);
+}
+
+export function siblingMergeAfterBackspace() {
+  const selection = window.getSelection();
+  const currentRange = selection?.getRangeAt(0);
+
+  // ---- Select Span Container
+  let node = currentRange?.startContainer;
+  while (node && node.parentNode && node.nodeName !== "SPAN")
+    node = node.parentNode;
+  const span = node;
+  const prev_span = span?.previousSibling;
+  if (prev_span) {
+    while (span.firstChild) {
+      prev_span.appendChild(span.firstChild);
+    }
+    span.parentNode?.removeChild(span);
+  }
 }

@@ -8,6 +8,7 @@ import {
   handlePaste,
   insertBlankTag,
   removeFailedTag,
+  siblingMergeAfterBackspace,
   treeWalkerSearch,
   unwrapAll,
   wrapAll,
@@ -40,6 +41,7 @@ export const Editor = () => {
   const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
     "left"
   );
+  const [spanCache, setSpanCache] = useState<Node | null | undefined>(null);
 
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
@@ -130,7 +132,12 @@ export const Editor = () => {
       e.preventDefault();
       addNewLine();
     } else {
-      checkOrPlaceCaret(father as Element, rangy);
+      const cache = checkOrPlaceCaret(father as Element, rangy);
+      console.log("current CACHE => ", cache);
+      setSpanCache(cache);
+      if (spanCache) {
+        siblingMergeAfterBackspace();
+      }
     }
   }
 
