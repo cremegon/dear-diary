@@ -41,7 +41,6 @@ export const Editor = () => {
   const [textAlign, setTextAlign] = useState<"left" | "right" | "center">(
     "left"
   );
-  const [spanCache, setSpanCache] = useState<Node | null | undefined>(null);
 
   const editorRef = useRef<HTMLDivElement>(null);
   const father = document.getElementById("father");
@@ -139,9 +138,6 @@ export const Editor = () => {
           console.log(father?.innerHTML);
         }, 0);
       }
-
-      console.log(father?.innerHTML);
-      setSpanCache(cache);
     }
   }
 
