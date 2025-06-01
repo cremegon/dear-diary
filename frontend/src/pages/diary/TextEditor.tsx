@@ -133,11 +133,15 @@ export const Editor = () => {
       addNewLine();
     } else {
       const cache = checkOrPlaceCaret(father as Element, rangy);
-      console.log("current CACHE => ", cache);
-      setSpanCache(cache);
-      if (spanCache) {
-        siblingMergeAfterBackspace();
+      if (cache) {
+        setTimeout(() => {
+          siblingMergeAfterBackspace();
+          console.log(father?.innerHTML);
+        }, 0);
       }
+
+      console.log(father?.innerHTML);
+      setSpanCache(cache);
     }
   }
 

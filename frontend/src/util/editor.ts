@@ -502,7 +502,7 @@ export function removeFailedTag(node: Node) {
 }
 
 export function removeEmptySpaceAtStart(selection: Selection) {
-  console.log("blank space detected at beginning");
+  console.log("removing any empty space from start...");
   const currentRange = selection.getRangeAt(0);
   let current = currentRange.startContainer;
   while (current.parentNode && current.nodeName !== "SPAN") {
@@ -801,16 +801,28 @@ export function siblingMergeAfterBackspace() {
   const selection = window.getSelection();
   const currentRange = selection?.getRangeAt(0);
 
-  // ---- Select Span Container
+  // ---- Select Div Container
   let node = currentRange?.startContainer;
   while (node && node.parentNode && node.nodeName !== "SPAN")
     node = node.parentNode;
+  const trueStartOffset = node?.textContent?.length || 0;
   const span = node;
-  const prev_span = span?.previousSibling;
-  if (prev_span) {
-    while (span.firstChild) {
-      prev_span.appendChild(span.firstChild);
+  const next_span = span?.nextSibling;
+  console.log("neighbouring span => ", span, next_span);
+  if (next_span) {
+    console.log("importing...");
+    while (next_span.firstChild) {
+      span.appendChild(next_span.firstChild);
     }
-    span.parentNode?.removeChild(span);
+    span.normalize();
+    span.parentNode?.removeChild(next_span);
+  }
+  if (span && span.firstChild) {
+    const newRange = document.createRange();
+    newRange.setStart(span.firstChild, trueStartOffset);
+    newRange.collapse(true);
+
+    selection?.removeAllRanges();
+    selection?.addRange(newRange);
   }
 }
