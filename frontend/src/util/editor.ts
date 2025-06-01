@@ -816,13 +816,13 @@ export function siblingMergeAfterBackspace() {
     }
     span.normalize();
     span.parentNode?.removeChild(next_span);
-  }
-  if (span && span.firstChild) {
-    const newRange = document.createRange();
-    newRange.setStart(span.firstChild, trueStartOffset);
-    newRange.collapse(true);
+    if (span && span.firstChild) {
+      const newRange = document.createRange();
+      newRange.setStart(span.firstChild, trueStartOffset);
+      newRange.collapse(true);
 
-    selection?.removeAllRanges();
-    selection?.addRange(newRange);
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    }
   }
 }
