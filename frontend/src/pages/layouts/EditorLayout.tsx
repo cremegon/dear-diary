@@ -1,17 +1,29 @@
 import React from "react";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { nextChapter, prevChapter } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
   const params = useParams().chapterId as string;
   const diaryId = useParams().diaryId as string;
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
 
   async function handlePrevious() {
     const response = await prevChapter(params);
     const chapterId = response.data;
     if (!chapterId) return;
-    navigate(`/diary/${diaryId}/chapter/${chapterId}`);
+    if (location.pathname.includes("diary")) {
+      navigate(`/diary/${diaryId}/chapter/${chapterId}`);
+    } else {
+      navigate(`/archive/${diaryId}/chapter/${chapterId}`);
+    }
   }
 
   async function handleNext() {
