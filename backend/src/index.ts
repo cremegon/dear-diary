@@ -38,6 +38,7 @@ import {
   cycleToNextChapter,
   cycleToPrevChapter,
 } from "./controllers/chapters/cycleChapter";
+import { fetchUniqueTrustees } from "./controllers/entrustees/fetchUniqueTrustees";
 
 const app = express();
 app.use(express.json());
@@ -119,7 +120,10 @@ app.post("/check-reset-code", confirmForgotPassword);
 // ---------------------- Check Reset Code
 app.post("/reset-password", resetPassword);
 
-// ---------------------- Fetch All Trustees
+// ---------------------- Fetch All Unique Trustees
+app.get("/fetch-unique-trustees", fetchUniqueTrustees);
+
+// ---------------------- Fetch All Linked Trustees
 app.get("/fetch-trustees", fetchTrustees);
 
 // ---------------------- Add New Entrustee

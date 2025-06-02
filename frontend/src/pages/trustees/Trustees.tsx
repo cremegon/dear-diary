@@ -60,7 +60,9 @@ export const EntrusteePage = () => {
     async function fetchCompiledDiaryData(diaryURL: string) {
       try {
         const response = await fetchDiary(diaryURL);
+        const unique_trustees = await fetchUniqueTrustees();
         setEntry(response.data);
+        setEasyTrusteeData(unique_trustees);
         console.log(entry, response);
       } catch (error) {
         setError(error);
