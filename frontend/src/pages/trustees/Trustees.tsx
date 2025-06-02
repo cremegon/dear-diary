@@ -119,6 +119,19 @@ export const EntrusteePage = () => {
             Add from existing trustees...
           </div>
 
+          <div className="mt-4 flex flex-row bg-pink-200 w-full">
+            {trustees && trustees.length > 0
+              ? trustees.map((person, idx) => (
+                  <div
+                    className="w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 text-center justify-items-center"
+                    key={idx}
+                  >
+                    {person.name}
+                  </div>
+                ))
+              : null}
+          </div>
+
           <div>
             <select className="mt-4 w-full">
               {easyTrusteeData && easyTrusteeData.length > 0
