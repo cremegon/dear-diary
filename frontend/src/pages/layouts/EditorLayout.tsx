@@ -9,8 +9,12 @@ import {
 import { nextChapter, prevChapter } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
-  const params = useParams().chapterId as string;
-  const diaryId = useParams().diaryId as string;
+  const param = useParams().chapterId as string;
+  const archive_param = useParams().archiveChapterId as string;
+  const params = param ? param : archive_param;
+  const diary_id = useParams().diaryId as string;
+  const archive_diary_id = useParams().archiveDiaryId as string;
+  const diaryId = diary_id ? diary_id : archive_diary_id;
   const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
@@ -30,7 +34,11 @@ export const EditorPageLayout = () => {
     const response = await nextChapter(params);
     const chapterId = response.data;
     if (!chapterId) return;
-    navigate(`/diary/${diaryId}/chapter/${chapterId}`);
+    if (location.pathname.includes("diary")) {
+      navigate(`/diary/${diaryId}/chapter/${chapterId}`);
+    } else {
+      navigate(`/archive/${diaryId}/chapter/${chapterId}`);
+    }
   }
   return (
     <div>
@@ -42,10 +50,14 @@ export const EditorPageLayout = () => {
           Previous
         </button>
         <Link
-          to={`/diary/${diaryId}/chapter`}
+          to={
+            location.pathname.includes("diary")
+              ? `/diary/${diaryId}/chapter`
+              : `/archive/${diaryId}/chapter`
+          }
           className="text-white font-bold text-3xl"
         >
-          Chapters
+          {location.pathname.includes("diary") ? "Chapter" : "Archive"}
         </Link>
         <button
           onClick={handleNext}
