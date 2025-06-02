@@ -43,18 +43,19 @@ export const EntrusteePage = () => {
     ]);
   }
 
-  function handleEasyAddTrustee(diaryURL: string, val) {
+  function handleEasyAddTrustee(diaryURL: string, val: string) {
+    const value = val.split(",");
     setTrustees((prev) => [
       ...prev,
       {
         diaryId: diaryURL,
-        name: val.name,
-        email: val.email,
-        address: val.address,
-        phone: val.phone,
+        name: value[0],
+        email: value[1],
+        address: value[2],
+        phone: value[3],
       },
     ]);
-    console.log(trustees, val);
+    console.log(trustees, val.split(","));
   }
 
   function handleRemoveTrustee(idx: number) {
@@ -134,10 +135,10 @@ export const EntrusteePage = () => {
           </div>
 
           <div className="mt-4 flex flex-row bg-pink-200 w-full h-min">
-            {trustees[0].name && trustees.length > 0
+            {trustees[trustees.length - 1].name && trustees.length > 0
               ? trustees.map((person, idx) => (
                   <div
-                    className=" ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex"
+                    className={`${person.name ? "block" : "hidden"} ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex`}
                     key={idx}
                   >
                     {person.name}
