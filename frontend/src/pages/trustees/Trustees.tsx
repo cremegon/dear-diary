@@ -43,6 +43,20 @@ export const EntrusteePage = () => {
     ]);
   }
 
+  function handleEasyAddTrustee(diaryURL: string, val) {
+    setTrustees((prev) => [
+      ...prev,
+      {
+        diaryId: diaryURL,
+        name: val.name,
+        email: val.email,
+        address: val.address,
+        phone: val.phone,
+      },
+    ]);
+    console.log(trustees, val);
+  }
+
   function handleRemoveTrustee(idx: number) {
     const change = [...trustees.slice(0, idx), ...trustees.slice(idx + 1)];
     setTrustees(change);
@@ -67,7 +81,7 @@ export const EntrusteePage = () => {
         const unique_trustees = await fetchUniqueTrustees();
         setEntry(response.data);
         setEasyTrusteeData(unique_trustees.trustees);
-        console.log(easyTrusteeData);
+        console.log(trustees[0]);
         console.log(entry, response);
       } catch (error) {
         setError(error);
@@ -120,10 +134,10 @@ export const EntrusteePage = () => {
           </div>
 
           <div className="mt-4 flex flex-row bg-pink-200 w-full h-min">
-            {trustees && trustees.length > 0
+            {trustees[0].name && trustees.length > 0
               ? trustees.map((person, idx) => (
                   <div
-                    className="w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex"
+                    className=" ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex"
                     key={idx}
                   >
                     {person.name}
@@ -133,10 +147,16 @@ export const EntrusteePage = () => {
           </div>
 
           <div>
-            <select className="mt-4 w-full">
+            <select
+              className="mt-4 w-full"
+              onChange={(e) => handleEasyAddTrustee(diaryURL, e.target.value)}
+            >
               {easyTrusteeData && easyTrusteeData.length > 0
                 ? easyTrusteeData.map((item, idx) => (
-                    <option value={item.name} key={idx}>
+                    <option
+                      value={[item.name, item.email, item.address, item.phone]}
+                      key={idx}
+                    >
                       {item.name}
                     </option>
                   ))
