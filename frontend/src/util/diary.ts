@@ -88,7 +88,7 @@ export async function checkChapter(params: string) {
 }
 
 export async function prevChapter(params: string) {
-  console.log("checking chapter entries...");
+  console.log("going to previous chapter...", params);
 
   const response = await fetch(`http://localhost:5000/prev-chapter/${params}`, {
     method: "GET",
@@ -104,7 +104,7 @@ export async function prevChapter(params: string) {
 }
 
 export async function nextChapter(params: string) {
-  console.log("checking chapter entries...");
+  console.log("going to next chapter...", params);
 
   const response = await fetch(`http://localhost:5000/next-chapter/${params}`, {
     method: "GET",
