@@ -113,9 +113,19 @@ export const EntrusteePage = () => {
 
         <div className="ml-10">
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
+
           <div className="text-sm text-blue-600 cursor-pointer">
             Add from existing trustees...
           </div>
+
+          <div>
+            <option value="Your Trustees">
+              <select name="" id="">
+                Hi
+              </select>
+            </option>
+          </div>
+
           {trustees
             ? trustees.map((item, idx) => (
                 <div className="mt-4 flex flex-col justify-evenly" key={idx}>
