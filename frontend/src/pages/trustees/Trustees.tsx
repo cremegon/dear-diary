@@ -119,11 +119,15 @@ export const EntrusteePage = () => {
           </div>
 
           <div>
-            <option value="Your Trustees">
-              <select name="" id="">
-                Hi
-              </select>
-            </option>
+            <select className="mt-4 w-full">
+              {easyTrusteeData
+                ? easyTrusteeData.map((item, idx) => (
+                    <option value={item.name} key={idx}>
+                      {item.name}
+                    </option>
+                  ))
+                : null}
+            </select>
           </div>
 
           {trustees
