@@ -12,11 +12,22 @@ interface DiaryEntry {
   cover: string;
 }
 
+interface TrusteeEntry {
+  id: number;
+  diary_id: number;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+}
+
 export const EntrusteePage = () => {
   const diaryURL = useParams().diaryId as string;
   const [trustees, setTrustees] = useState([
     { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
   ]);
+  const [easyAddTrustee, setEasyAddTrustee] = useState(false);
+  const [easyTrusteeData, setEasyTrusteeData] = useState([]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
