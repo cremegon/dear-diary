@@ -27,7 +27,7 @@ export const EntrusteePage = () => {
     { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
   ]);
   const [easyAddTrustee, setEasyAddTrustee] = useState(false);
-  const [easyTrusteeData, setEasyTrusteeData] = useState([]);
+  const [easyTrusteeData, setEasyTrusteeData] = useState<TrusteeEntry[]>([]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
