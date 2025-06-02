@@ -17,7 +17,9 @@ export const fetchUniqueTrustees = async (
     return res.status(403).json({ message: "No cookies found" });
   }
 
-  const trustees = await pool.query("SELECT DISTINCT * FROM trustees");
+  const trustees = await pool.query(
+    "SELECT DISTINCT ON (t.name) t.* FROM trustees as t"
+  );
 
   return res.status(200).json({
     message: "Unique Trustees Found",

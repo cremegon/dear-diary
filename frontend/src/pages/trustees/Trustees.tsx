@@ -66,7 +66,8 @@ export const EntrusteePage = () => {
         const response = await fetchDiary(diaryURL);
         const unique_trustees = await fetchUniqueTrustees();
         setEntry(response.data);
-        setEasyTrusteeData(unique_trustees);
+        setEasyTrusteeData(unique_trustees.trustees);
+        console.log(easyTrusteeData);
         console.log(entry, response);
       } catch (error) {
         setError(error);
@@ -120,7 +121,7 @@ export const EntrusteePage = () => {
 
           <div>
             <select className="mt-4 w-full">
-              {easyTrusteeData
+              {easyTrusteeData && easyTrusteeData.length > 0
                 ? easyTrusteeData.map((item, idx) => (
                     <option value={item.name} key={idx}>
                       {item.name}
