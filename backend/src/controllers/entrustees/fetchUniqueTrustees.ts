@@ -8,7 +8,7 @@ export const fetchUniqueTrustees = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  console.log("fetching trustees...");
+  console.log("fetching unique trustees...");
   const token = req.cookies.authToken;
 
   // check if a token exists ; if not then a user isn't verified

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchDiary, finishDiary } from "../../util/diary.ts";
+import {
+  fetchDiary,
+  fetchUniqueTrustees,
+  finishDiary,
+} from "../../util/diary.ts";
 import { useParams } from "react-router-dom";
 
 interface DiaryEntry {
