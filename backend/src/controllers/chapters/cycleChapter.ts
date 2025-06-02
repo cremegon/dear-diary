@@ -25,7 +25,7 @@ export const cycleToPrevChapter = async (
     [chapterURL]
   );
 
-  console.log("current query: ", query.rows[0].prevchapterid);
+  console.log("current query back: ", query.rows.length);
 
   if (!query.rows[0].prevchapterid) {
     return res
@@ -64,7 +64,7 @@ export const cycleToNextChapter = async (
     [chapterURL]
   );
 
-  console.log("current query: ", query.rows.length);
+  console.log("current query front: ", query.rows.length);
 
   if (!query.rows[0].nextchapterid) {
     return res
