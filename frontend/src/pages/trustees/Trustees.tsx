@@ -16,6 +16,14 @@ interface DiaryEntry {
   cover: string;
 }
 
+interface TrusteeTemplate {
+  diaryId: string;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+}
+
 interface TrusteeEntry {
   id: number;
   diary_id: number;
@@ -27,9 +35,8 @@ interface TrusteeEntry {
 
 export const EntrusteePage = () => {
   const diaryURL = useParams().diaryId as string;
-  const [trustees, setTrustees] = useState([
-    { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
-  ]);
+  const [trustees, setTrustees] = useState<TrusteeTemplate[]>([]);
+  const [m_trustees, set_m_Trustees] = useState<TrusteeTemplate[]>([]);
   const [easyAddTrustee, setEasyAddTrustee] = useState(false);
   const [easyTrusteeData, setEasyTrusteeData] = useState<TrusteeEntry[]>([]);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
@@ -37,10 +44,24 @@ export const EntrusteePage = () => {
   const [error, setError] = useState("");
 
   function handleAddTrustee() {
-    setTrustees((prev) => [
-      ...prev,
-      { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
-    ]);
+    if (easyAddTrustee) setEasyAddTrustee(false);
+    if (
+      m_trustees &&
+      m_trustees.length > 0 &&
+      m_trustees[m_trustees.length - 1].name
+    ) {
+      console.log("yes m_trustees");
+      set_m_Trustees((prev) => [
+        ...prev,
+        { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
+      ]);
+    } else {
+      console.log("NO m_trustees");
+      set_m_Trustees([
+        { diaryId: diaryURL, name: "", email: "", address: "", phone: "" },
+      ]);
+    }
+    console.log(m_trustees);
   }
 
   function handleEasyAddTrustee(diaryURL: string, val: string) {
@@ -64,15 +85,15 @@ export const EntrusteePage = () => {
     console.log(change);
   }
   function handleEntrusteeDetails(value: string, id: string, i: number) {
-    const updatedItem = trustees.map((item, idx) => {
+    const updatedItem = m_trustees.map((item, idx) => {
       if (idx === i) {
         return { ...item, [id]: value };
       }
       return item;
     });
 
-    setTrustees(updatedItem);
-    console.log(trustees);
+    set_m_Trustees(updatedItem);
+    console.log(m_trustees);
   }
 
   useEffect(() => {
@@ -138,7 +159,7 @@ export const EntrusteePage = () => {
           </div>
 
           <div className={`mt-4 flex flex-row bg-pink-200 w-full h-min`}>
-            {trustees[trustees.length - 1].name && trustees.length > 0
+            {trustees.length > 0 && trustees[trustees.length - 1].name
               ? trustees.map((person, idx) => (
                   <div
                     className={`${person.name ? "block" : "hidden"} ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex`}
@@ -169,8 +190,8 @@ export const EntrusteePage = () => {
           </div>
 
           <div className={`${!easyAddTrustee ? "block" : "hidden"}`}>
-            {trustees
-              ? trustees.map((item, idx) => (
+            {m_trustees
+              ? m_trustees.map((item, idx) => (
                   <div className="mt-4 flex flex-col justify-evenly" key={idx}>
                     <div className="flex flex-row justify-between align-bottom">
                       <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
@@ -186,7 +207,7 @@ export const EntrusteePage = () => {
                       type="text"
                       placeholder="enter entrustee name"
                       id="name"
-                      value={trustees[idx]["name"]}
+                      value={m_trustees[idx]["name"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
                       }
@@ -196,7 +217,7 @@ export const EntrusteePage = () => {
                       type="text"
                       placeholder="enter email"
                       id="email"
-                      value={trustees[idx]["email"]}
+                      value={m_trustees[idx]["email"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
                       }
@@ -206,7 +227,7 @@ export const EntrusteePage = () => {
                       type="text"
                       placeholder="enter entrustee address"
                       id="address"
-                      value={trustees[idx]["address"]}
+                      value={m_trustees[idx]["address"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
                       }
@@ -216,7 +237,7 @@ export const EntrusteePage = () => {
                       type="text"
                       placeholder="enter entrustee phone number"
                       id="phone"
-                      value={trustees[idx]["phone"]}
+                      value={m_trustees[idx]["phone"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
                       }
@@ -229,7 +250,9 @@ export const EntrusteePage = () => {
           <div className="flex flex-row justify-between mt-6">
             <button
               className="btn-writeUI"
-              onClick={() => finishDiary(diaryURL, trustees)}
+              onClick={() =>
+                finishDiary(diaryURL, [...trustees, ...m_trustees])
+              }
             >
               Finish
             </button>
