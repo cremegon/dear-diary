@@ -596,6 +596,13 @@ export function addNewLine() {
     ? currentRange.startContainer.textContent.length
     : 0;
 
+  console.log(
+    "NEW LINE PARAMS: <span,start,end>",
+    selectionParent,
+    startOffset,
+    endOffset
+  );
+
   // ---- Create new Div and Span to Insert
   const div = document.createElement("div");
   const span = document.createElement("span");
