@@ -826,7 +826,6 @@ export function siblingMergeAfterBackspace() {
       selection?.addRange(newRange);
     }
   } else if (div_node && span && next_span && next_span.nodeName === "#text") {
-    console.log("NIGGA!!!!");
     span.appendChild(next_span);
     span.normalize();
 
