@@ -130,11 +130,14 @@ export const EntrusteePage = () => {
         <div className="ml-10">
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
 
-          <div className="text-sm text-blue-600 cursor-pointer">
-            Add from existing trustees...
+          <div
+            onClick={() => setEasyAddTrustee(!easyAddTrustee)}
+            className="text-sm text-blue-600 cursor-pointer"
+          >
+            {!easyAddTrustee ? "Add from existing trustees" : "Add new trustee"}
           </div>
 
-          <div className="mt-4 flex flex-row bg-pink-200 w-full h-min">
+          <div className={`mt-4 flex flex-row bg-pink-200 w-full h-min`}>
             {trustees[trustees.length - 1].name && trustees.length > 0
               ? trustees.map((person, idx) => (
                   <div
@@ -147,7 +150,7 @@ export const EntrusteePage = () => {
               : null}
           </div>
 
-          <div>
+          <div className={`${easyAddTrustee ? "block" : "hidden"}`}>
             <select
               className="mt-4 w-full"
               onChange={(e) => handleEasyAddTrustee(diaryURL, e.target.value)}
@@ -165,61 +168,63 @@ export const EntrusteePage = () => {
             </select>
           </div>
 
-          {trustees
-            ? trustees.map((item, idx) => (
-                <div className="mt-4 flex flex-col justify-evenly" key={idx}>
-                  <div className="flex flex-row justify-between align-bottom">
-                    <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
-                    <button
-                      className="bg-red-600 text-white w-20"
-                      onClick={() => handleRemoveTrustee(idx)}
-                    >
-                      delete
-                    </button>
+          <div className={`${!easyAddTrustee ? "block" : "hidden"}`}>
+            {trustees
+              ? trustees.map((item, idx) => (
+                  <div className="mt-4 flex flex-col justify-evenly" key={idx}>
+                    <div className="flex flex-row justify-between align-bottom">
+                      <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
+                      <button
+                        className="bg-red-600 text-white w-20"
+                        onClick={() => handleRemoveTrustee(idx)}
+                      >
+                        delete
+                      </button>
+                    </div>
+                    <input
+                      className="border-pink-400 border-4 mt-4"
+                      type="text"
+                      placeholder="enter entrustee name"
+                      id="name"
+                      value={trustees[idx]["name"]}
+                      onChange={(e) =>
+                        handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                      }
+                    />
+                    <input
+                      className="border-pink-400 border-4 mt-4"
+                      type="text"
+                      placeholder="enter email"
+                      id="email"
+                      value={trustees[idx]["email"]}
+                      onChange={(e) =>
+                        handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                      }
+                    />
+                    <input
+                      className="border-pink-400 border-4 mt-4"
+                      type="text"
+                      placeholder="enter entrustee address"
+                      id="address"
+                      value={trustees[idx]["address"]}
+                      onChange={(e) =>
+                        handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                      }
+                    />
+                    <input
+                      className="border-pink-400 border-4 mt-4"
+                      type="text"
+                      placeholder="enter entrustee phone number"
+                      id="phone"
+                      value={trustees[idx]["phone"]}
+                      onChange={(e) =>
+                        handleEntrusteeDetails(e.target.value, e.target.id, idx)
+                      }
+                    />
                   </div>
-                  <input
-                    className="border-pink-400 border-4 mt-4"
-                    type="text"
-                    placeholder="enter entrustee name"
-                    id="name"
-                    value={trustees[idx]["name"]}
-                    onChange={(e) =>
-                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
-                    }
-                  />
-                  <input
-                    className="border-pink-400 border-4 mt-4"
-                    type="text"
-                    placeholder="enter email"
-                    id="email"
-                    value={trustees[idx]["email"]}
-                    onChange={(e) =>
-                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
-                    }
-                  />
-                  <input
-                    className="border-pink-400 border-4 mt-4"
-                    type="text"
-                    placeholder="enter entrustee address"
-                    id="address"
-                    value={trustees[idx]["address"]}
-                    onChange={(e) =>
-                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
-                    }
-                  />
-                  <input
-                    className="border-pink-400 border-4 mt-4"
-                    type="text"
-                    placeholder="enter entrustee phone number"
-                    id="phone"
-                    value={trustees[idx]["phone"]}
-                    onChange={(e) =>
-                      handleEntrusteeDetails(e.target.value, e.target.id, idx)
-                    }
-                  />
-                </div>
-              ))
-            : "nothing"}
+                ))
+              : "nothing"}
+          </div>
 
           <div className="flex flex-row justify-between mt-6">
             <button
