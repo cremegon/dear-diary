@@ -831,6 +831,7 @@ export function siblingMergeAfterBackspace() {
 
   // If the browser sees the next span sibling as a textNode: do this
   else if (div_node && span && next_span && next_span.nodeName === "#text") {
+    console.log("importing next sibling as a TEXT node...");
     span.appendChild(next_span);
     span.normalize();
 
