@@ -45,7 +45,7 @@ export const deleteChapter = async (
       prevId,
     ]);
   } else {
-    await pool.query("UPDATE capters SET prevchapterid = $1 WHERE id = $2", [
+    await pool.query("UPDATE chapters SET prevchapterid = $1 WHERE id = $2", [
       prevId,
       nextId,
     ]);

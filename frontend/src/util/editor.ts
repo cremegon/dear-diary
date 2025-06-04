@@ -808,14 +808,32 @@ export function siblingMergeAfterBackspace() {
   const trueStartOffset = node?.textContent?.length || 0;
   const span = node;
   const next_span = span?.nextSibling;
-  console.log("neighbouring span => ", span, next_span);
-  if (next_span) {
+  const div_node = span?.parentNode;
+  console.log("neighbouring span => ", span, next_span, next_span?.nodeName);
+  if (div_node && span && next_span && next_span?.nodeName === "SPAN") {
     console.log("importing...");
     while (next_span.firstChild) {
       span.appendChild(next_span.firstChild);
     }
     span.normalize();
-    span.parentNode?.removeChild(next_span);
+    div_node.removeChild(next_span);
+    if (span && span.firstChild) {
+      const newRange = document.createRange();
+      newRange.setStart(span.firstChild, trueStartOffset);
+      newRange.collapse(true);
+
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    }
+  } else if (div_node && span && next_span && next_span.nodeName === "#text") {
+    console.log("NIGGA!!!!");
+    span.appendChild(next_span);
+    span.normalize();
+
+    if (div_node.childNodes.length > 1) {
+      div_node.removeChild(next_span);
+    }
+
     if (span && span.firstChild) {
       const newRange = document.createRange();
       newRange.setStart(span.firstChild, trueStartOffset);

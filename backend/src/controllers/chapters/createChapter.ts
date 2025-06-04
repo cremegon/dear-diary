@@ -29,8 +29,9 @@ export const createChapter = async (
     "SELECT id FROM chapters WHERE diary_id = $1 ORDER BY id DESC LIMIT 1",
     [diaryId]
   );
-
-  const prevchapterid = prevChapterId.rows[0].id;
+  console.log("hi...", prevChapterId.rows);
+  const prevchapterid =
+    prevChapterId.rows.length > 0 ? prevChapterId.rows[0].id : null;
   console.log("previouschapterid = ", prevchapterid);
 
   const query = await pool.query(
