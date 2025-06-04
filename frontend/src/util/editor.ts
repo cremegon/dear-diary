@@ -829,7 +829,7 @@ export function siblingMergeAfterBackspace() {
     }
   }
 
-  // If the brow
+  // If the browser sees the next span sibling as a textNode
   else if (div_node && span && next_span && next_span.nodeName === "#text") {
     span.appendChild(next_span);
     span.normalize();
