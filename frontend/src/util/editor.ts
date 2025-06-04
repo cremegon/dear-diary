@@ -810,6 +810,8 @@ export function siblingMergeAfterBackspace() {
   const next_span = span?.nextSibling;
   const div_node = span?.parentNode;
   console.log("neighbouring span => ", span, next_span, next_span?.nodeName);
+
+  // For Browser Compatibility:
   if (div_node && span && next_span && next_span?.nodeName === "SPAN") {
     console.log("importing...");
     while (next_span.firstChild) {
