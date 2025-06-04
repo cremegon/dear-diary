@@ -811,7 +811,7 @@ export function siblingMergeAfterBackspace() {
   const div_node = span?.parentNode;
   console.log("neighbouring span => ", span, next_span, next_span?.nodeName);
 
-  // For Browser Compatibility: If the browser sees it as a span: treat it like this
+  // For Browser Compatibility: If the browser sees the next span sibling as a span: treat it like this
   if (div_node && span && next_span && next_span?.nodeName === "SPAN") {
     console.log("importing...");
     while (next_span.firstChild) {
@@ -827,7 +827,10 @@ export function siblingMergeAfterBackspace() {
       selection?.removeAllRanges();
       selection?.addRange(newRange);
     }
-  } else if (div_node && span && next_span && next_span.nodeName === "#text") {
+  }
+
+  // If the brow
+  else if (div_node && span && next_span && next_span.nodeName === "#text") {
     span.appendChild(next_span);
     span.normalize();
 
