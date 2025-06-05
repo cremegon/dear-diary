@@ -206,7 +206,7 @@ export const EntrusteePage = () => {
                       className="border-pink-400 border-4 mt-4"
                       type="text"
                       placeholder="enter entrustee name"
-                      id="name"
+                      id={`name+${idx}`}
                       value={m_trustees[idx]["name"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
@@ -216,7 +216,7 @@ export const EntrusteePage = () => {
                       className="border-pink-400 border-4 mt-4"
                       type="text"
                       placeholder="enter email"
-                      id="email"
+                      id={`email+${idx}`}
                       value={m_trustees[idx]["email"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
@@ -226,7 +226,7 @@ export const EntrusteePage = () => {
                       className="border-pink-400 border-4 mt-4"
                       type="text"
                       placeholder="enter entrustee address"
-                      id="address"
+                      id={`address+${idx}`}
                       value={m_trustees[idx]["address"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
