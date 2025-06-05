@@ -3,6 +3,7 @@ import {
   fetchDiary,
   fetchUniqueTrustees,
   finishDiary,
+  verifyTrusteesList,
 } from "../../util/diary.ts";
 import { useParams } from "react-router-dom";
 
@@ -84,6 +85,7 @@ export const EntrusteePage = () => {
     setTrustees(change);
     console.log(change);
   }
+
   function handleEntrusteeDetails(value: string, id: string, i: number) {
     const updatedItem = m_trustees.map((item, idx) => {
       if (idx === i) {
@@ -94,6 +96,11 @@ export const EntrusteePage = () => {
 
     set_m_Trustees(updatedItem);
     console.log(m_trustees);
+  }
+
+  function handleFinishDiary(diaryURL: string, trustees: object[]) {
+    const { valid, error } = verifyTrusteesList(trustees);
+    if (!valid) return error;
   }
 
   useEffect(() => {
@@ -236,7 +243,7 @@ export const EntrusteePage = () => {
                       className="border-pink-400 border-4 mt-4"
                       type="text"
                       placeholder="enter entrustee phone number"
-                      id="phone"
+                      id={`phone+${idx}`}
                       value={m_trustees[idx]["phone"]}
                       onChange={(e) =>
                         handleEntrusteeDetails(e.target.value, e.target.id, idx)
