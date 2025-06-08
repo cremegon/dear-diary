@@ -192,22 +192,20 @@ export function verifyTrusteesList(trustees: object[]) {
   for (let i = 0; i < trustees.length; i++) {
     const { diaryId, name, email, address, phone } = trustees[i];
     if (!name || !email || !address || !phone)
-      return { valid: false, error: `field not filled at input => ${i}` };
+      return { valid: false, error_t: `field not filled at input => ${i}` };
 
     const validEmail = email.includes("@") && email.includes(".com");
     if (!validEmail)
       return {
         valid: false,
-        error: `email not valid at input => ${trustees[i]}`,
+        error_t: `email not valid at input => ${trustees[i]}`,
       };
   }
-  return { valid: val, error: err };
+  return { valid: val, error_t: err };
 }
 
 export async function finishDiary(diaryURL: string, trustees: object[]) {
   console.log("sending compile request...", trustees);
-  const { valid, error } = verifyTrusteesList(trustees);
-  if (!valid) return error;
 
   const response = await fetch(
     `http://localhost:5000/finish-diary/${diaryURL}`,

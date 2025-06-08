@@ -99,7 +99,9 @@ export const EntrusteePage = () => {
   }
 
   function handleFinishDiary(diaryURL: string, trustees: object[]) {
-    const { valid, error } = verifyTrusteesList(trustees);
+    const { valid, error_t } = verifyTrusteesList(trustees);
+    if (error_t) setError(error_t);
+    finishDiary(diaryURL, trustees);
     if (!valid) return error;
   }
 
@@ -123,11 +125,11 @@ export const EntrusteePage = () => {
 
   return (
     <div className="min-h-screen">
-      <div
+      {/* <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${error ? "block" : "hidden"} absolute`}
       >
         Any Error Occured...
-      </div>
+      </div> */}
 
       <div
         className={`top-1/2 left-1/2 bg-yellow-300 ${loading && !error ? "block" : "hidden"} absolute`}
@@ -138,6 +140,7 @@ export const EntrusteePage = () => {
       <div
         className={`${loading || error ? "hidden" : "block"} my-10 mx-10 flex flex-row w-full h-full`}
       >
+        <div>{error}</div>
         <div>
           <h1 className="text-xl font-bold text-center mb-5">
             {entry && entry.length > 0 ? entry[0].title : "Loading..."}
@@ -258,7 +261,7 @@ export const EntrusteePage = () => {
             <button
               className="btn-writeUI"
               onClick={() =>
-                finishDiary(diaryURL, [...trustees, ...m_trustees])
+                handleFinishDiary(diaryURL, [...trustees, ...m_trustees])
               }
             >
               Finish
