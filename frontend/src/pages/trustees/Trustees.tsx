@@ -100,7 +100,10 @@ export const EntrusteePage = () => {
 
   function handleFinishDiary(diaryURL: string, trustees: object[]) {
     const { valid, error_t } = verifyTrusteesList(trustees);
-    if (error_t) setError(error_t);
+    console.log("error from trustee entry => ", valid, error_t);
+    if (error_t) {
+      return setError(error_t);
+    }
     finishDiary(diaryURL, trustees);
     if (!valid) return error;
   }
@@ -138,9 +141,8 @@ export const EntrusteePage = () => {
       </div>
 
       <div
-        className={`${loading || error ? "hidden" : "block"} my-10 mx-10 flex flex-row w-full h-full`}
+        className={`${loading ? "hidden" : "block"} my-10 mx-10 flex flex-row w-full h-full`}
       >
-        <div>{error}</div>
         <div>
           <h1 className="text-xl font-bold text-center mb-5">
             {entry && entry.length > 0 ? entry[0].title : "Loading..."}
@@ -159,6 +161,11 @@ export const EntrusteePage = () => {
         </div>
 
         <div className="ml-10">
+          <div
+            className={`${error ? "block" : "hidden"} text-red-500 bg-red-300 my-4 p-4`}
+          >
+            {error}
+          </div>
           <h1 className="text-2xl font-bold">Add your Trustees</h1>
 
           <div

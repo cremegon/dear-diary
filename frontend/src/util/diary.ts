@@ -189,10 +189,16 @@ export async function fetchCoverArt(diaryId: string) {
 export function verifyTrusteesList(trustees: object[]) {
   const val = true;
   const err = "";
+  const error_i = null;
+  const error_f = null;
   for (let i = 0; i < trustees.length; i++) {
     const { diaryId, name, email, address, phone } = trustees[i];
     if (!name || !email || !address || !phone)
-      return { valid: false, error_t: `field not filled at input => ${i}` };
+      return {
+        valid: false,
+        error_t: `field not filled at input => ${i}`,
+        error_index: i,
+      };
 
     const validEmail = email.includes("@") && email.includes(".com");
     if (!validEmail)
@@ -201,7 +207,7 @@ export function verifyTrusteesList(trustees: object[]) {
         error_t: `email not valid at input => ${trustees[i]}`,
       };
   }
-  return { valid: val, error_t: err };
+  return { valid: val, error_t: err, error_index: error_i };
 }
 
 export async function finishDiary(diaryURL: string, trustees: object[]) {
