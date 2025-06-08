@@ -172,7 +172,7 @@ export const EntrusteePage = () => {
           )}
         </div>
 
-        <div className="ml-10">
+        <div className="ml-10 w-1/3">
           <div
             className={`${error ? "block" : "hidden"} text-red-500 bg-red-300 my-4 p-4`}
           >
@@ -187,7 +187,7 @@ export const EntrusteePage = () => {
             {!easyAddTrustee ? "Add from existing trustees" : "Add new trustee"}
           </div>
 
-          <div className={`mt-4 flex flex-row bg-pink-200 w-full h-min`}>
+          <div className={`mt-4 flex bg-blue-600 w-2/3 h-min flex-wrap`}>
             {trustees.length > 0 && trustees[trustees.length - 1].name
               ? trustees.map((person, idx) => (
                   <div
@@ -200,7 +200,7 @@ export const EntrusteePage = () => {
               : null}
           </div>
 
-          <div className={`${easyAddTrustee ? "block" : "hidden"}`}>
+          <div className={`${easyAddTrustee ? "block" : "hidden"} w-2/3`}>
             <select
               className="mt-4 w-full"
               onChange={(e) => handleEasyAddTrustee(diaryURL, e.target.value)}
@@ -223,8 +223,7 @@ export const EntrusteePage = () => {
               ? m_trustees.map((item, idx) => (
                   <div className="mt-4 flex flex-col justify-evenly" key={idx}>
                     <div className="flex flex-row justify-between align-bottom">
-                      <div>{idx}</div>
-                      <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
+                      <h1 className="text-xl font-bold">{`Trustee # ${idx + 1}`}</h1>
                       <button
                         className="bg-red-600 text-white w-20"
                         onClick={() => handleRemoveTrustee(idx)}
