@@ -187,7 +187,7 @@ export const EntrusteePage = () => {
             {!easyAddTrustee ? "Add from existing trustees" : "Add new trustee"}
           </div>
 
-          <div className={`mt-4 flex bg-blue-600 w-2/3 h-min flex-wrap`}>
+          <div className={`mt-4 flex bg-blue-600 w-full h-min flex-wrap`}>
             {trustees.length > 0 && trustees[trustees.length - 1].name
               ? trustees.map((person, idx) => (
                   <div
@@ -200,7 +200,7 @@ export const EntrusteePage = () => {
               : null}
           </div>
 
-          <div className={`${easyAddTrustee ? "block" : "hidden"} w-2/3`}>
+          <div className={`${easyAddTrustee ? "block" : "hidden"}`}>
             <select
               className="mt-4 w-full"
               onChange={(e) => handleEasyAddTrustee(diaryURL, e.target.value)}
