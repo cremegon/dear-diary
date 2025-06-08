@@ -216,6 +216,15 @@ export function verifyTrusteesList(trustees: object[]) {
         error_field: "email",
       };
 
+    const validEmail = email.includes("@") && email.includes(".com");
+    if (!validEmail)
+      return {
+        valid: false,
+        error_t: `email not valid at input => ${trustees[i]}`,
+        error_index: i,
+        error_field: "email",
+      };
+
     if (!address)
       return {
         valid: false,
@@ -230,15 +239,6 @@ export function verifyTrusteesList(trustees: object[]) {
         error_t: `phone field not filled at input => ${i}`,
         error_index: i,
         error_field: "phone",
-      };
-
-    const validEmail = email.includes("@") && email.includes(".com");
-    if (!validEmail)
-      return {
-        valid: false,
-        error_t: `email not valid at input => ${trustees[i]}`,
-        error_index: i,
-        error_field: "email",
       };
   }
   return {

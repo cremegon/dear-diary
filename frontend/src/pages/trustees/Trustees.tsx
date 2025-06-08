@@ -87,9 +87,11 @@ export const EntrusteePage = () => {
   }
 
   function handleEntrusteeDetails(value: string, id: string, i: number) {
+    const plus_index = id.indexOf("+");
+    const newId = id.slice(0, plus_index);
     const updatedItem = m_trustees.map((item, idx) => {
       if (idx === i) {
-        return { ...item, [id]: value };
+        return { ...item, [newId]: value };
       }
       return item;
     });
