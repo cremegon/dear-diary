@@ -203,7 +203,7 @@ export function verifyTrusteesList(trustees: object[]) {
     if (!name)
       return {
         valid: false,
-        error_t: `name field not filled at input => ${i}`,
+        error_t: `name field not filled at trustee # ${i + 1}`,
         error_index: i,
         error_field: "name",
       };
@@ -211,7 +211,7 @@ export function verifyTrusteesList(trustees: object[]) {
     if (!email)
       return {
         valid: false,
-        error_t: `email field not filled at input => ${i}`,
+        error_t: `email field not filled at trustee # ${i + 1}`,
         error_index: i,
         error_field: "email",
       };
@@ -220,7 +220,7 @@ export function verifyTrusteesList(trustees: object[]) {
     if (!validEmail)
       return {
         valid: false,
-        error_t: `email not valid at input => ${trustees[i]}`,
+        error_t: `email not valid at trustee # ${i + 1}`,
         error_index: i,
         error_field: "email",
       };
@@ -228,7 +228,7 @@ export function verifyTrusteesList(trustees: object[]) {
     if (!address)
       return {
         valid: false,
-        error_t: `address field not filled at input => ${i}`,
+        error_t: `address field not filled at trustee # ${i + 1}`,
         error_index: i,
         error_field: "address",
       };
@@ -236,7 +236,7 @@ export function verifyTrusteesList(trustees: object[]) {
     if (!phone)
       return {
         valid: false,
-        error_t: `phone field not filled at input => ${i}`,
+        error_t: `phone field not filled at trustee # ${i + 1}`,
         error_index: i,
         error_field: "phone",
       };

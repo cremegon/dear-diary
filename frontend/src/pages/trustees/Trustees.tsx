@@ -81,9 +81,9 @@ export const EntrusteePage = () => {
   }
 
   function handleRemoveTrustee(idx: number) {
-    const change = [...trustees.slice(0, idx), ...trustees.slice(idx + 1)];
-    setTrustees(change);
-    console.log(change);
+    const change = [...m_trustees.slice(0, idx), ...m_trustees.slice(idx + 1)];
+    set_m_Trustees(change);
+    console.log("trustee removed => ", change);
   }
 
   function handleEntrusteeDetails(value: string, id: string, i: number) {
