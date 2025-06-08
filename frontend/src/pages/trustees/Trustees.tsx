@@ -67,6 +67,13 @@ export const EntrusteePage = () => {
 
   function handleEasyAddTrustee(diaryURL: string, val: string) {
     const value = val.split(",");
+    const email_find = value[1];
+    for (const person of trustees) {
+      if (email_find === person.email) {
+        console.log("person already in quick list");
+        return;
+      }
+    }
     setTrustees((prev) => [
       ...prev,
       {
