@@ -193,11 +193,43 @@ export function verifyTrusteesList(trustees: object[]) {
   const error_f = null;
   for (let i = 0; i < trustees.length; i++) {
     const { diaryId, name, email, address, phone } = trustees[i];
-    if (!name || !email || !address || !phone)
+    // if (!name || !email || !address || !phone)
+    //   return {
+    //     valid: false,
+    //     error_t: `field not filled at input => ${i}`,
+    //     error_index: i,
+    //   };
+
+    if (!name)
       return {
         valid: false,
-        error_t: `field not filled at input => ${i}`,
+        error_t: `name field not filled at input => ${i}`,
         error_index: i,
+        error_field: "name",
+      };
+
+    if (!email)
+      return {
+        valid: false,
+        error_t: `email field not filled at input => ${i}`,
+        error_index: i,
+        error_field: "email",
+      };
+
+    if (!address)
+      return {
+        valid: false,
+        error_t: `address field not filled at input => ${i}`,
+        error_index: i,
+        error_field: "address",
+      };
+
+    if (!phone)
+      return {
+        valid: false,
+        error_t: `phone field not filled at input => ${i}`,
+        error_index: i,
+        error_field: "phone",
       };
 
     const validEmail = email.includes("@") && email.includes(".com");
@@ -205,9 +237,16 @@ export function verifyTrusteesList(trustees: object[]) {
       return {
         valid: false,
         error_t: `email not valid at input => ${trustees[i]}`,
+        error_index: i,
+        error_field: "email",
       };
   }
-  return { valid: val, error_t: err, error_index: error_i };
+  return {
+    valid: val,
+    error_t: err,
+    error_index: error_i,
+    error_field: error_f,
+  };
 }
 
 export async function finishDiary(diaryURL: string, trustees: object[]) {

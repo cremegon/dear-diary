@@ -99,10 +99,20 @@ export const EntrusteePage = () => {
   }
 
   function handleFinishDiary(diaryURL: string, trustees: object[]) {
-    const { valid, error_t } = verifyTrusteesList(trustees);
+    const { valid, error_t, error_index, error_field } =
+      verifyTrusteesList(m_trustees);
     console.log("error from trustee entry => ", valid, error_t);
     if (error_t) {
-      return setError(error_t);
+      setError(error_t);
+      const errorField = document.getElementById(
+        `${error_field}+${error_index}`
+      );
+      if (errorField) {
+        errorField.style.borderColor = "red";
+      }
+      console.log("what we got", `${error_field}+${error_index}`);
+      console.log("what it is", `name+${error_index}`);
+      return;
     }
     finishDiary(diaryURL, trustees);
     if (!valid) return error;
@@ -211,6 +221,7 @@ export const EntrusteePage = () => {
               ? m_trustees.map((item, idx) => (
                   <div className="mt-4 flex flex-col justify-evenly" key={idx}>
                     <div className="flex flex-row justify-between align-bottom">
+                      <div>{idx}</div>
                       <h1 className="text-xl">{`Trustee # ${idx + 1}`}</h1>
                       <button
                         className="bg-red-600 text-white w-20"
