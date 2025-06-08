@@ -192,7 +192,15 @@ export function verifyTrusteesList(trustees: object[]) {
   const error_i = null;
   const error_f = null;
   for (let i = 0; i < trustees.length; i++) {
-    const { diaryId, name, email, address, phone } = trustees[i];
+    const trustee = trustees[i] as {
+      diaryId: string;
+      name: string;
+      email: string;
+      address: string;
+      phone: string;
+    };
+    const { diaryId, name, email, address, phone } = trustee;
+    console.log(diaryId);
     // if (!name || !email || !address || !phone)
     //   return {
     //     valid: false,
