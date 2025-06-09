@@ -11,10 +11,8 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<any> => {
-  console.log("Middleware Authentication...");
-
+  console.log("Middleware Authenticating...");
   const token = req.cookies.authToken;
-  console.log(req.cookies, "hey");
 
   // if user exists ; decode the token they have
   try {
