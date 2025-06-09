@@ -17,14 +17,12 @@ export const AuthProvider = () => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      // const response = await fetch("http://localhost:5000/verify", {
-      //   method: "GET",
-      //   credentials: "include",
-      // });
+      const response = await fetch("http://localhost:5000/verify", {
+        method: "GET",
+        credentials: "include",
+      });
 
-      // const data = await response.json();
-
-      if (!auth) {
+      if (!response.ok) {
         if (user) {
           const parsedUser = JSON.parse(user);
           parsedUser.isAuthenticated = false;

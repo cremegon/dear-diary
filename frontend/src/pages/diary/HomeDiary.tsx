@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkDiary, deleteDiary, handleDiary } from "../../util/diary.ts";
 
@@ -21,18 +21,6 @@ export const DiaryPage = () => {
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
-  const titleRef = useRef<HTMLInputElement | null>(null);
-
-  async function fetchDiaryData() {
-    try {
-      const response = await checkDiary();
-      setEntry(response.data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function handleDelete(e: React.MouseEvent, diaryId: string) {
     console.log(diaryId);
@@ -61,8 +49,17 @@ export const DiaryPage = () => {
 
   // ---- Load in Available Diary Entries
   useEffect(() => {
+    async function fetchDiaryData() {
+      try {
+        const response = await checkDiary();
+        setEntry(response.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchDiaryData();
-    console.log("refreshed!");
   }, [loading, refresh]);
 
   return (
@@ -127,7 +124,7 @@ export const DiaryPage = () => {
         </div>
         <h1 className="text-4xl mb-10">Write Your Diary</h1>
         <h2 className="text-4xl text-yellow-500">
-          {entry
+          {entry && entry.length > 0
             ? entry.map((item) => (
                 <ul
                   key={item.id}
@@ -171,7 +168,7 @@ export const DiaryPage = () => {
             : "nothing..."}
         </h2>
 
-        <div className={`${entry.length > 0 ? "hidden" : "block"}`}>
+        <div className={`${entry && entry.length > 0 ? "hidden" : "block"}`}>
           <form action="post" onSubmit={(e) => refreshCreateDiary(e)}>
             <input
               type="text"
