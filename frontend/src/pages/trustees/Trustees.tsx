@@ -210,9 +210,11 @@ export const EntrusteePage = () => {
                       {person.name}
                     </div>
                     <div
-                      className="bg-black w-7 h-7"
+                      className="bg-black w-7 h-7 flex justify-center items-center"
                       onClick={() => handleEasyRemoveTrustee(idx)}
-                    />
+                    >
+                      <div className="bg-white rounded-3xl w-4 h-4 cursor-pointer" />
+                    </div>
                   </div>
                 ))
               : null}
