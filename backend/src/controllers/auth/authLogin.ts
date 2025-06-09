@@ -10,7 +10,7 @@ const JWT_SECRET = config.jwtSecret;
 
 export const loginUser = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
-  console.log(email, password);
+  console.log("email and password from frontend", email, password);
 
   // select the user that is tied to the token from the database
   const selectedUser = await pool.query(
@@ -19,7 +19,7 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
   );
 
   // if there is no user in the database connected to the token, then things are sketch, return False
-  if (selectedUser.rowCount === 0) {
+  if (!selectedUser.rowCount) {
     return res
       .status(404)
       .json({ message: "User not Found", redirect: "/signup" });

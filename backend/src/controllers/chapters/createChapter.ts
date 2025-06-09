@@ -23,10 +23,9 @@ export const createChapter = async (
     "SELECT id FROM chapters WHERE diary_id = $1 ORDER BY id DESC LIMIT 1",
     [diaryId]
   );
-  console.log("hi...", prevChapterId.rows);
+
   const prevchapterid =
     prevChapterId.rows.length > 0 ? prevChapterId.rows[0].id : null;
-  console.log("previouschapterid = ", prevchapterid);
 
   const query = await pool.query(
     "INSERT INTO chapters(diary_id,font_family,font_size,title,prevchapterid) VALUES($1,$2,$3,$4,$5) RETURNING *",
@@ -40,7 +39,6 @@ export const createChapter = async (
     prevchapterid,
   ]);
 
-  console.log("encrypting...", id);
   const encryptedURL = encryptUserId(id);
 
   await pool.query("UPDATE chapters SET url = $1 WHERE id = $2", [

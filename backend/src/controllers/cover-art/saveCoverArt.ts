@@ -10,12 +10,6 @@ export const saveCoverArt = async (
 ): Promise<any> => {
   const { image } = req.body;
   const { diaryURL } = req.params;
-  const token = req.cookies.authToken;
-
-  if (!token) {
-    console.log("Token Error at checkDiary");
-    return res.status(404).json({ message: "No Token Found" });
-  }
 
   await pool.query("UPDATE diaries SET cover = $1 WHERE url = $2", [
     image,

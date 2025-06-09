@@ -17,19 +17,21 @@ export const fetchArchives = async (
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.id;
 
+  // ---- Get the user id from the cookie and select all completed diaries from db
   const diaryEntry = await pool.query(
     "SELECT * FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL ORDER BY completed_at DESC",
     [userId]
   );
   console.log("checking entrusted...");
 
+  // ---- select all unique diary id's from these diaries
   const diaryIds = await pool.query(
     "SELECT DISTINCT id FROM diaries WHERE user_id = $1 AND completed_at IS NOT NULL",
     [userId]
   );
 
-  console.log(diaryIds.rows);
   const trustedPersons: trustedPersonsMap = {};
+  // ---- create a hashmap of diaries mapped to users they are shared with
   for (let i = 0; i < diaryIds.rows.length; i++) {
     const user_id = diaryIds.rows[i].id;
     const entrusted = await pool.query(
@@ -43,7 +45,6 @@ export const fetchArchives = async (
       trustedPersons[user_id].push(...entrusted.rows);
     }
   }
-  console.log("TRUSTED PEOPLE!", trustedPersons);
 
   return res.status(200).json({
     message: "Archived Diaries Found",

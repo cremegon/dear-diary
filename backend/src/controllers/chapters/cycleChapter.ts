@@ -1,10 +1,8 @@
 import { Request, response, Response } from "express";
 import { Pool } from "pg";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../../config";
 
 const pool = new Pool(config.db);
-const JWT_SECRET = config.jwtSecret;
 
 export const cycleToPrevChapter = async (
   req: Request,
@@ -18,8 +16,6 @@ export const cycleToPrevChapter = async (
     [chapterURL]
   );
 
-  console.log("current query back: ", query.rows.length);
-
   if (!query.rows[0].prevchapterid) {
     return res
       .status(404)
@@ -31,7 +27,6 @@ export const cycleToPrevChapter = async (
     "SELECT url FROM chapters WHERE id = $1",
     [id]
   );
-  console.log(id);
 
   return res
     .status(200)
@@ -49,8 +44,6 @@ export const cycleToNextChapter = async (
     "SELECT nextchapterid FROM chapters WHERE url = $1",
     [chapterURL]
   );
-
-  console.log("current query front: ", query.rows.length);
 
   if (!query.rows[0].nextchapterid) {
     return res

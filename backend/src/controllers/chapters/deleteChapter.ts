@@ -21,23 +21,29 @@ export const deleteChapter = async (
   prevId = currentId.prevchapterid;
   nextId = currentId.nextchapterid;
 
+  // ---- link the next chapter's previd to the current chapters previd
   if (nextId) {
     await pool.query("UPDATE chapters SET prevchapterid = $1 WHERE id = $2", [
       prevId,
       nextId,
     ]);
-  } else {
+  }
+  // ---- otherwise, if this is the last chapter, set the prevchapter's nextid to null
+  else {
     await pool.query("UPDATE chapters SET nextchapterId = $1 WHERE id = $2", [
       nextId,
       prevId,
     ]);
   }
+  // ---- if there is a prev chapter, set the prev chapter's nextid to the next chapter of the current chapter
   if (prevId) {
     await pool.query("UPDATE chapters SET nextchapterid = $1 WHERE id = $2", [
       nextId,
       prevId,
     ]);
-  } else {
+  }
+  // ---- otherwise, if this is the first chapter, then set the next chapter's previd to null
+  else {
     await pool.query("UPDATE chapters SET prevchapterid = $1 WHERE id = $2", [
       prevId,
       nextId,

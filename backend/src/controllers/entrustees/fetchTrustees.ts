@@ -15,7 +15,6 @@ export const fetchTrustees = async (
   console.log("fetching trustees...");
   const token = req.cookies.authToken;
   const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
-  console.log("fetched user_id:", decoded.id);
 
   const diaries = await pool.query("SELECT * FROM diaries WHERE user_id = $1", [
     decoded.id,
@@ -26,10 +25,11 @@ export const fetchTrustees = async (
     [decoded.id]
   );
 
-  console.log("selected trustees = ", trustees.rows);
+  console.log("trustees selected");
 
   const diary_to_trustees: relatedToTrustees = {};
 
+  // ---- for each diary, select its title and trustees
   for (let i = 0; i < diaries.rows.length; i++) {
     const diary_id = diaries.rows[i].id;
     const title = diaries.rows[i].title;
@@ -37,20 +37,17 @@ export const fetchTrustees = async (
       "SELECT * FROM trustees WHERE diary_id = $1",
       [diary_id]
     );
+    // ---- then, map the name of each trustee to the associated diary
     for (let j = 0; j < trustees_to_diaries.rows.length; j++) {
       const name = trustees_to_diaries.rows[j].name;
-      console.log("curr name", name);
       if (!diary_to_trustees[name]) {
         diary_to_trustees[name] = [];
       }
       if (!diary_to_trustees[name].includes(title)) {
-        console.log("curr title", title);
         diary_to_trustees[name].push(title);
       }
     }
   }
-
-  console.log(diary_to_trustees);
 
   return res.status(200).json({
     message: "Trustees Found",

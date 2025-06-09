@@ -8,12 +8,9 @@ const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
 export const signupUser = async (req: Request, res: Response): Promise<any> => {
-  // select the userInput's name, email and password from the frontend request.
   const { name, email, password } = req.body;
   // hash their password Input for extra security.
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  // first, verify if this user already doesn't exist by the input email
   const result = await pool.query("SELECT * FROM users WHERE email = $1", [
     email,
   ]);
