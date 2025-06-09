@@ -17,24 +17,23 @@ export const AuthProvider = () => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      const response = await fetch("http://localhost:5000/verify", {
-        method: "GET",
-        credentials: "include",
-      });
+      // const response = await fetch("http://localhost:5000/verify", {
+      //   method: "GET",
+      //   credentials: "include",
+      // });
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (!response.ok) {
+      if (!auth) {
         if (user) {
           const parsedUser = JSON.parse(user);
           parsedUser.isAuthenticated = false;
           localStorage.setItem("user", JSON.stringify(parsedUser));
         }
-        console.log(data.message);
+
         setAuth(false);
         navigate("/login");
       } else {
-        console.log(data.message);
         if (user) {
           const parsedUser = JSON.parse(user);
           parsedUser.isAuthenticated = true;

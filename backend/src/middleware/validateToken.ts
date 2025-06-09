@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Pool } from "pg";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
@@ -8,7 +8,8 @@ const JWT_SECRET = config.jwtSecret;
 
 export const validateToken = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   console.log("Verifying Token...");
 
