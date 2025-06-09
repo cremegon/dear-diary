@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -39,8 +39,11 @@ import {
   cycleToPrevChapter,
 } from "./controllers/chapters/cycleChapter";
 import { fetchUniqueTrustees } from "./controllers/entrustees/fetchUniqueTrustees";
+import { authMiddleware } from "./middleware/authMiddleware";
 
 const app = express();
+
+app.use(express.Router());
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -88,13 +91,13 @@ app.delete("/delete-chapter/:chapterURL", deleteChapter);
 app.get("/check-diary", checkDiary);
 
 // ---------------------- Fetch a Diary
-app.get("/fetch-diary/:diaryURL", fetchDiary);
+app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
 
 // ---------------------- Check Chapter
 app.get("/check-chapter", fetchChapters);
 
 // ---------------------- Check Archives
-app.get("/check-archives", fetchArchives);
+app.get("/check-archives", authMiddleware, fetchArchives);
 
 // ---------------------- Save Content
 app.post("/save-to-db", saveContent);
