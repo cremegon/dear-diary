@@ -94,7 +94,7 @@ app.get("/check-diary", checkDiary);
 app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
 
 // ---------------------- Check Chapter
-app.get("/check-chapter", fetchChapters);
+app.get("/check-chapter", authMiddleware, fetchChapters);
 
 // ---------------------- Check Archives
 app.get("/check-archives", authMiddleware, fetchArchives);
@@ -127,7 +127,7 @@ app.post("/reset-password", resetPassword);
 app.get("/fetch-unique-trustees", fetchUniqueTrustees);
 
 // ---------------------- Fetch All Linked Trustees
-app.get("/fetch-trustees", fetchTrustees);
+app.get("/fetch-trustees", authMiddleware, fetchTrustees);
 
 // ---------------------- Add New Entrustee
 app.post("/add-entrustee/:diaryURL", addEntrustee);

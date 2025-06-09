@@ -19,18 +19,7 @@ export const authMiddleware = async (
   // if user exists ; decode the token they have
   try {
     const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
-    console.log("decoded details form token:", decoded);
-    // select the user connected to the token from the database
-    const selectedUser = await pool.query(
-      "SELECT email FROM users WHERE id = $1",
-      [decoded.id]
-    );
-    const user = selectedUser.rows[0];
-    console.log("selected user from login: ", user);
-
-    // if the user from the token does not match the user in the database, return False
-    console.log("comparisions = ", user.email, decoded.email);
-    if (user.email === decoded.email) {
+    if (decoded) {
       next();
     }
     // if the user matches, then the verification is successful
