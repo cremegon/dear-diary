@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkDiary, deleteDiary, handleDiary } from "../../util/diary.ts";
 
@@ -21,6 +21,7 @@ export const DiaryPage = () => {
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
+  const titleRef = useRef<HTMLInputElement | null>(null);
 
   async function fetchDiaryData() {
     try {
@@ -46,6 +47,13 @@ export const DiaryPage = () => {
   }
 
   async function refreshCreateDiary(e: React.FormEvent) {
+    if (!title) {
+      const titleNode = document.getElementById("title");
+      if (titleNode) {
+        titleNode.style.borderColor = "red";
+      }
+      return;
+    }
     await handleDiary(e, title);
     console.log("created new diary");
     setRefresh(!refresh);
@@ -168,6 +176,7 @@ export const DiaryPage = () => {
             <input
               type="text"
               value={title}
+              id="title"
               placeholder="Add your Title"
               onChange={(e) => setTitle(e.target.value)}
               className="border-pink-400 border-4"

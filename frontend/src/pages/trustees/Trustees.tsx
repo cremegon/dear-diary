@@ -114,6 +114,7 @@ export const EntrusteePage = () => {
   }
 
   function handleFinishDiary(diaryURL: string, trustees: object[]) {
+    if (!trustees && !m_trustees) return;
     const { valid, error_t, error_index, error_field } =
       verifyTrusteesList(m_trustees);
     console.log("error from trustee entry => ", valid, error_t);
@@ -126,7 +127,6 @@ export const EntrusteePage = () => {
         errorField.style.borderColor = "red";
       }
       console.log("what we got", `${error_field}+${error_index}`);
-      console.log("what it is", `name+${error_index}`);
       return;
     }
     finishDiary(diaryURL, trustees);
