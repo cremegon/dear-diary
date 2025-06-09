@@ -9,14 +9,8 @@ export const deleteDiary = async (
   res: Response
 ): Promise<any> => {
   const { diaryURL } = req.params;
-  const token = req.cookies.authToken;
 
   console.log("Deleting Diary...", diaryURL);
-
-  if (!token) {
-    console.log("Token Error at deleteDiary");
-    return res.status(404).send();
-  }
 
   try {
     await pool.query("DELETE FROM diaries WHERE url = $1", [diaryURL]);

@@ -11,14 +11,7 @@ export const cycleToPrevChapter = async (
   res: Response
 ): Promise<any> => {
   const { chapterURL } = req.params;
-  const token = req.cookies.authToken;
-
   console.log("Flipping Behind...", chapterURL);
-
-  if (!token) {
-    console.log("Token Error at chapterFlipBack");
-    return res.status(404).json({ message: "No Chapters Found" });
-  }
 
   const query = await pool.query(
     "SELECT prevchapterid FROM chapters WHERE url = $1",
@@ -50,14 +43,7 @@ export const cycleToNextChapter = async (
   res: Response
 ): Promise<any> => {
   const { chapterURL } = req.params;
-  const token = req.cookies.authToken;
-
   console.log("Flipping Forward...");
-
-  if (!token) {
-    console.log("Token Error at chapterFlipNext");
-    return res.status(404).json({ message: "No Chapters Found" });
-  }
 
   const query = await pool.query(
     "SELECT nextchapterid FROM chapters WHERE url = $1",

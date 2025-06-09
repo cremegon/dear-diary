@@ -9,14 +9,7 @@ export const deleteChapter = async (
   res: Response
 ): Promise<any> => {
   const { chapterURL } = req.params;
-  const token = req.cookies.authToken;
-
   console.log("Deleting Chapter...", chapterURL);
-
-  if (!token) {
-    console.log("Token Error at deleteDiary");
-    return res.status(404).send();
-  }
 
   let prevId = null;
   let nextId = null;

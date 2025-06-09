@@ -9,13 +9,6 @@ export const fetchUniqueTrustees = async (
   res: Response
 ): Promise<any> => {
   console.log("fetching unique trustees...");
-  const token = req.cookies.authToken;
-
-  // check if a token exists ; if not then a user isn't verified
-  if (!token) {
-    console.log("no tokens found at fetching trustees");
-    return res.status(403).json({ message: "No cookies found" });
-  }
 
   const trustees = await pool.query(
     "SELECT DISTINCT ON (t.name) t.* FROM trustees as t"

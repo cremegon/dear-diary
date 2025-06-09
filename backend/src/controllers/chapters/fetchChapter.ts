@@ -11,14 +11,7 @@ export const fetchChapters = async (
   res: Response
 ): Promise<any> => {
   const { key } = req.query;
-  const token = req.cookies.authToken;
-
   console.log("Checking Chapters...");
-
-  if (!token) {
-    console.log("Token Error at checkChapter");
-    return res.status(404).json({ message: "No Chapters Found" });
-  }
 
   const query = await pool.query("SELECT id FROM diaries WHERE url = $1", [
     key,

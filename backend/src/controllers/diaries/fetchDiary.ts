@@ -5,15 +5,8 @@ import { config } from "../../config";
 const pool = new Pool(config.db);
 
 export const fetchDiary = async (req: Request, res: Response): Promise<any> => {
-  const token = req.cookies.authToken;
   const { diaryURL } = req.params;
-
   console.log("fetching diary to be compiled!");
-
-  if (!token) {
-    console.log("Token Error at checkDiary");
-    return res.status(404).json({ message: "No Diaries Found" });
-  }
 
   const diaryEntry = await pool.query("SELECT * FROM diaries WHERE url = $1", [
     diaryURL,

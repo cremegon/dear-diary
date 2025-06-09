@@ -14,8 +14,8 @@ export const Navbar = () => {
   return (
     <div className="bg-black w-full h-32 flex flex-col justify-center">
       <ul className="flex flex-row justify-between items-center text-xl text-white">
-        <NavLink to={"/"} className="ml-8">
-          Home
+        <NavLink to={"/diary"} className="ml-8">
+          Diary
         </NavLink>
 
         <NavLink to={"/archive"} className="ml-24 hover:font-black">

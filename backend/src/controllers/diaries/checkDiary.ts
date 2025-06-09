@@ -8,12 +8,6 @@ const JWT_SECRET = config.jwtSecret;
 
 export const checkDiary = async (req: Request, res: Response): Promise<any> => {
   const token = req.cookies.authToken;
-
-  if (!token) {
-    console.log("Token Error at checkDiary");
-    return res.status(404).json({ message: "No Diaries Found" });
-  }
-
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.id;
 

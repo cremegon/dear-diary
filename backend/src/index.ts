@@ -72,23 +72,23 @@ app.post("/login", loginUser);
 app.get("/logout", logoutUser);
 
 // ---------------------- Create Diary
-app.post("/new-diary", createDiary);
+app.post("/new-diary", authMiddleware, createDiary);
 
 // ---------------------- Delete Diary
-app.delete("/delete-diary/:diaryURL", deleteDiary);
+app.delete("/delete-diary/:diaryURL", authMiddleware, deleteDiary);
 
 // ---------------------- Create Chapter
-app.post("/new-chapter", createChapter);
+app.post("/new-chapter", authMiddleware, createChapter);
 
 // ---------------------- Cycle Between Chapter Pages
 app.get("/prev-chapter/:chapterURL", cycleToPrevChapter);
 app.get("/next-chapter/:chapterURL", cycleToNextChapter);
 
 // ---------------------- Delete Chapter
-app.delete("/delete-chapter/:chapterURL", deleteChapter);
+app.delete("/delete-chapter/:chapterURL", authMiddleware, deleteChapter);
 
 // ---------------------- Check Diary
-app.get("/check-diary", checkDiary);
+app.get("/check-diary", authMiddleware, checkDiary);
 
 // ---------------------- Fetch a Diary
 app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
@@ -103,7 +103,7 @@ app.get("/check-archives", authMiddleware, fetchArchives);
 app.post("/save-to-db", saveContent);
 
 // ---------------------- Load Content
-app.post("/load-from-db", loadContent);
+app.post("/load-from-db", authMiddleware, loadContent);
 
 // ---------------------- Save Cover Art
 app.post("/save-cover-art/:diaryURL", saveCoverArt);
@@ -112,7 +112,7 @@ app.post("/save-cover-art/:diaryURL", saveCoverArt);
 app.get("/load-cover-art/:diaryURL", loadCoverArt);
 
 // ---------------------- Compile Diary to PDF
-app.post("/finish-diary/:diaryURL", compileDiary);
+app.post("/finish-diary/:diaryURL", authMiddleware, compileDiary);
 
 // ---------------------- Send Reset Password
 app.post("/forgot-password", forgotPassword);
@@ -124,13 +124,13 @@ app.post("/check-reset-code", confirmForgotPassword);
 app.post("/reset-password", resetPassword);
 
 // ---------------------- Fetch All Unique Trustees
-app.get("/fetch-unique-trustees", fetchUniqueTrustees);
+app.get("/fetch-unique-trustees", authMiddleware, fetchUniqueTrustees);
 
 // ---------------------- Fetch All Linked Trustees
 app.get("/fetch-trustees", authMiddleware, fetchTrustees);
 
 // ---------------------- Add New Entrustee
-app.post("/add-entrustee/:diaryURL", addEntrustee);
+app.post("/add-entrustee/:diaryURL", authMiddleware, addEntrustee);
 
 //Server Listen
 const PORT = config.serverPort;

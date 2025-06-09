@@ -1,22 +1,16 @@
 import { Request, Response } from "express";
 import { Pool } from "pg";
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../../config";
 import { encryptUserId } from "../../utils/security";
 
 const pool = new Pool(config.db);
-const JWT_SECRET = config.jwtSecret;
 
 export const createChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   const { fontFamily, fontSize, url } = req.body;
-  const token = req.cookies.authToken;
   console.log("Creating New Chapter....", url);
-
-  if (!token)
-    return res.status(403).json({ message: "Token not verified at Chapters" });
 
   const selectedRow = await pool.query(
     "SELECT id FROM diaries WHERE url = $1",

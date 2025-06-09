@@ -14,13 +14,6 @@ export const fetchTrustees = async (
 ): Promise<any> => {
   console.log("fetching trustees...");
   const token = req.cookies.authToken;
-
-  // check if a token exists ; if not then a user isn't verified
-  if (!token) {
-    console.log("no tokens found at fetching trustees");
-    return res.status(403).json({ message: "No cookies found" });
-  }
-
   const decoded = jwt.verify(token, JWT_SECRET as string) as jwt.JwtPayload;
   console.log("fetched user_id:", decoded.id);
 

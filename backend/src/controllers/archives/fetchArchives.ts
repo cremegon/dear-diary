@@ -14,12 +14,6 @@ export const fetchArchives = async (
 ): Promise<any> => {
   console.log("checking archives...");
   const token = req.cookies.authToken;
-
-  if (!token) {
-    console.log("Token Error at checkDiary");
-    return res.status(404).json({ message: "No Diaries Found" });
-  }
-
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.id;
 
