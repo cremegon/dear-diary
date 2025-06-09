@@ -28,11 +28,17 @@ export const fetchTrustees = async (
   console.log("trustees selected");
 
   const diary_to_trustees: relatedToTrustees = {};
+  const link_to_diary: { [key: string]: string } = {};
 
   // ---- for each diary, select its title and trustees
   for (let i = 0; i < diaries.rows.length; i++) {
     const diary_id = diaries.rows[i].id;
+    const diary_url = diaries.rows[i].url;
     const title = diaries.rows[i].title;
+
+    if (!link_to_diary[title]) {
+      link_to_diary[title] = diary_url;
+    }
     const trustees_to_diaries = await pool.query(
       "SELECT * FROM trustees WHERE diary_id = $1",
       [diary_id]
@@ -47,11 +53,13 @@ export const fetchTrustees = async (
         diary_to_trustees[name].push(title);
       }
     }
+    console.log(link_to_diary);
   }
 
   return res.status(200).json({
     message: "Trustees Found",
     trustees: trustees.rows,
     diaries: diary_to_trustees,
+    urls: link_to_diary,
   });
 };

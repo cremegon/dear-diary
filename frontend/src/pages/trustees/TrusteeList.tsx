@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchEntrustees } from "../../util/diary.ts";
+import { Link } from "react-router-dom";
 
 interface Trustees {
   id: number;
@@ -15,12 +16,16 @@ export const TrusteeHome = () => {
   const [diariesToTrustees, setDiariesToTrustees] = useState<{
     [key: number]: string[];
   }>([]);
+  const [linkToDiaries, setLinkeToDiaries] = useState<{
+    [key: string]: string | null;
+  }>();
 
   async function fetchTrusteeData() {
     const response = await fetchEntrustees();
     if (!response) return "error from backend finding entrustees...";
     setTrusteesList(response.trustees);
     setDiariesToTrustees(response.diaries);
+    setLinkeToDiaries(response.urls);
     console.log(response.trustees);
     console.log(response.diaries);
   }
@@ -54,7 +59,15 @@ export const TrusteeHome = () => {
                             |
                           </li>
                           <li className={`${idx > 0 ? "ml-2" : null}`}>
-                            {related}
+                            <Link
+                              to={
+                                linkToDiaries
+                                  ? `/archive/${linkToDiaries[related]}/chapter`
+                                  : ""
+                              }
+                            >
+                              {related}
+                            </Link>
                           </li>
                         </div>
                       )
