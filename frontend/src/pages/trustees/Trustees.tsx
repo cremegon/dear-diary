@@ -93,6 +93,12 @@ export const EntrusteePage = () => {
     console.log("trustee removed => ", change);
   }
 
+  function handleEasyRemoveTrustee(idx: number) {
+    const change = [...trustees.slice(0, idx), ...trustees.slice(idx + 1)];
+    setTrustees(change);
+    console.log("easy trustee removed => ", change);
+  }
+
   function handleEntrusteeDetails(value: string, id: string, i: number) {
     const plus_index = id.indexOf("+");
     const newId = id.slice(0, plus_index);
@@ -197,11 +203,13 @@ export const EntrusteePage = () => {
           <div className={`mt-4 flex bg-blue-600 w-full h-min flex-wrap`}>
             {trustees.length > 0 && trustees[trustees.length - 1].name
               ? trustees.map((person, idx) => (
-                  <div
-                    className={`${person.name ? "block" : "hidden"} ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex`}
-                    key={idx}
-                  >
-                    {person.name}
+                  <div key={idx}>
+                    <div
+                      className={`${person.name ? "block" : "hidden"} ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex`}
+                    >
+                      {person.name}
+                    </div>
+                    <div className="" />
                   </div>
                 ))
               : null}
