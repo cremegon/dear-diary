@@ -203,13 +203,16 @@ export const EntrusteePage = () => {
           <div className={`mt-4 flex bg-blue-600 w-full h-min flex-wrap`}>
             {trustees.length > 0 && trustees[trustees.length - 1].name
               ? trustees.map((person, idx) => (
-                  <div key={idx}>
+                  <div key={idx} className="flex flex-row">
                     <div
                       className={`${person.name ? "block" : "hidden"} ml-2 w-auto h-7 p-2 text-sm border-2 border-pink-600 bg-pink-400 items-center justify-center flex`}
                     >
                       {person.name}
                     </div>
-                    <div className="" />
+                    <div
+                      className="bg-black w-7 h-7"
+                      onClick={() => handleEasyRemoveTrustee(idx)}
+                    />
                   </div>
                 ))
               : null}
