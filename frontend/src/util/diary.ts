@@ -341,9 +341,17 @@ export async function fetchDiary(diaryURL: string) {
     }
   );
 
-  if (!response.ok) return `NO Archives Found`;
+  if (response.status === 401) return null;
 
   const data = await response.json();
 
   return data;
+}
+
+export async function expireCookie() {
+  await fetch(`http://localhost:5000/expire-cookie`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
 }

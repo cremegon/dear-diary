@@ -130,7 +130,6 @@ export const EntrusteePage = () => {
       return;
     }
     finishDiary(diaryURL, trustees);
-    if (!valid) return error;
   }
 
   useEffect(() => {

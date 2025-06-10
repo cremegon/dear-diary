@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchEntrustees } from "../../util/diary.ts";
 import { Link } from "react-router-dom";
+import { handleLogout } from "../../util/client.ts";
+import { useAuth } from "../../context/contextProvider.tsx";
 
 interface Trustees {
   id: number;
@@ -12,6 +14,7 @@ interface Trustees {
 }
 
 export const TrusteeHome = () => {
+  const { setAuth } = useAuth();
   const [trusteesList, setTrusteesList] = useState<Trustees[]>([]);
   const [diariesToTrustees, setDiariesToTrustees] = useState<{
     [key: number]: string[];
@@ -22,12 +25,10 @@ export const TrusteeHome = () => {
 
   async function fetchTrusteeData() {
     const response = await fetchEntrustees();
-    if (!response) return "error from backend finding entrustees...";
+    if (response.length < 1) handleLogout(setAuth);
     setTrusteesList(response.trustees);
     setDiariesToTrustees(response.diaries);
     setLinkeToDiaries(response.urls);
-    console.log(response.trustees);
-    console.log(response.diaries);
   }
 
   useEffect(() => {

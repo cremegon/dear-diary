@@ -40,6 +40,7 @@ import {
 } from "./controllers/chapters/cycleChapter";
 import { fetchUniqueTrustees } from "./controllers/entrustees/fetchUniqueTrustees";
 import { authMiddleware } from "./middleware/authMiddleware";
+import { expireCookieTest } from "./utils/expireCookieTest";
 
 const app = express();
 
@@ -53,6 +54,9 @@ app.use(
     credentials: true,
   })
 );
+
+app.get("/expire-cookie", expireCookieTest);
+
 // ---------------------- Sign Up new Users
 app.post("/signup", signupUser);
 

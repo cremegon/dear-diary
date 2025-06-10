@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { handleLogout } from "../util/client.ts";
 import { useAuth } from "../context/contextProvider.tsx";
+import { expireCookie } from "../util/diary.ts";
 
 export const Navbar = () => {
   const { setAuth } = useAuth();
@@ -14,6 +15,12 @@ export const Navbar = () => {
   return (
     <div className="bg-black w-full h-32 flex flex-col justify-center">
       <ul className="flex flex-row justify-between items-center text-xl text-white">
+        <button
+          onClick={() => expireCookie()}
+          className="border-4 border-black p-4 bg-red-500"
+        >
+          Expire Cookie
+        </button>
         <NavLink to={"/diary"} className="ml-8">
           Diary
         </NavLink>

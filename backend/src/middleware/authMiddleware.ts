@@ -24,7 +24,7 @@ export const authMiddleware = async (
   } catch (error) {
     console.log("Invalid Token from Token Verification");
     return res
-      .status(403)
+      .status(401)
       .clearCookie("authToken", {
         httpOnly: true,
         sameSite: "strict",
