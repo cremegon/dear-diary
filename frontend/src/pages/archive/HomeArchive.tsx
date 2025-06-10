@@ -34,7 +34,7 @@ export const ArchivePage = () => {
   async function fetchArchivedData() {
     try {
       const response = await fetchArchives();
-      if (!response) return handleLogout(setAuth);
+      // if (!response) return handleLogout(setAuth);
       setEntry(response.data);
       setTrusted(response.entrusted);
     } catch (error) {

@@ -13,6 +13,7 @@ const Reader = () => {
   useEffect(() => {
     async function loadContent() {
       const response = await loadFromDatabase(params);
+      if (!response) return;
       try {
         setLoading(false);
       } catch (error) {

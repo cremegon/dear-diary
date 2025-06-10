@@ -145,6 +145,7 @@ export async function loadFromDatabase(url: string) {
     credentials: "include",
   });
 
+  if (!response.ok && response.status === 401) return false;
   const data = await response.json();
   return data;
 }

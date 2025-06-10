@@ -42,7 +42,7 @@ export const AuthProvider = () => {
 
     console.log("user verification:", auth);
     verifyToken();
-  }, [auth, user]);
+  }, [auth, user, navigate]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
