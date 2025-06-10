@@ -61,7 +61,7 @@ export async function checkDiary() {
     credentials: "include",
   });
 
-  if (!response.ok) return `NO diary Found`;
+  if (!response.ok && response.status === 401) return false;
 
   const data = await response.json();
 
@@ -294,7 +294,7 @@ export async function fetchEntrustees() {
     credentials: "include",
   });
 
-  if (!response.ok) return [];
+  if (!response.ok && response.status === 401) return false;
   const data = await response.json();
   return data;
 }
@@ -311,7 +311,7 @@ export async function addEntrustee(diaryURL: string, trustees: object[]) {
     }
   );
 
-  if (!response.ok) return false;
+  if (!response.ok && response.status === 401) return false;
   return true;
 }
 
@@ -324,7 +324,7 @@ export async function fetchArchives() {
     credentials: "include",
   });
 
-  if (!response.ok) return `NO Archives Found`;
+  if (!response.ok && response.status === 401) return false;
 
   const data = await response.json();
 

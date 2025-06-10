@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { checkDiary, deleteDiary, handleDiary } from "../../util/diary.ts";
+import { handleLogout } from "../../util/client.ts";
+import { useAuth } from "../../context/contextProvider.tsx";
 
 interface DiaryEntry {
   id: number;
@@ -13,6 +15,7 @@ interface DiaryEntry {
 }
 
 export const DiaryPage = () => {
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,6 +55,7 @@ export const DiaryPage = () => {
     async function fetchDiaryData() {
       try {
         const response = await checkDiary();
+        if (!response) return handleLogout(setAuth);
         setEntry(response.data);
       } catch (error) {
         setError(error);

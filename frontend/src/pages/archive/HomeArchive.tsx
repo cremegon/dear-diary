@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchArchives } from "../../util/diary.ts";
+import { useAuth } from "../../context/contextProvider.tsx";
+import { handleLogout } from "../../util/client.ts";
 
 interface DiaryEntry {
   id: number;
@@ -22,6 +24,7 @@ interface TrusteeEntry {
 }
 
 export const ArchivePage = () => {
+  const { setAuth } = useAuth();
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [trusted, setTrusted] = useState<{ [key: number]: TrusteeEntry[] }>([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +34,7 @@ export const ArchivePage = () => {
   async function fetchArchivedData() {
     try {
       const response = await fetchArchives();
+      if (!response) return handleLogout(setAuth);
       setEntry(response.data);
       setTrusted(response.entrusted);
     } catch (error) {

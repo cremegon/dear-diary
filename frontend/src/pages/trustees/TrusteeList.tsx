@@ -25,7 +25,7 @@ export const TrusteeHome = () => {
 
   async function fetchTrusteeData() {
     const response = await fetchEntrustees();
-    if (response.length < 1) handleLogout(setAuth);
+    if (!response) return handleLogout(setAuth);
     setTrusteesList(response.trustees);
     setDiariesToTrustees(response.diaries);
     setLinkeToDiaries(response.urls);
