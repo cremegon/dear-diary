@@ -21,6 +21,7 @@ export const DiaryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
+  const [changeTitle, setChangeTitle] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
@@ -143,11 +144,19 @@ export const DiaryPage = () => {
                     />
                   </div>
                   <Link to={`${item.url}/chapter`}>
-                    <li>{item.title}</li>
-                    <input placeholder={item.title} />
+                    <li className={`${!changeTitle ? "block" : "hidden"}`}>
+                      {item.title}
+                    </li>
+                    <input
+                      className={`${changeTitle ? "block" : "hidden"} border-4 w-1/2 p-0`}
+                      placeholder={item.title}
+                    />
                   </Link>
 
-                  <button className="text-sm border-4 p-4 bg-blue-500 border-black text-blue-950">
+                  <button
+                    onClick={() => setChangeTitle(!changeTitle)}
+                    className="text-sm border-4 p-4 bg-blue-500 border-black text-blue-950"
+                  >
                     Edit Diary Name
                   </button>
 
