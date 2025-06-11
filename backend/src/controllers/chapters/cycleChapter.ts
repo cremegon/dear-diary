@@ -47,6 +47,7 @@ export const cycleToNextChapter = async (
   );
 
   if (!query.rows[0].nextchapterid) {
+    console.log("no next chapter");
     return res
       .status(404)
       .json({ message: "No Next Chapter Present", data: null });
