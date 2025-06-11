@@ -104,6 +104,24 @@ export async function checkChapter(params: string) {
   return data;
 }
 
+export async function fetchPrevNextChapters(params: string) {
+  console.log("checking prev+next chapterids...");
+
+  const response = await fetch(
+    `http://localhost:5000/fetch-prev-next-chapters/${params}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) return false;
+
+  const data = await response.json();
+  return data;
+}
+
 export async function prevChapter(params: string) {
   console.log("going to previous chapter...", params);
 

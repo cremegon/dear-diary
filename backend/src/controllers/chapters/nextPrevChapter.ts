@@ -24,13 +24,13 @@ export const fetchNextPrevChapters = async (
       const query = await pool.query("SELECT url FROM chapters WHERE id = $1", [
         prevchapterid,
       ]);
-      prev = query.rows[0].prevchapterid;
+      prev = query.rows[0].url;
     }
     if (nextchapterid) {
       const query = await pool.query("SELECT url FROM chapters WHERE id = $1", [
         nextchapterid,
       ]);
-      next = query.rows[0].nextchapterid;
+      next = query.rows[0].url;
     }
 
     console.log(prev, next);

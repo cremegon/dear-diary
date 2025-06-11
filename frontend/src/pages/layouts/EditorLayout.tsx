@@ -6,7 +6,11 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { nextChapter, prevChapter } from "../../util/diary.ts";
+import {
+  fetchPrevNextChapters,
+  nextChapter,
+  prevChapter,
+} from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
   const [prevId, setPrevId] = useState<string | null>(null);
@@ -46,16 +50,21 @@ export const EditorPageLayout = () => {
 
   useEffect(() => {
     async function handlePrevNextChapters(URL: string) {
-      const response = await fetchPrevNextChapters(params);
+      const response = await fetchPrevNextChapters(URL);
       if (!response) return;
+      setPrevId(response.prev);
+      setNextId(response.next);
+      console.log(prevId, nextId);
     }
+    handlePrevNextChapters(params);
   }, []);
   return (
     <div>
       <div className="h-40 bg-pink-500 flex flex-row justify-between items-center">
         <button
+          disabled={prevId ? true : false}
           onClick={handlePrevious}
-          className="bg-white border-pink-400 border-4 w-24 h-10 ml-20"
+          className={`${prevId ? "text-green-500" : "text-red-500"} bg-white border-pink-400 border-4 w-24 h-10 ml-20`}
         >
           Previous
         </button>
@@ -70,6 +79,7 @@ export const EditorPageLayout = () => {
           {location.pathname.includes("diary") ? "Chapter" : "Archive"}
         </Link>
         <button
+          disabled={nextId ? true : false}
           onClick={handleNext}
           className="bg-white border-pink-400 border-4 w-24 h-10 mr-20"
         >
