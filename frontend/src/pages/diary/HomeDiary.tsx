@@ -147,11 +147,11 @@ export const DiaryPage = () => {
                     <li className={`${!changeTitle ? "block" : "hidden"}`}>
                       {item.title}
                     </li>
-                    <input
-                      className={`${changeTitle ? "block" : "hidden"} border-4 w-1/2 p-0`}
-                      placeholder={item.title}
-                    />
                   </Link>
+                  <input
+                    className={`${changeTitle ? "block" : "hidden"} border-4`}
+                    placeholder={item.title}
+                  />
 
                   <button
                     onClick={() => setChangeTitle(!changeTitle)}
