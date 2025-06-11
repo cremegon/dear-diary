@@ -8,6 +8,7 @@ export const changeTitle = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  console.log("changing diary title...");
   const { new_title } = req.body;
   const { diaryURL } = req.params;
   try {

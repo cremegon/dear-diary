@@ -34,7 +34,7 @@ export const ArchivePage = () => {
   async function fetchArchivedData() {
     try {
       const response = await fetchArchives();
-      // if (!response) return handleLogout(setAuth);
+      if (!response) return handleLogout(setAuth);
       setEntry(response.data);
       setTrusted(response.entrusted);
     } catch (error) {
@@ -72,12 +72,20 @@ export const ArchivePage = () => {
           {entry
             ? entry.map((item, idx) => (
                 <ul key={item.id} className="flex flex-col w-full">
-                  <div className="flex flex-row justify-between items-center">
-                    <div className="flex flex-col">
+                  <div className="flex flex-row justify-start items-center">
+                    <div className={`${item.cover ? "block" : "hidden"}`}>
+                      <img
+                        src={item.cover}
+                        width={100}
+                        height={150}
+                        alt="thebiggay"
+                      />
+                    </div>
+                    <div className="flex flex-col ml-10">
                       <Link to={`${item.url}/chapter`}>
                         <li>{item.title}</li>
                       </Link>
-                      <div className="mt-4 flex flex-row">
+                      <div className="mt-4 flex flex-wrap w-2/3">
                         <div className="text-sm">Entrusted to:</div>
                         {trusted[item.id] && trusted[item.id].length > 0 ? (
                           trusted[item.id].map((person) => (
@@ -103,14 +111,6 @@ export const ArchivePage = () => {
                           ) : null}
                         </div>
                       </div>
-                    </div>
-                    <div className={`${item.cover ? "block" : "hidden"}`}>
-                      <img
-                        src={item.cover}
-                        width={100}
-                        height={150}
-                        alt="thebiggay"
-                      />
                     </div>
                   </div>
                 </ul>

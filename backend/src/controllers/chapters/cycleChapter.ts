@@ -17,6 +17,7 @@ export const cycleToPrevChapter = async (
   );
 
   if (!query.rows[0].prevchapterid) {
+    console.log("no prev chapter");
     return res
       .status(404)
       .json({ message: "No Prev Chapter Present", data: null });
