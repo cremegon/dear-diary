@@ -4,7 +4,10 @@ import { config } from "../../config";
 
 const pool = new Pool(config.db);
 
-export const checkDiary = async (req: Request, res: Response): Promise<any> => {
+export const changeTitle = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const { new_title } = req.body;
   const { URL } = req.params;
   try {
