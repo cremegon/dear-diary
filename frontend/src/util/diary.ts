@@ -16,12 +16,15 @@ export async function handleDiary(e: React.FormEvent, title: string) {
 
 export async function changeDiaryTitle(new_title: string, url: string) {
   console.log("changing diary title...");
-  const response = await fetch(`http://localhost:5000/new-diary/${url}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ new_title }),
-    credentials: "include",
-  });
+  const response = await fetch(
+    `http://localhost:5000/change-diary-title/${url}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ new_title }),
+      credentials: "include",
+    }
+  );
 
   if (!response.ok) return "An Error Occured with Diaries";
   console.log("Diary Title Changed");
