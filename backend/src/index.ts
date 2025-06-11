@@ -105,11 +105,7 @@ app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
 app.get("/check-chapter", authMiddleware, fetchChapters);
 
 // ---------------------- Get the Prev+Next ChapterId's
-app.get(
-  "/fetch-next-prev-chapters/chapterURL",
-  authMiddleware,
-  fetchNextPrevChapters
-);
+app.get("/fetch-next-prev-chapters/:chapterURL", fetchNextPrevChapters);
 
 // ---------------------- Check Archives
 app.get("/check-archives", authMiddleware, fetchArchives);

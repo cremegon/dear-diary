@@ -16,7 +16,23 @@ export const fetchNextPrevChapters = async (
       "SELECT prevchapterid,nextchapterid FROM chapters WHERE url = $1",
       [chapterURL]
     );
-    const { prev, next } = query.rows[0];
+    const { prevchapterid, nextchapterid } = query.rows[0];
+    let prev = null;
+    let next = null;
+
+    if (prevchapterid) {
+      const query = await pool.query("SELECT url FROM chapters WHERE id = $1", [
+        prevchapterid,
+      ]);
+      prev = query.rows[0].prevchapterid;
+    }
+    if (nextchapterid) {
+      const query = await pool.query("SELECT url FROM chapters WHERE id = $1", [
+        nextchapterid,
+      ]);
+      next = query.rows[0].nextchapterid;
+    }
+
     console.log(prev, next);
     return res.status(200).json({
       message: "Prev Next Found",

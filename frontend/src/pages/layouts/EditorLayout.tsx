@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Link,
   Outlet,
@@ -9,6 +9,8 @@ import {
 import { nextChapter, prevChapter } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
+  const [prevId, setPrevId] = useState<string | null>(null);
+  const [nextId, setNextId] = useState<string | null>(null);
   const param = useParams().chapterId as string;
   const archive_param = useParams().archiveChapterId as string;
   const params = param ? param : archive_param;
@@ -17,7 +19,6 @@ export const EditorPageLayout = () => {
   const diaryId = diary_id ? diary_id : archive_diary_id;
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   async function handlePrevious() {
     const response = await prevChapter(params);
@@ -33,13 +34,22 @@ export const EditorPageLayout = () => {
   async function handleNext() {
     const response = await nextChapter(params);
     const chapterId = response.data;
-    if (!chapterId) return;
+    if (!chapterId) {
+      return;
+    }
     if (location.pathname.includes("diary")) {
       navigate(`/diary/${diaryId}/chapter/${chapterId}`);
     } else {
       navigate(`/archive/${diaryId}/chapter/${chapterId}`);
     }
   }
+
+  useEffect(() => {
+    async function handlePrevNextChapters(URL: string) {
+      const response = await fetchPrevNextChapters(params);
+      if (!response) return;
+    }
+  }, []);
   return (
     <div>
       <div className="h-40 bg-pink-500 flex flex-row justify-between items-center">
