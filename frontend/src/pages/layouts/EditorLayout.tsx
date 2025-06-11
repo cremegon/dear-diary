@@ -51,6 +51,7 @@ export const EditorPageLayout = () => {
   useEffect(() => {
     async function handlePrevNextChapters(URL: string) {
       const response = await fetchPrevNextChapters(URL);
+      console.log("response...?", response);
       if (!response) return;
       setPrevId(response.prev);
       setNextId(response.next);

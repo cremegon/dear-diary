@@ -108,7 +108,7 @@ export async function fetchPrevNextChapters(params: string) {
   console.log("checking prev+next chapterids...");
 
   const response = await fetch(
-    `http://localhost:5000/fetch-prev-next-chapters/${params}`,
+    `http://localhost:5000/fetch-next-prev-chapters/${params}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
