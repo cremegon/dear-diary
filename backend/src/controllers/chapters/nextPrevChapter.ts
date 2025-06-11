@@ -4,26 +4,28 @@ import { config } from "../../config";
 
 const pool = new Pool(config.db);
 
-export const fetchChapters = async (
+export const fetchNextPrevChapters = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   const { chapterURL } = req.params;
   console.log("Checking Prev and Next Chapters...");
 
-  const query = await pool.query("SELECT id FROM diaries WHERE url = $1", [
-    key,
-  ]);
-  const diaryId = query.rows[0].id;
-  const next = await pool.query(
-    "SELECT * FROM chapters WHERE diary_id = $1 ORDER BY created_at DESC",
-    [diaryId]
-  );
-
-  const chapters = diaryEntry.rows;
-
-  return res.status(200).json({
-    message: "Diary Entries Found",
-    data: chapters,
-  });
+  try {
+    const query = await pool.query(
+      "SELECT prevchapterid,nextchapterid FROM chapters WHERE url = $1",
+      [chapterURL]
+    );
+    const { prev, next } = query.rows[0];
+    console.log(prev, next);
+    return res.status(200).json({
+      message: "Prev Next Found",
+      prev: prev,
+      next: next,
+    });
+  } catch (error) {
+    return res
+      .status(403)
+      .json({ message: "Failed to find prev/next chapterId's" });
+  }
 };

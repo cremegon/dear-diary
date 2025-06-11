@@ -42,6 +42,7 @@ import { fetchUniqueTrustees } from "./controllers/entrustees/fetchUniqueTrustee
 import { authMiddleware } from "./middleware/authMiddleware";
 import { expireCookieTest } from "./utils/expireCookieTest";
 import { changeTitle } from "./controllers/diaries/changeTitle";
+import { fetchNextPrevChapters } from "./controllers/chapters/nextPrevChapter";
 
 const app = express();
 
@@ -102,6 +103,13 @@ app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
 
 // ---------------------- Check Chapter
 app.get("/check-chapter", authMiddleware, fetchChapters);
+
+// ---------------------- Get the Prev+Next ChapterId's
+app.get(
+  "/fetch-next-prev-chapters/chapterURL",
+  authMiddleware,
+  fetchNextPrevChapters
+);
 
 // ---------------------- Check Archives
 app.get("/check-archives", authMiddleware, fetchArchives);
