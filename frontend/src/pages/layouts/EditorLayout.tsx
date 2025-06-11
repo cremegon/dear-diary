@@ -6,11 +6,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import {
-  fetchPrevNextChapters,
-  nextChapter,
-  prevChapter,
-} from "../../util/diary.ts";
+import { fetchPrevNextChapters } from "../../util/diary.ts";
 
 export const EditorPageLayout = () => {
   const [prevId, setPrevId] = useState<string | null>(null);
@@ -25,9 +21,8 @@ export const EditorPageLayout = () => {
   const location = useLocation();
 
   async function handlePrevious() {
-    const response = await prevChapter(params);
-    const chapterId = response.data;
-    if (!chapterId) return;
+    if (!prevId) return;
+    const chapterId = prevId;
     if (location.pathname.includes("diary")) {
       navigate(`/diary/${diaryId}/chapter/${chapterId}`);
     } else {
@@ -36,11 +31,10 @@ export const EditorPageLayout = () => {
   }
 
   async function handleNext() {
-    const response = await nextChapter(params);
-    const chapterId = response.data;
-    if (!chapterId) {
+    if (!nextId) {
       return;
     }
+    const chapterId = nextId;
     if (location.pathname.includes("diary")) {
       navigate(`/diary/${diaryId}/chapter/${chapterId}`);
     } else {
@@ -58,12 +52,12 @@ export const EditorPageLayout = () => {
       console.log(prevId, nextId);
     }
     handlePrevNextChapters(params);
-  }, []);
+  }, [navigate]);
   return (
     <div>
       <div className="h-40 bg-pink-500 flex flex-row justify-between items-center">
         <button
-          disabled={prevId ? true : false}
+          disabled={!prevId ? true : false}
           onClick={handlePrevious}
           className={`${prevId ? "text-green-500" : "text-red-500"} bg-white border-pink-400 border-4 w-24 h-10 ml-20`}
         >
@@ -80,9 +74,9 @@ export const EditorPageLayout = () => {
           {location.pathname.includes("diary") ? "Chapter" : "Archive"}
         </Link>
         <button
-          disabled={nextId ? true : false}
+          disabled={!nextId ? true : false}
           onClick={handleNext}
-          className="bg-white border-pink-400 border-4 w-24 h-10 mr-20"
+          className={`${nextId ? "text-green-500" : "text-red-500"} bg-white border-pink-400 border-4 w-24 h-10 ml-20`}
         >
           Next
         </button>
