@@ -9,11 +9,11 @@ export const changeTitle = async (
   res: Response
 ): Promise<any> => {
   const { new_title } = req.body;
-  const { URL } = req.params;
+  const { diaryURL } = req.params;
   try {
     await pool.query(
       "ALTER TABLE diaries SET COLUMN title = $1 WHERE url = $2",
-      [new_title, URL]
+      [new_title, diaryURL]
     );
   } catch (error) {
     console.log("Error injecting into DB");

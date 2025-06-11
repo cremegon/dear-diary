@@ -41,6 +41,7 @@ import {
 import { fetchUniqueTrustees } from "./controllers/entrustees/fetchUniqueTrustees";
 import { authMiddleware } from "./middleware/authMiddleware";
 import { expireCookieTest } from "./utils/expireCookieTest";
+import { changeTitle } from "./controllers/diaries/changeTitle";
 
 const app = express();
 
@@ -93,6 +94,8 @@ app.delete("/delete-chapter/:chapterURL", authMiddleware, deleteChapter);
 
 // ---------------------- Check Diary
 app.get("/check-diary", authMiddleware, checkDiary);
+
+app.post("/change-diary-title/:diaryURL", authMiddleware, changeTitle);
 
 // ---------------------- Fetch a Diary
 app.get("/fetch-diary/:diaryURL", authMiddleware, fetchDiary);
