@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { checkDiary, deleteDiary, handleDiary } from "../../util/diary.ts";
+import {
+  changeDiaryTitle,
+  checkDiary,
+  deleteDiary,
+  handleDiary,
+} from "../../util/diary.ts";
 import { handleLogout } from "../../util/client.ts";
 import { useAuth } from "../../context/contextProvider.tsx";
 
@@ -21,10 +26,20 @@ export const DiaryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
+  const [newTitle, setNewTitle] = useState("");
   const [changeTitle, setChangeTitle] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
+
+  async function handleChangeTitle(new_title: string, url: string) {
+    if (!changeTitle) return setChangeTitle(!changeTitle);
+    if (new_title) {
+      await changeDiaryTitle(newTitle, url);
+      setRefresh(!refresh);
+    }
+    return setChangeTitle(!changeTitle);
+  }
 
   async function handleDelete(e: React.MouseEvent, diaryId: string) {
     console.log(diaryId);
@@ -151,10 +166,11 @@ export const DiaryPage = () => {
                   <input
                     className={`${changeTitle ? "block" : "hidden"} border-4 w-1/3`}
                     placeholder={item.title}
+                    onChange={(e) => setNewTitle(e.target.value)}
                   />
 
                   <button
-                    onClick={() => setChangeTitle(!changeTitle)}
+                    onClick={() => handleChangeTitle(newTitle, item.url)}
                     className="text-sm border-4 p-4 bg-blue-500 border-black text-blue-950"
                   >
                     Edit Diary Name
