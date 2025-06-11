@@ -144,7 +144,12 @@ export const DiaryPage = () => {
                   </div>
                   <Link to={`${item.url}/chapter`}>
                     <li>{item.title}</li>
+                    <input placeholder={item.title} />
                   </Link>
+
+                  <button className="text-sm border-4 p-4 bg-blue-500 border-black text-blue-950">
+                    Edit Diary Name
+                  </button>
 
                   <div className="bg-lime-400 w-20 h-20 flex items-center justify-center">
                     <Link
