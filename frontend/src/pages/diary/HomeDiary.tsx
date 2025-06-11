@@ -35,8 +35,10 @@ export const DiaryPage = () => {
   async function handleChangeTitle(new_title: string, url: string) {
     if (!changeTitle) return setChangeTitle(!changeTitle);
     if (new_title) {
-      await changeDiaryTitle(newTitle, url);
-      setRefresh(!refresh);
+      const response = await changeDiaryTitle(newTitle, url);
+      if (!response) return;
+      setNewTitle("");
+      setLoading(true);
     }
     return setChangeTitle(!changeTitle);
   }
@@ -173,7 +175,7 @@ export const DiaryPage = () => {
                     onClick={() => handleChangeTitle(newTitle, item.url)}
                     className="text-sm border-4 p-4 bg-blue-500 border-black text-blue-950"
                   >
-                    Edit Diary Name
+                    {changeTitle ? "Confirm New Title" : "Edit Diary Title"}
                   </button>
 
                   <div className="bg-lime-400 w-20 h-20 flex items-center justify-center">
