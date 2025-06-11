@@ -149,7 +149,7 @@ export const DiaryPage = () => {
                     </li>
                   </Link>
                   <input
-                    className={`${changeTitle ? "block" : "hidden"} border-4`}
+                    className={`${changeTitle ? "block" : "hidden"} border-4 w-1/3`}
                     placeholder={item.title}
                   />
 

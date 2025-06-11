@@ -14,6 +14,22 @@ export async function handleDiary(e: React.FormEvent, title: string) {
   console.log("NEW DATA!", data.message);
 }
 
+export async function changeDiaryTitle(new_title: string, url: string) {
+  console.log("creating new diary...");
+  e.preventDefault();
+  const response = await fetch(`http://localhost:5000/new-diary/${url}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ new_title }),
+    credentials: "include",
+  });
+
+  if (!response.ok) return "An Error Occured with Diaries";
+
+  const data = await response.json();
+  console.log("Diary Title Changed");
+}
+
 export async function deleteDiary(e: React.MouseEvent, diaryId: string) {
   console.log("deleting diary...", diaryId);
   e.preventDefault();
