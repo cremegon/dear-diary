@@ -24,14 +24,20 @@ export const cycleToPrevChapter = async (
   }
 
   const id = query.rows[0].prevchapterid;
+  const prev = await pool.query(
+    "SELECT prevchapterid FROM chapters WHERE id=$1",
+    [id]
+  );
   const chapterQuery = await pool.query(
     "SELECT url FROM chapters WHERE id = $1",
     [id]
   );
 
-  return res
-    .status(200)
-    .json({ json: "Cycling to Prev Page", data: chapterQuery.rows[0].url });
+  return res.status(200).json({
+    json: "Cycling to Prev Page",
+    data: chapterQuery.rows[0].url,
+    prev: prev,
+  });
 };
 
 export const cycleToNextChapter = async (
@@ -54,6 +60,10 @@ export const cycleToNextChapter = async (
   }
 
   const id = query.rows[0].nextchapterid;
+  const next = await pool.query(
+    "SELECT nextchapterid FROM chapters WHERE id=$1",
+    [id]
+  );
   const chapterQuery = await pool.query(
     "SELECT url FROM chapters WHERE id = $1",
     [id]
@@ -61,5 +71,9 @@ export const cycleToNextChapter = async (
 
   return res
     .status(200)
-    .json({ json: "Cycling to Next Page", data: chapterQuery.rows[0].url });
+    .json({
+      json: "Cycling to Next Page",
+      data: chapterQuery.rows[0].url,
+      next: next,
+    });
 };
