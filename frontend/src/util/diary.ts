@@ -26,8 +26,9 @@ export async function changeDiaryTitle(new_title: string, url: string) {
     }
   );
 
-  if (!response.ok) return "An Error Occured with Diaries";
+  if (!response.ok) return false;
   console.log("Diary Title Changed");
+  return true;
 }
 
 export async function deleteDiary(e: React.MouseEvent, diaryId: string) {
