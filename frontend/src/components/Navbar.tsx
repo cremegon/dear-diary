@@ -34,7 +34,7 @@ export const Navbar = () => {
         </NavLink>
 
         <div className="flex flex-row mr-8 w-40 justify-evenly">
-          <div className="bg-white w-12 h-12 rounded-full"></div>
+          <div className="bg-white w-12 h-12 rounded-full" />
           <p
             className="flex items-center hover:cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
