@@ -2,9 +2,9 @@ import React from "react";
 
 export const ProfilePage = () => {
   return (
-    <div>
-      <div>
-        <h1>This is the PROFILE PAGE!!!</h1>
+    <div className="min-h-screen">
+      <div className="flex justify-center items-center">
+        <h1>Profile</h1>
       </div>
     </div>
   );
