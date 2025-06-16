@@ -12,7 +12,7 @@ export const SettingsPage = () => {
                 key={idx}
                 className="flex flex-col justify-center my-8 ml-4 w-1/2 h-20 bg-pink-400"
               >
-                <li>{item}</li>
+                <li className="ml-4 text-white font-bold">{item}</li>
               </div>
             ))
           : null}
