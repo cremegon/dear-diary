@@ -8,7 +8,7 @@ export const SettingsPage = () => {
       <ul>
         {settingsArray && settingsArray.length > 0
           ? settingsArray.map((item, idx) => (
-              <div key={idx} className="">
+              <div key={idx} className="my-8 ml-4">
                 <li>{item}</li>
               </div>
             ))
