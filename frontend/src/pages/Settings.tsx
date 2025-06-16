@@ -7,9 +7,11 @@ export const SettingsPage = () => {
       <h1 className="text-3xl font-bold mt-4 ml-4">Settings</h1>
       <ul>
         {settingsArray && settingsArray.length > 0
-          ? settingsArray.map((item, idx) => {
-              <li key={idx}>{item}</li>;
-            })
+          ? settingsArray.map((item, idx) => (
+              <div key={idx} className="">
+                <li>{item}</li>
+              </div>
+            ))
           : null}
       </ul>
     </div>
