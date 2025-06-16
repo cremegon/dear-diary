@@ -8,7 +8,10 @@ export const SettingsPage = () => {
       <ul>
         {settingsArray && settingsArray.length > 0
           ? settingsArray.map((item, idx) => (
-              <div key={idx} className="my-8 ml-4">
+              <div
+                key={idx}
+                className="flex flex-col justify-center my-8 ml-4 w-1/2 h-20 bg-pink-400"
+              >
                 <li>{item}</li>
               </div>
             ))
