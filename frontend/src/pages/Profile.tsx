@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const ProfilePage = () => {
   const [edit, setEdit] = useState(false);
@@ -15,6 +15,16 @@ export const ProfilePage = () => {
     }
     setEdit(!edit);
   }
+
+  useEffect(() => {
+    async function fetchBio() {
+      const response = fetchProfileBio();
+      if (!response) return;
+      setBio(response.data);
+    }
+    fetchBio();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-1/3 h-full flex flex-col">
