@@ -14,7 +14,7 @@ export const SettingsPage = () => {
             ? settingsArray.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col justify-center w-full h-20 bg-pink-400"
+                  className="flex flex-col justify-center w-full h-20 bg-pink-400 mt-6"
                 >
                   <li className="ml-4 text-white font-bold">{item}</li>
                 </div>
