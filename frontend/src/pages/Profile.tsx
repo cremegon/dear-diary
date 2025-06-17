@@ -23,7 +23,8 @@ export const ProfilePage = () => {
       const response = await fetchProfileBio();
       if (!response) return;
       if (!bioBox.current) return;
-      bioBox.current.textContent = response.data;
+      setBio(response.data);
+      bioBox.current.textContent = bio;
     }
     fetchBio();
   }, []);
@@ -36,6 +37,7 @@ export const ProfilePage = () => {
         <h2 className="mt-6">About You</h2>
         <textarea
           ref={bioBox}
+          value={bio}
           onChange={(e) => setBio(e.target.value)}
           disabled={!edit}
           className="border-2 border-black h-52 my-4"
