@@ -31,22 +31,21 @@ export const ArchivePage = () => {
   const [addHover, setAddHover] = useState([false, 0]);
   const [error, setError] = useState("");
 
-  async function fetchArchivedData() {
-    try {
-      const response = await fetchArchives();
-      if (!response) return handleLogout(setAuth);
-      setEntry(response.data);
-      setTrusted(response.entrusted);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-    console.log(trusted);
-  }
-
   // ---- Load in Available Diary Entries
   useEffect(() => {
+    async function fetchArchivedData() {
+      try {
+        const response = await fetchArchives();
+        if (!response) return handleLogout(setAuth);
+        setEntry(response.data);
+        setTrusted(response.entrusted);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+      console.log(trusted);
+    }
     fetchArchivedData();
   }, [loading]);
 

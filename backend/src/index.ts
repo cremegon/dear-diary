@@ -43,6 +43,8 @@ import { authMiddleware } from "./middleware/authMiddleware";
 import { expireCookieTest } from "./utils/expireCookieTest";
 import { changeTitle } from "./controllers/diaries/changeTitle";
 import { fetchNextPrevChapters } from "./controllers/chapters/nextPrevChapter";
+import { fetchBio } from "./controllers/profile/fetchBio";
+import { updateBio } from "./controllers/profile/updateBio";
 
 const app = express();
 
@@ -144,6 +146,10 @@ app.get("/fetch-trustees", authMiddleware, fetchTrustees);
 app.post("/add-entrustee/:diaryURL", authMiddleware, addEntrustee);
 
 // ---------------------- Fetch Profile Details
+app.get("/fetch-bio", authMiddleware, fetchBio);
+
+// ---------------------- Update Profile Details
+app.post("/update-bio", authMiddleware, updateBio);
 
 //Server Listen
 const PORT = config.serverPort;
