@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
 export const ProfilePage = () => {
-  const [bio, setBio] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [bio, setBio] = useState("");
   const user = localStorage.getItem("user");
   if (!user) return;
   const username = JSON.parse(user).username
@@ -9,10 +10,10 @@ export const ProfilePage = () => {
     : "Guest";
 
   function handleEdit() {
-    if (bio) {
-      handleUpdateProfileBio();
+    if (edit) {
+      updateProfileBio(bio);
     }
-    setBio(!bio);
+    setEdit(!edit);
   }
   return (
     <div className="min-h-screen flex flex-col items-center">
@@ -21,7 +22,8 @@ export const ProfilePage = () => {
         <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
         <h2 className="mt-6">About You</h2>
         <textarea
-          disabled={bio}
+          onChange={(e) => setBio(e.target.value)}
+          disabled={edit}
           className="border-2 border-black h-52 my-4"
         ></textarea>
         <button onClick={handleEdit} className="btn-writeUI">
