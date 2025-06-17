@@ -1,6 +1,9 @@
 import React from "react";
 
-export const settingsArray: string[] = ["Change Password", "Confirm Deceased"];
+export const settingsArray: string[] = [
+  "Change Password",
+  "Confirm End of User",
+];
 export const SettingsPage = () => {
   return (
     <div className="min-h-screen">
