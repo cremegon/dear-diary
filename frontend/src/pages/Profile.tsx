@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const ProfilePage = () => {
+  const [edit, setEdit] = useState(false);
   const user = localStorage.getItem("user");
   if (!user) return;
   const username = JSON.parse(user).username
@@ -12,8 +13,13 @@ export const ProfilePage = () => {
         <h1 className="my-8 text-4xl font-bold text-center">{username}</h1>
         <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
         <h2 className="mt-6">About You</h2>
-        <textarea className="border-2 border-black h-52 my-4"></textarea>
-        <button className="btn-writeUI">Edit</button>
+        <textarea
+          disabled={edit}
+          className="border-2 border-black h-52 my-4"
+        ></textarea>
+        <button onClick={() => setEdit(!edit)} className="btn-writeUI">
+          Edit
+        </button>
       </div>
     </div>
   );
