@@ -9,10 +9,13 @@ export const SettingsPage = () => {
     <div className="min-h-screen">
       <div className="flex flex-col justify-center items-center w-full">
         <h1 className="text-3xl font-bold mt-4 ml-4">Settings</h1>
-        <ul className="w-full">
+        <ul className="w-1/2">
           {settingsArray && settingsArray.length > 0
             ? settingsArray.map((item, idx) => (
-                <div key={idx} className="w-full h-20 bg-pink-400">
+                <div
+                  key={idx}
+                  className="flex flex-col justify-center w-full h-20 bg-pink-400"
+                >
                   <li className="ml-4 text-white font-bold">{item}</li>
                 </div>
               ))
