@@ -143,6 +143,8 @@ app.get("/fetch-trustees", authMiddleware, fetchTrustees);
 // ---------------------- Add New Entrustee
 app.post("/add-entrustee/:diaryURL", authMiddleware, addEntrustee);
 
+// ---------------------- Fetch Profile Details
+
 //Server Listen
 const PORT = config.serverPort;
 app.listen(PORT, () => {
