@@ -7,7 +7,7 @@ const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
 export const updateBio = async (req: Request, res: Response): Promise<any> => {
-  const bio = req.body;
+  const { bio } = req.body;
   console.log("updating profile bio...");
 
   const token = req.cookies.authToken;

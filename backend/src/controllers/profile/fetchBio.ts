@@ -17,6 +17,7 @@ export const fetchBio = async (req: Request, res: Response): Promise<any> => {
     userId,
   ]);
 
+  console.log("sent for bio ", profileBio.rows[0]);
   return res.status(200).json({
     message: "Profile Bio Found",
     data: profileBio.rows[0].bio,
