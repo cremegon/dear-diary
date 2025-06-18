@@ -47,6 +47,32 @@ import { fetchBio } from "./controllers/profile/fetchBio";
 import { updateBio } from "./controllers/profile/updateBio";
 import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
 
+import { Request, Response } from "express";
+import { Pool } from "pg";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
+const JWT_SECRET = config.jwtSecret;
+
+cloudinary.config({
+  cloud_name: config.cloudName,
+  api_key: config.apiKey,
+  api_secret: config.apiSecret,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req: Request, file: Express.Multer.File) => {
+    return {
+      folder: "user-profile-pics",
+      format: "png", // supports promises as well
+      public_id: file.fieldname + "-" + Date.now(),
+    };
+  },
+});
+
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
 const app = express();
 
 app.use(express.Router());
@@ -153,8 +179,10 @@ app.get("/fetch-bio", authMiddleware, fetchBio);
 app.post("/update-bio", authMiddleware, updateBio);
 
 // ---------------------- Upload Profile Pic
-app.post("/upload-dp", authMiddleware, uploadProfilePic);
-
+app.post("/upload", upload.single("image"), function (req, res) {
+  console.log(req.file);
+  res.send("File Uploaded Successfully");
+});
 //Server Listen
 const PORT = config.serverPort;
 app.listen(PORT, () => {

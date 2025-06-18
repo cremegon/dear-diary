@@ -28,4 +28,7 @@ export const config = {
   serverPassword: process.env.SERVER_PASSWORD,
   serverPort: Number(process.env.PORT) || 5000,
   senderEmail: process.env.SENDER_EMAIL,
+  cloudName: process.env.CLOUD_NAME,
+  apiKey: process.env.API_KEY,
+  apiSecret: process.env.API_SECRET,
 };
