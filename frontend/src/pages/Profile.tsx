@@ -4,6 +4,7 @@ import { fetchProfileBio, updateProfileBio } from "../util/diary.ts";
 export const ProfilePage = () => {
   const bioBox = useRef<HTMLTextAreaElement>(null);
   const user = localStorage.getItem("user");
+  const [image, setImage] = useState<File | null>(null);
   const [edit, setEdit] = useState(false);
   const [bio, setBio] = useState("");
   const [username] = useState(
@@ -17,6 +18,8 @@ export const ProfilePage = () => {
     }
     setEdit(!edit);
   }
+
+  function handleUploadImage() {}
 
   useEffect(() => {
     async function fetchBio() {
@@ -34,6 +37,9 @@ export const ProfilePage = () => {
       <div className="w-1/3 h-full flex flex-col">
         <h1 className="my-8 text-4xl font-bold text-center">{username}</h1>
         <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
+        <button onClick={handleUploadImage} className="btn-writeUI">
+          Change DP
+        </button>
         <h2 className="mt-6">About You</h2>
         <textarea
           ref={bioBox}
