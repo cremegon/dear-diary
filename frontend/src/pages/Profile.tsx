@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fetchProfileBio, updateProfileBio } from "../util/diary.ts";
+import {
+  fetchProfileBio,
+  updateProfileBio,
+  uploadProfilePic,
+} from "../util/diary.ts";
 
 export const ProfilePage = () => {
   const bioBox = useRef<HTMLTextAreaElement>(null);

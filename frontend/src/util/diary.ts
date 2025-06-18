@@ -410,6 +410,18 @@ export async function updateProfileBio(bio: string) {
   return data;
 }
 
+export async function uploadProfilePic(image: string) {
+  const response = await fetch("http://localhost:5000/upload-dp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image }),
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
+}
+
 export async function expireCookie() {
   await fetch(`http://localhost:5000/expire-cookie`, {
     method: "GET",
