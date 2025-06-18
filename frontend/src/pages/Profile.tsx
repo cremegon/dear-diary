@@ -5,7 +5,7 @@ export const ProfilePage = () => {
   const bioBox = useRef<HTMLTextAreaElement>(null);
   const user = localStorage.getItem("user");
   const [image, setImage] = useState<File | null>(null);
-  const [pre];
+  const [preview, setPreview] = useState("");
   const [edit, setEdit] = useState(false);
   const [bio, setBio] = useState("");
   const [username] = useState(
@@ -28,6 +28,7 @@ export const ProfilePage = () => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   }
 
@@ -55,6 +56,7 @@ export const ProfilePage = () => {
         <button onClick={handleUploadImage} className="btn-writeUI">
           Change DP
         </button>
+        {preview && <img src={preview} alt="Preview" className="w-1/3 h-1/3" />}
         <h2 className="mt-6">About You</h2>
         <textarea
           ref={bioBox}
