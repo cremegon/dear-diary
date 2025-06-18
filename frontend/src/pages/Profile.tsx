@@ -47,7 +47,15 @@ export const ProfilePage = () => {
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-1/3 h-full flex flex-col">
         <h1 className="my-8 text-4xl font-bold text-center">{username}</h1>
-        <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
+        {preview ? (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-40 h-40 rounded-full self-center"
+          />
+        ) : (
+          <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
+        )}
         <input
           type="file"
           accept="image/*"
@@ -56,7 +64,7 @@ export const ProfilePage = () => {
         <button onClick={handleUploadImage} className="btn-writeUI">
           Change DP
         </button>
-        {preview && <img src={preview} alt="Preview" className="w-1/3 h-1/3" />}
+
         <h2 className="mt-6">About You</h2>
         <textarea
           ref={bioBox}
