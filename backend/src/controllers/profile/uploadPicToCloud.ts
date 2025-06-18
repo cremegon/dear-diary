@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { Pool } from "pg";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../../config";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
