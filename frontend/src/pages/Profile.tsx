@@ -4,8 +4,7 @@ import { fetchProfileBio, updateProfileBio } from "../util/diary.ts";
 export const ProfilePage = () => {
   const bioBox = useRef<HTMLTextAreaElement>(null);
   const user = localStorage.getItem("user");
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState("");
+  const [image, setImage] = useState("");
   const [edit, setEdit] = useState(false);
   const [bio, setBio] = useState("");
   const [username] = useState(
@@ -20,15 +19,12 @@ export const ProfilePage = () => {
     setEdit(!edit);
   }
 
-  function handleUploadImage() {
-    if (!image) return;
-  }
-
-  function handleFileChange(e) {
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+      setImage(URL.createObjectURL(file));
+      const response = uploadProfilePic(image);
+      if (!response) return;
     }
   }
 
@@ -47,9 +43,9 @@ export const ProfilePage = () => {
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-1/3 h-full flex flex-col">
         <h1 className="my-8 text-4xl font-bold text-center">{username}</h1>
-        {preview ? (
+        {image ? (
           <img
-            src={preview}
+            src={image}
             alt="Preview"
             className="w-40 h-40 rounded-full self-center"
           />
@@ -61,9 +57,6 @@ export const ProfilePage = () => {
           accept="image/*"
           onChange={(e) => handleFileChange(e)}
         />
-        <button onClick={handleUploadImage} className="btn-writeUI">
-          Change DP
-        </button>
 
         <h2 className="mt-6">About You</h2>
         <textarea
