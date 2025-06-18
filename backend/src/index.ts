@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Request } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -45,14 +45,10 @@ import { changeTitle } from "./controllers/diaries/changeTitle";
 import { fetchNextPrevChapters } from "./controllers/chapters/nextPrevChapter";
 import { fetchBio } from "./controllers/profile/fetchBio";
 import { updateBio } from "./controllers/profile/updateBio";
-import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
 
-import { Request, Response } from "express";
-import { Pool } from "pg";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
-const JWT_SECRET = config.jwtSecret;
 
 cloudinary.config({
   cloud_name: config.cloudName,
@@ -78,6 +74,7 @@ const app = express();
 app.use(express.Router());
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -179,7 +176,7 @@ app.get("/fetch-bio", authMiddleware, fetchBio);
 app.post("/update-bio", authMiddleware, updateBio);
 
 // ---------------------- Upload Profile Pic
-app.post("/upload", upload.single("image"), function (req, res) {
+app.post("/upload-dp", upload.single("image"), function (req, res) {
   console.log(req.file);
   res.send("File Uploaded Successfully");
 });
