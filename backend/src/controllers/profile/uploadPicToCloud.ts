@@ -6,21 +6,23 @@ import { config } from "../../config";
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
-export const fetchBio = async (req: Request, res: Response): Promise<any> => {
-  console.log("fetching profile bio...");
+export const uploadProfilePic = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { image } = req.body;
+  console.log("uploading profile pic to cloudinary...", image);
 
   const token = req.cookies.authToken;
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.id;
 
-  const profileBio = await pool.query(
-    "SELECT bio,profile_dp FROM users WHERE id = $1",
-    [userId]
-  );
+  await pool.query("UPDATE users SET profile_dp = $1 WHERE id = $2", [
+    image,
+    userId,
+  ]);
 
-  console.log("sent for bio ", profileBio.rows[0]);
   return res.status(200).json({
-    message: "Profile Bio Found",
-    data: profileBio.rows[0],
+    message: "Profile Pic Updated",
   });
 };

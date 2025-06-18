@@ -45,6 +45,7 @@ import { changeTitle } from "./controllers/diaries/changeTitle";
 import { fetchNextPrevChapters } from "./controllers/chapters/nextPrevChapter";
 import { fetchBio } from "./controllers/profile/fetchBio";
 import { updateBio } from "./controllers/profile/updateBio";
+import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
 
 const app = express();
 
@@ -150,6 +151,9 @@ app.get("/fetch-bio", authMiddleware, fetchBio);
 
 // ---------------------- Update Profile Details
 app.post("/update-bio", authMiddleware, updateBio);
+
+// ---------------------- Upload Profile Pic
+app.post("/upload-dp", authMiddleware, uploadProfilePic);
 
 //Server Listen
 const PORT = config.serverPort;

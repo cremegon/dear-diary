@@ -26,9 +26,9 @@ export const ProfilePage = () => {
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
-      const response = uploadProfilePic(image);
-      if (!response) return;
+      const imageURL = URL.createObjectURL(file);
+      setImage(imageURL);
+      uploadProfilePic(imageURL.slice(5, imageURL.length - 1));
     }
   }
 
@@ -37,7 +37,9 @@ export const ProfilePage = () => {
       const response = await fetchProfileBio();
       if (!response) return;
       if (!bioBox.current) return;
-      setBio(response.data);
+      console.log(response.data);
+      setBio(response.data.bio);
+      setImage(response.data.profile_dp);
       bioBox.current.textContent = bio;
     }
     fetchBio();
