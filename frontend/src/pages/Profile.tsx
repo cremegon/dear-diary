@@ -5,6 +5,7 @@ export const ProfilePage = () => {
   const bioBox = useRef<HTMLTextAreaElement>(null);
   const user = localStorage.getItem("user");
   const [image, setImage] = useState<File | null>(null);
+  const [pre];
   const [edit, setEdit] = useState(false);
   const [bio, setBio] = useState("");
   const [username] = useState(
@@ -19,7 +20,16 @@ export const ProfilePage = () => {
     setEdit(!edit);
   }
 
-  function handleUploadImage() {}
+  function handleUploadImage() {
+    if (!image) return;
+  }
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+    }
+  }
 
   useEffect(() => {
     async function fetchBio() {
@@ -37,6 +47,11 @@ export const ProfilePage = () => {
       <div className="w-1/3 h-full flex flex-col">
         <h1 className="my-8 text-4xl font-bold text-center">{username}</h1>
         <div className="w-40 h-40 bg-gray-300 rounded-full self-center" />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileChange(e)}
+        />
         <button onClick={handleUploadImage} className="btn-writeUI">
           Change DP
         </button>
