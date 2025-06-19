@@ -58,7 +58,7 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: async (req: Request, file: Express.Multer.File) => {
+  params: async (file: Express.Multer.File) => {
     return {
       folder: "user-profile-pics",
       format: "png", // supports promises as well
@@ -176,7 +176,7 @@ app.get("/fetch-bio", authMiddleware, fetchBio);
 app.post("/update-bio", authMiddleware, updateBio);
 
 // ---------------------- Upload Profile Pic
-app.post("/upload-dp", upload.single("image"), function (req, res) {
+app.post("/upload-dp", upload.single("file"), function (req, res) {
   console.log(req.file);
   res.send("File Uploaded Successfully");
 });

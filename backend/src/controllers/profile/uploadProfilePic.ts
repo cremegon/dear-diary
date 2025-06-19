@@ -10,15 +10,15 @@ export const uploadProfilePic = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { image } = req.body;
-  console.log("uploading profile pic...", image);
+  const filepath = req.file?.path;
+  console.log("uploading profile pic...", filepath);
 
   const token = req.cookies.authToken;
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
   const userId = decoded.id;
 
   await pool.query("UPDATE users SET profile_dp = $1 WHERE id = $2", [
-    image,
+    filepath,
     userId,
   ]);
 
