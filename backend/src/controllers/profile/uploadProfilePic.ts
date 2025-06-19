@@ -11,7 +11,7 @@ export const uploadProfilePic = async (
   res: Response
 ): Promise<any> => {
   const filepath = req.file?.path;
-  console.log("uploading profile pic...", req.file);
+  console.log("uploading profile pic...", req);
 
   const token = req.cookies.authToken;
   const decoded = jwt.verify(token, JWT_SECRET as string) as JwtPayload;
@@ -24,5 +24,6 @@ export const uploadProfilePic = async (
 
   return res.status(200).json({
     message: "Profile Pic Updated",
+    data: filepath,
   });
 };

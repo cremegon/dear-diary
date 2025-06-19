@@ -410,11 +410,12 @@ export async function updateProfileBio(bio: string) {
   return data;
 }
 
-export async function uploadProfilePic(image: string) {
+export async function uploadProfilePic(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
   const response = await fetch("http://localhost:5000/upload-dp", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ image }),
+    body: formData,
     credentials: "include",
   });
 

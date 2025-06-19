@@ -47,15 +47,15 @@ import { fetchBio } from "./controllers/profile/fetchBio";
 import { updateBio } from "./controllers/profile/updateBio";
 import { upload } from "./controllers/profile/upload";
 import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
-import router from "./controllers/profile/uploadRoute";
+import uploadRoute from "./controllers/profile/uploadRoute";
 
 const app = express();
 
 app.use(express.Router());
-app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-app.use(router);
+app.use(uploadRoute);
+app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     methods: ["GET", "POST", "PUT", "DELETE"],

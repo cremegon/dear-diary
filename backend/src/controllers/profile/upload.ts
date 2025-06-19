@@ -11,7 +11,7 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: async (req: Request, file: Express.Multer.File) => ({
+  params: async (req, file) => ({
     folder: "user-profile-pics",
     format: "png", // supports promises as well
     public_id: file.fieldname + "-" + Date.now(),
