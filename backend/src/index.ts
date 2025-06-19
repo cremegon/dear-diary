@@ -47,6 +47,7 @@ import { fetchBio } from "./controllers/profile/fetchBio";
 import { updateBio } from "./controllers/profile/updateBio";
 import { upload } from "./controllers/profile/upload";
 import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
+import router from "./controllers/profile/uploadRoute";
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use(express.Router());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(router);
 app.use(
   cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -153,9 +155,6 @@ app.get("/fetch-bio", authMiddleware, fetchBio);
 
 // ---------------------- Update Profile Details
 app.post("/update-bio", authMiddleware, updateBio);
-
-// ---------------------- Upload Profile Pic
-app.post("/upload-dp", upload.single("file"), uploadProfilePic);
 
 //Server Listen
 const PORT = config.serverPort;

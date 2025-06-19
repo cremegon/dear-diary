@@ -11,13 +11,11 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: async (file: Express.Multer.File) => {
-    return {
-      folder: "user-profile-pics",
-      format: "png", // supports promises as well
-      public_id: file.fieldname + "-" + Date.now(),
-    };
-  },
+  params: async (req: Request, file: Express.Multer.File) => ({
+    folder: "user-profile-pics",
+    format: "png", // supports promises as well
+    public_id: file.fieldname + "-" + Date.now(),
+  }),
 });
 
 export const upload = multer({

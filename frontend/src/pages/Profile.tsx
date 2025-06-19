@@ -26,9 +26,9 @@ export const ProfilePage = () => {
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setImage(imageURL);
-      uploadProfilePic(imageURL.slice(5, imageURL.length - 1));
+      const response = await uploadProfilePic(file);
+      if (!response) return;
+      setImage(response.data);
     }
   }
 
