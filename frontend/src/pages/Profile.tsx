@@ -40,6 +40,11 @@ export const ProfilePage = () => {
       console.log(response.data);
       setBio(response.data.bio);
       setImage(response.data.profile_dp);
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        parsedUser.profile_dp = response.data.profile_dp;
+        localStorage.setItem("user", JSON.stringify(parsedUser));
+      }
       bioBox.current.textContent = bio;
     }
     fetchBio();

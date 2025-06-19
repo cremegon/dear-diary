@@ -25,17 +25,20 @@ import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
 function App() {
   useEffect(() => {
     const user = localStorage.getItem("user");
+
     if (!user) {
       const user: {
         isAuthenticated: boolean;
         loggedIn: boolean;
         theme: string;
         username: string;
+        profile_dp: string;
       } = {
         isAuthenticated: false,
         loggedIn: false,
         theme: "light",
         username: "",
+        profile_dp: "",
       };
       localStorage.setItem("user", JSON.stringify(user));
     }
