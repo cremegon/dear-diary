@@ -54,6 +54,6 @@ export const loginUser = async (req: Request, res: Response): Promise<any> => {
     .json({
       message: "Successfully Logged In",
       redirect: "/",
-      content: user.name,
+      content: user,
     });
 };

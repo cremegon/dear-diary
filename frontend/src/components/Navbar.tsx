@@ -7,6 +7,7 @@ import { expireCookie } from "../util/diary.ts";
 export const Navbar = () => {
   const { setAuth } = useAuth();
   const user = localStorage.getItem("user");
+  const parsedUser = user ? JSON.parse(user) : null;
   const [navUser] = useState<string>(() => {
     return user ? JSON.parse(user).username : "Guest";
   });
@@ -34,7 +35,14 @@ export const Navbar = () => {
         </NavLink>
 
         <div className="flex flex-row mr-8 w-40 justify-evenly">
-          <div className="bg-white w-12 h-12 rounded-full" />
+          {parsedUser.profile_dp ? (
+            <img
+              src={parsedUser.profile_dp}
+              className="w-12 h-12 rounded-full"
+            />
+          ) : (
+            <div className="bg-white w-12 h-12 rounded-full" />
+          )}
           <p
             className="flex items-center hover:cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}

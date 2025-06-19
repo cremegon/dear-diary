@@ -124,11 +124,12 @@ export const LoginUser = async (
   if (response.ok) {
     const user = localStorage.getItem("user");
     if (user) {
-      const titleName = getName(data.content);
+      const titleName = getName(data.content.name);
       const parsedUser = JSON.parse(user);
       parsedUser.isAuthenticated = true;
       parsedUser.loggedIn = true;
       parsedUser.username = titleName;
+      parsedUser.profile_dp = data.content.profile_dp;
       localStorage.setItem("user", JSON.stringify(parsedUser));
 
       setAuth(true);
