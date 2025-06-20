@@ -7,7 +7,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
 
-export const resetPassword = async (
+export const changePassword = async (
   req: Request,
   res: Response
 ): Promise<any> => {

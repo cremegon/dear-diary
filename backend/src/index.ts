@@ -48,6 +48,7 @@ import { updateBio } from "./controllers/profile/updateBio";
 import { upload } from "./controllers/profile/upload";
 import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
 import uploadRoute from "./controllers/profile/uploadRoute";
+import { changePassword } from "./controllers/auth/changePassword";
 
 const app = express();
 
@@ -131,6 +132,9 @@ app.get("/load-cover-art/:diaryURL", loadCoverArt);
 
 // ---------------------- Compile Diary to PDF
 app.post("/finish-diary/:diaryURL", authMiddleware, compileDiary);
+
+// ---------------------- Change Password
+app.post("/change-password", changePassword);
 
 // ---------------------- Send Reset Password
 app.post("/forgot-password", forgotPassword);

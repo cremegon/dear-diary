@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { changePassword } from "../../util/client.ts";
 
 export const ChangePassPage = () => {
   const [current, setCurrent] = useState("");
@@ -10,13 +11,13 @@ export const ChangePassPage = () => {
   const newRef = useRef<HTMLInputElement | null>(null);
   const reTypeNewRef = useRef<HTMLInputElement | null>(null);
 
-  function handleChangePassword() {
+  async function handleChangePassword() {
     setError({ status: false, message: "" });
     if (newPass !== reTypeNew) {
       setError({ status: true, message: "New passwords do not match" });
       return;
     }
-    const response = changePassword(current, newPass);
+    const response = await changePassword(current, newPass);
     if (response.error) {
       setError({ status: true, message: response.message });
       return;
@@ -26,7 +27,9 @@ export const ChangePassPage = () => {
     <div className="min-h-screen flex flex-col items-center">
       <div className="flex flex-col">
         <h1 className="text-4xl font-bold my-6">Change Password</h1>
-        <div className={`${error && error.status ? "block" : "hidden"}`}>
+        <div
+          className={`${error && error.status ? "block" : "hidden"} text-red-600 bg-red-300 p-4`}
+        >
           {error.message}
         </div>
         <h2 className="text-start mt-4">Enter Current Password</h2>
