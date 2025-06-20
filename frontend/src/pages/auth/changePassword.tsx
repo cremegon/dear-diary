@@ -1,20 +1,27 @@
 import React, { useRef, useState } from "react";
-import { changePassword } from "../../util/client.ts";
+import { changePassword, verifyPassword } from "../../util/client.ts";
 
 export const ChangePassPage = () => {
   const [current, setCurrent] = useState("");
   const [newPass, setNewPass] = useState("");
   const [reTypeNew, setReTypeNew] = useState("");
   const [error, setError] = useState({ status: false, message: "" });
+  const [success, setSuccess] = useState("");
 
   const currentRef = useRef<HTMLInputElement | null>(null);
   const newRef = useRef<HTMLInputElement | null>(null);
   const reTypeNewRef = useRef<HTMLInputElement | null>(null);
 
   async function handleChangePassword() {
+    setSuccess("");
     setError({ status: false, message: "" });
     if (newPass !== reTypeNew) {
       setError({ status: true, message: "New passwords do not match" });
+      return;
+    }
+    const validPassword = verifyPassword(newPass);
+    if (validPassword.error) {
+      setError({ status: true, message: validPassword.message });
       return;
     }
     const response = await changePassword(current, newPass);
@@ -22,6 +29,7 @@ export const ChangePassPage = () => {
       setError({ status: true, message: response.message });
       return;
     }
+    setSuccess(response.message);
   }
   return (
     <div className="min-h-screen flex flex-col items-center">
@@ -31,6 +39,11 @@ export const ChangePassPage = () => {
           className={`${error && error.status ? "block" : "hidden"} text-red-600 bg-red-300 p-4`}
         >
           {error.message}
+        </div>
+        <div
+          className={`${success ? "block" : "hidden"} text-green-600 bg-green-300 p-4`}
+        >
+          {success}
         </div>
         <h2 className="text-start mt-4">Enter Current Password</h2>
         <input
