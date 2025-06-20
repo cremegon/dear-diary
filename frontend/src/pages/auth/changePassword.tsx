@@ -4,6 +4,7 @@ export const ChangePassPage = () => {
   const [current, setCurrent] = useState("");
   const [newPass, setNewPass] = useState("");
   const [reTypeNew, setReTypeNew] = useState("");
+  const [error, setError] = useState(false);
 
   const currentRef = useRef<HTMLInputElement | null>(null);
   const newRef = useRef<HTMLInputElement | null>(null);
