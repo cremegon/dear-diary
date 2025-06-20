@@ -1,6 +1,6 @@
 import React from "react";
 
-export const changePassPage = () => {
+export const ChangePassPage = () => {
   return (
     <div className="min-h-screen">
       <h1>Change Password</h1>
@@ -8,4 +8,4 @@ export const changePassPage = () => {
   );
 };
 
-export default changePassPage;
+export default ChangePassPage;

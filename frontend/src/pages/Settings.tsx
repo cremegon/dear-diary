@@ -1,8 +1,14 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-export const settingsArray: object[] = [
-  { title: "Change Password" },
-  { title: "Confirm End of User" },
+interface settingsArrayProps {
+  title: string;
+  navlink: string;
+}
+
+export const settingsArray: settingsArrayProps[] = [
+  { title: "Change Password", navlink: "change-password" },
+  { title: "Confirm End of User", navlink: "" },
 ];
 export const SettingsPage = () => {
   return (
@@ -16,7 +22,9 @@ export const SettingsPage = () => {
                   key={idx}
                   className="flex flex-col justify-center w-full h-20 bg-pink-400 mt-6"
                 >
-                  <li className="ml-4 text-white font-bold">{item.title}</li>
+                  <NavLink to={item.navlink}>
+                    <li className="ml-4 text-white font-bold">{item.title}</li>
+                  </NavLink>
                 </div>
               ))
             : null}

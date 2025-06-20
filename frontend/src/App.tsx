@@ -21,6 +21,7 @@ import Reader from "./pages/archive/Reader.tsx";
 import { EntrusteePage } from "./pages/trustees/Trustees.tsx";
 import { TrusteeHome } from "./pages/trustees/TrusteeList.tsx";
 import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
+import ChangePassPage from "./pages/auth/changePassword.tsx";
 
 function App() {
   useEffect(() => {
@@ -80,6 +81,10 @@ function App() {
 
               <Route path="profile" element={<ProfilePage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route
+                path="settings/change-password"
+                element={<ChangePassPage />}
+              />
             </Route>
 
             <Route
