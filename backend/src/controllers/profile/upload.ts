@@ -1,4 +1,5 @@
 import multer from "multer";
+import { Request } from "express";
 import { config } from "../../config";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
@@ -11,11 +12,15 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: async (req, file) => ({
-    folder: "user-profile-pics",
-    format: "png", // supports promises as well
-    public_id: file.fieldname + "-" + Date.now(),
-  }),
+  params: async (req: Request, file: Express.Multer.File) => {
+    const userId = req.cookies.authToken;
+    console.log("userId from cloudinary storage = ", userId);
+    return {
+      folder: "user-profile-pics",
+      format: "png", // supports promises as well
+      public_id: file.fieldname + "-" + Date.now(),
+    };
+  },
 });
 
 export const upload = multer({

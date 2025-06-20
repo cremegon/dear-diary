@@ -5,6 +5,7 @@ import { uploadProfilePic } from "./uploadProfilePic";
 import cookieParser from "cookie-parser";
 
 const router = express.Router();
+router.use(cookieParser());
 router.use(
   cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
