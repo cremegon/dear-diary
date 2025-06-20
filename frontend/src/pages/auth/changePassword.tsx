@@ -1,6 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 export const ChangePassPage = () => {
+  const [current, setCurrent] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [reTypeNew, setReTypeNew] = useState("");
+
   const currentRef = useRef<HTMLInputElement | null>(null);
   const newRef = useRef<HTMLInputElement | null>(null);
   const reTypeNewRef = useRef<HTMLInputElement | null>(null);
@@ -12,18 +16,21 @@ export const ChangePassPage = () => {
           ref={currentRef}
           type="text"
           placeholder="current password"
+          value={current}
           className="mt-2 border-4 border-pink-400"
         />
         <input
           ref={newRef}
           type="text"
           placeholder="new password"
+          value={newPass}
           className="mt-2 border-4 border-pink-400"
         />
         <input
           ref={reTypeNewRef}
           type="text"
           placeholder="re-type new password"
+          value={reTypeNew}
           className="mt-2 border-4 border-pink-400"
         />
       </div>
