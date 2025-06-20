@@ -9,6 +9,19 @@ export const ChangePassPage = () => {
   const currentRef = useRef<HTMLInputElement | null>(null);
   const newRef = useRef<HTMLInputElement | null>(null);
   const reTypeNewRef = useRef<HTMLInputElement | null>(null);
+
+  function handleChangePassword() {
+    setError({ status: false, message: "" });
+    if (newPass !== reTypeNew) {
+      setError({ status: true, message: "New passwords do not match" });
+      return;
+    }
+    const response = changePassword(current, newPass);
+    if (response.error) {
+      setError({ status: true, message: response.message });
+      return;
+    }
+  }
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="flex flex-col">
@@ -45,7 +58,9 @@ export const ChangePassPage = () => {
           onChange={(e) => setReTypeNew(e.target.value)}
           className="mb-6 border-4 border-pink-400"
         />
-        <button className="btn-writeUI">Confirm</button>
+        <button onClick={handleChangePassword} className="btn-writeUI">
+          Confirm
+        </button>
       </div>
     </div>
   );
