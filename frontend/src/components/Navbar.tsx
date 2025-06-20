@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { handleLogout } from "../util/client.ts";
 import { useAuth } from "../context/contextProvider.tsx";
 import { expireCookie } from "../util/diary.ts";
 
 export const Navbar = () => {
   const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const user = localStorage.getItem("user");
   const parsedUser = user ? JSON.parse(user) : null;
   const [navUser] = useState<string>(() => {
     return user ? JSON.parse(user).username : "Guest";
   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [navigate]);
 
   return (
     <div className="bg-black w-full h-32 flex flex-col justify-center">
