@@ -17,6 +17,7 @@ export const ChangePassPage = () => {
           type="text"
           placeholder="current password"
           value={current}
+          onChange={(e) => setCurrent(e.target.value)}
           className="mt-2 border-4 border-pink-400"
         />
         <input
@@ -24,6 +25,7 @@ export const ChangePassPage = () => {
           type="text"
           placeholder="new password"
           value={newPass}
+          onChange={(e) => setNewPass(e.target.value)}
           className="mt-2 border-4 border-pink-400"
         />
         <input
@@ -31,8 +33,10 @@ export const ChangePassPage = () => {
           type="text"
           placeholder="re-type new password"
           value={reTypeNew}
-          className="mt-2 border-4 border-pink-400"
+          onChange={(e) => setReTypeNew(e.target.value)}
+          className="my-2 border-4 border-pink-400"
         />
+        <button className="btn-writeUI">Confirm</button>
       </div>
     </div>
   );
