@@ -22,6 +22,7 @@ import { EntrusteePage } from "./pages/trustees/Trustees.tsx";
 import { TrusteeHome } from "./pages/trustees/TrusteeList.tsx";
 import { ArchiveEntrusteePage } from "./pages/archive/ArchiveTrustees.tsx";
 import ChangePassPage from "./pages/auth/changePassword.tsx";
+import EndUser from "./pages/auth/endUser.tsx";
 
 function App() {
   useEffect(() => {
@@ -85,6 +86,7 @@ function App() {
                 path="settings/change-password"
                 element={<ChangePassPage />}
               />
+              <Route path="settings/conclude-legacy" element={<EndUser />} />
             </Route>
 
             <Route
