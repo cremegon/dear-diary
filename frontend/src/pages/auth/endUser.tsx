@@ -2,10 +2,10 @@ import React from "react";
 
 export const EndUser = () => {
   return (
-    <div className="min-h-screen">
-      <div>
-        <h1 className="text-4xl font-bold">End User History</h1>
-        <p>
+    <div className="min-h-screen flex flex-col items-center">
+      <div className="w-1/2">
+        <h1 className="text-4xl font-bold mt-8">End User History</h1>
+        <p className="mt-10">
           This page exists to confirm the presence of the user's health,
           well-being and activity. In order to continue the life span of this
           diary in parallel with the writer's presence, please answer the
