@@ -9,7 +9,9 @@ export const EndUser = () => {
           This page exists to confirm the presence of the user's health,
           well-being and activity. In order to continue the life span of this
           diary in parallel with the writer's presence, please answer the
-          security questions below. Failure to answer correctly within
+          security questions below. Failure to answer correctly within 3-months
+          will automatically end the life cycle of this diary and distribute
+          copies of all diaries to their trustees
         </p>
       </div>
     </div>
