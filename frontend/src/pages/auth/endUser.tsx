@@ -8,7 +8,8 @@ export const EndUser = () => {
         <p>
           This page exists to confirm the presence of the user's health,
           well-being and activity. In order to continue the life span of this
-          diary in parallel to the user's presence, please
+          diary in parallel with the writer's presence, please answer the
+          security questions below. Failure to answer correctly within
         </p>
       </div>
     </div>
