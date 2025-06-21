@@ -11,7 +11,7 @@ export const EndUser = () => {
           diary in parallel with the writer's presence, please answer the
           security questions below. Failure to answer correctly within 3-months
           will automatically end the life cycle of this diary and distribute
-          copies of all diaries to their trustees
+          copies of all diaries to their designated trustees and permanently
         </p>
       </div>
     </div>
