@@ -8,7 +8,7 @@ interface settingsArrayProps {
 
 export const settingsArray: settingsArrayProps[] = [
   { title: "Change Password", navlink: "change-password" },
-  { title: "Confirm End of User", navlink: "" },
+  { title: "Confirm End of User", navlink: "conclude-legacy" },
 ];
 export const SettingsPage = () => {
   return (
