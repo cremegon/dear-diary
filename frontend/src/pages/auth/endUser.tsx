@@ -12,6 +12,7 @@ export const EndUser = () => {
           security questions below. Failure to answer correctly within 3-months
           will automatically end the life cycle of this diary and distribute
           copies of all diaries to their designated trustees and permanently
+          conclude the life cycle of the writer's history
         </p>
       </div>
     </div>
