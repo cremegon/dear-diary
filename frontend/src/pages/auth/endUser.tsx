@@ -7,7 +7,8 @@ export const EndUser = () => {
         <h1 className="text-4xl font-bold">End User History</h1>
         <p>
           This page exists to confirm the presence of the user's health,
-          well-being and activity. In order to continue the life
+          well-being and activity. In order to continue the life span of this
+          diary in parallel to the user's presence, please
         </p>
       </div>
     </div>
