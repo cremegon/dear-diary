@@ -9,7 +9,7 @@ export const EndUser = () => {
           This page exists to confirm the action to be taken upon the passing of
           the user. You may choose to make your diary public into the library of
           people's experiences. Otherwise, upon the passing of the user, this
-          diary will only be shared
+          diary will only be shared only with respective trustees
         </p>
       </div>
     </div>
