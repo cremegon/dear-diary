@@ -10,7 +10,7 @@ export const EndUser = () => {
           the user. You may choose to make your diary public into the library of
           people's experiences. Otherwise, upon the passing of the user, this
           diary will only be shared only with respective trustees that the user
-          has associated
+          has associated with each diary.
         </p>
       </div>
     </div>
