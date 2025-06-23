@@ -8,7 +8,7 @@ export const EndUser = () => {
         <p className="mt-10">
           This page exists to confirm the action to be taken upon the passing of
           the user. You may choose to make your diary public into the library of
-          people's experiences
+          people's experiences. Otherwise, upon the passing
         </p>
       </div>
     </div>
