@@ -6,7 +6,8 @@ export const EndUser = () => {
       <div className="w-1/2">
         <h1 className="text-4xl font-bold mt-8">End User History</h1>
         <p className="mt-10">
-          This page exists to confirm the action to be taken upon the passing
+          This page exists to confirm the action to be taken upon the passing of
+          the user.
         </p>
       </div>
     </div>
