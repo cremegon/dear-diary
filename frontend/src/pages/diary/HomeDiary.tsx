@@ -78,7 +78,7 @@ export const DiaryPage = () => {
     const renamedFile = new File([uploadFile], newFileName, {
       type: uploadFile?.type,
     });
-    const response = await uploadManualFile(renamedFile);
+    const response = await uploadManualFile(fileUploadTitle, renamedFile);
   }
 
   function handleFileUpload() {
