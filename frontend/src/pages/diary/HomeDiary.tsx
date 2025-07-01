@@ -244,6 +244,12 @@ export const DiaryPage = () => {
             />
             <div className={`${uploadFile ? "block" : "hidden"}`}>
               <p>{uploadFile?.name}</p>
+              <input
+                type="text"
+                value={fileUploadTitle}
+                placeholder="enter file diary title"
+                onChange={(e) => setFileUploadTitle(e.target.value)}
+              />
             </div>
           </div>
         </div>
