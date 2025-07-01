@@ -1,4 +1,10 @@
-import React, { EventHandler, useEffect, useRef, useState } from "react";
+import React, {
+  EventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   changeDiaryTitle,
@@ -75,8 +81,8 @@ export const DiaryPage = () => {
       inputRef.current.click();
     }
   }
-  function handleFileSelection(event: EventHandler) {
-    const file = event.target.files[0];
+  function handleFileSelection(event: MouseEventHandler) {
+    const file = event.target;
   }
 
   // ---- Load in Available Diary Entries
@@ -235,7 +241,7 @@ export const DiaryPage = () => {
               type="file"
               className="hidden"
               ref={inputRef}
-              onClick={(e) => handleFileSelection(e)}
+              onChange={(e) => handleFileSelection(e)}
             />
           </div>
         </div>
