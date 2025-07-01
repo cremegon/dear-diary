@@ -1,12 +1,4 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  EventHandler,
-  MouseEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   changeDiaryTitle,
@@ -37,7 +29,8 @@ export const DiaryPage = () => {
   const [title, setTitle] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [changeTitle, setChangeTitle] = useState(false);
-  const [fileUpload, setFileUpload] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [fileUploadTitle, setFileUploadTitle] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
@@ -84,9 +77,12 @@ export const DiaryPage = () => {
     }
   }
   function handleFileSelection(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files[0]
-    if (!file) return 
-    handleUploadManualDiary(file:File)
+    if (event.target.files) {
+      const file = event.target.files[0];
+      if (!file) return;
+      setFileUploadTitle(true);
+      // handleUploadManualDiary(file:File)
+    }
   }
 
   // ---- Load in Available Diary Entries
