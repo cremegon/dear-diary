@@ -1,4 +1,6 @@
 import React, {
+  ChangeEvent,
+  ChangeEventHandler,
   EventHandler,
   MouseEventHandler,
   useEffect,
@@ -81,8 +83,10 @@ export const DiaryPage = () => {
       inputRef.current.click();
     }
   }
-  function handleFileSelection(event: MouseEventHandler) {
-    const file = event.target;
+  function handleFileSelection(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files[0]
+    if (!file) return 
+    handleUploadManualDiary(file:File)
   }
 
   // ---- Load in Available Diary Entries
