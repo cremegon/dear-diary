@@ -249,13 +249,16 @@ export const DiaryPage = () => {
             />
             <div className={`${uploadFile ? "block" : "hidden"} mt-4`}>
               <p>{uploadFile?.name}</p>
-              <input
-                className="border-4 border-pink-400"
-                type="text"
-                value={fileUploadTitle}
-                placeholder="enter file diary title"
-                onChange={(e) => setFileUploadTitle(e.target.value)}
-              />
+              <div>
+                <input
+                  className="border-4 border-pink-400"
+                  type="text"
+                  value={fileUploadTitle}
+                  placeholder="enter file diary title"
+                  onChange={(e) => setFileUploadTitle(e.target.value)}
+                />
+                <button className="btn-writeUI">Upload</button>
+              </div>
             </div>
           </div>
         </div>
