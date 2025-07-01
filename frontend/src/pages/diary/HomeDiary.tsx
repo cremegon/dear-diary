@@ -5,6 +5,7 @@ import {
   checkDiary,
   deleteDiary,
   handleDiary,
+  uploadManualFile,
 } from "../../util/diary.ts";
 import { handleLogout } from "../../util/client.ts";
 import { useAuth } from "../../context/contextProvider.tsx";
@@ -79,6 +80,11 @@ export const DiaryPage = () => {
       type: uploadFile?.type,
     });
     const response = await uploadManualFile(fileUploadTitle, renamedFile);
+    if (response.data) {
+      console.log("manual diary successfully uploaded!");
+    } else {
+      console.log("error uploading manual diary...");
+    }
   }
 
   function handleFileUpload() {

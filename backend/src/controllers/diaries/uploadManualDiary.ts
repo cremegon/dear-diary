@@ -19,20 +19,26 @@ export const uploadManualDiary = async (
   const now = new Date();
   const formattedDateNow = now.toISOString().replace("T", " ").slice(0, 23);
 
-  const query = await pool.query(
-    "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3,$4)",
-    [userId, title, filepath, formattedDateNow]
-  );
-  const id = query.rows[0].id;
-  const encryptedURL = encryptUserId(id);
+  try {
+    const query = await pool.query(
+      "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3,$4)",
+      [userId, title, filepath, formattedDateNow]
+    );
+    const id = query.rows[0].id;
+    const encryptedURL = encryptUserId(id);
 
-  await pool.query("UPDATE diaries SET url = $1 WHERE id = $2", [
-    encryptedURL,
-    id,
-  ]);
+    await pool.query("UPDATE diaries SET url = $1 WHERE id = $2", [
+      encryptedURL,
+      id,
+    ]);
 
-  return res.status(200).json({
-    message: "Manual Diary Uploaded",
-    data: filepath,
-  });
+    return res.status(200).json({
+      message: "Manual Diary Uploaded",
+      data: filepath,
+    });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error Occured at Manual Diary Upload", data: null });
+  }
 };
