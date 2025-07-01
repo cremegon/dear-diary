@@ -28,6 +28,7 @@ export const DiaryPage = () => {
   const [title, setTitle] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [changeTitle, setChangeTitle] = useState(false);
+  const [fileUpload, setFileUpload] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
@@ -219,7 +220,7 @@ export const DiaryPage = () => {
             </button>
           </form>
           <div className="text-blue-600">
-            <p>Upload Handwritten Diary</p>
+            <p onClick={}>Upload Handwritten Diary</p>
           </div>
         </div>
       </div>
