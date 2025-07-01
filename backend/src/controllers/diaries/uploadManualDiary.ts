@@ -20,7 +20,7 @@ export const uploadManualDiary = async (
   const formattedDateNow = now.toISOString().replace("T", " ").slice(0, 23);
 
   const query = await pool.query(
-    "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3)",
+    "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3,$4)",
     [userId, title, filepath, formattedDateNow]
   );
   const id = query.rows[0].id;

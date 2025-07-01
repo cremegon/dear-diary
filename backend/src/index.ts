@@ -48,6 +48,7 @@ import { updateBio } from "./controllers/profile/updateBio";
 import { upload } from "./controllers/profile/upload";
 import { uploadProfilePic } from "./controllers/profile/uploadProfilePic";
 import uploadRoute from "./controllers/profile/uploadRoute";
+import { uploadManualDiary } from "./controllers/diaries/uploadManualDiary";
 import { changePassword } from "./controllers/auth/changePassword";
 
 const app = express();
@@ -55,6 +56,7 @@ const app = express();
 app.use(express.Router());
 app.use(cookieParser());
 app.use(uploadRoute);
+app.use(uploadManualDiary);
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 app.use(

@@ -423,6 +423,22 @@ export async function uploadProfilePic(file: File) {
   return data;
 }
 
+export async function uploadManualFile(title: string, file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await fetch(
+    `http://localhost:5000/upload-manual-diary/${title}`,
+    {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    }
+  );
+
+  const data = await response.json();
+  return data;
+}
+
 export async function expireCookie() {
   await fetch(`http://localhost:5000/expire-cookie`, {
     method: "GET",
