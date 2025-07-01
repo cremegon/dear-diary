@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { EventHandler, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   changeDiaryTitle,
@@ -74,9 +74,9 @@ export const DiaryPage = () => {
     if (inputRef.current) {
       inputRef.current.click();
     }
-    function handleFileSelection(event: Event) {
-      const file = event.targ;
-    }
+  }
+  function handleFileSelection(event: EventHandler) {
+    const file = event.target.files[0];
   }
 
   // ---- Load in Available Diary Entries
@@ -231,7 +231,12 @@ export const DiaryPage = () => {
           </form>
           <div className="text-blue-600">
             <p onClick={handleFileUpload}>Upload Handwritten Diary</p>
-            <input type="file" className="hidden" ref={inputRef} />
+            <input
+              type="file"
+              className="hidden"
+              ref={inputRef}
+              onClick={(e) => handleFileSelection(e)}
+            />
           </div>
         </div>
       </div>
