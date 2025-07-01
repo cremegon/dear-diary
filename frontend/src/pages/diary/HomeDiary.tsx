@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   changeDiaryTitle,
@@ -22,6 +22,7 @@ interface DiaryEntry {
 export const DiaryPage = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [entry, setEntry] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -67,6 +68,15 @@ export const DiaryPage = () => {
     await handleDiary(e, title);
     console.log("created new diary");
     setRefresh(!refresh);
+  }
+
+  function handleFileUpload() {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+    function handleFileSelection(event: Event) {
+      const file = event.targ;
+    }
   }
 
   // ---- Load in Available Diary Entries
@@ -221,7 +231,7 @@ export const DiaryPage = () => {
           </form>
           <div className="text-blue-600">
             <p onClick={handleFileUpload}>Upload Handwritten Diary</p>
-            <input type="file" className="hidden" />
+            <input type="file" className="hidden" ref={inputRef} />
           </div>
         </div>
       </div>
