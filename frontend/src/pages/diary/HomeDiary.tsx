@@ -220,7 +220,8 @@ export const DiaryPage = () => {
             </button>
           </form>
           <div className="text-blue-600">
-            <p onClick={}>Upload Handwritten Diary</p>
+            <p onClick={handleFileUpload}>Upload Handwritten Diary</p>
+            <input type="file" className="hidden" />
           </div>
         </div>
       </div>
