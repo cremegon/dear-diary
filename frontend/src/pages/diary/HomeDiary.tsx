@@ -71,6 +71,16 @@ export const DiaryPage = () => {
     setRefresh(!refresh);
   }
 
+  async function handleManualDiary() {
+    if (!uploadFile) return;
+    const extension = uploadFile?.name.split(".").pop();
+    const newFileName = `${fileUploadTitle}.${extension}`;
+    const renamedFile = new File([uploadFile], newFileName, {
+      type: uploadFile?.type,
+    });
+    const response = await uploadManualFile(renamedFile);
+  }
+
   function handleFileUpload() {
     if (inputRef.current) {
       inputRef.current.click();
@@ -257,7 +267,9 @@ export const DiaryPage = () => {
                   placeholder="enter file diary title"
                   onChange={(e) => setFileUploadTitle(e.target.value)}
                 />
-                <button className="btn-writeUI">Upload</button>
+                <button className="btn-writeUI" onClick={handleManualDiary}>
+                  Upload
+                </button>
               </div>
             </div>
           </div>
