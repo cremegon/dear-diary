@@ -201,7 +201,7 @@ export const DiaryPage = () => {
                   </button>
                 </ul>
               ))
-            : "nothing..."}
+            : null}
         </h2>
 
         <div className={`${entry && entry.length > 0 ? "hidden" : "block"}`}>
@@ -218,6 +218,9 @@ export const DiaryPage = () => {
               New Diary
             </button>
           </form>
+          <div className="text-blue-600">
+            <p>Upload Handwritten Diary</p>
+          </div>
         </div>
       </div>
     </div>
