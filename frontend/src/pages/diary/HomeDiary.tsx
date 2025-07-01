@@ -234,17 +234,23 @@ export const DiaryPage = () => {
               New Diary
             </button>
           </form>
-          <div className="text-blue-600">
-            <p onClick={handleFileUpload}>Upload Handwritten Diary</p>
+          <div>
+            <p
+              className="text-blue-600 cursor-pointer"
+              onClick={handleFileUpload}
+            >
+              Upload Handwritten Diary
+            </p>
             <input
               type="file"
               className="hidden"
               ref={inputRef}
               onChange={(e) => handleFileSelection(e)}
             />
-            <div className={`${uploadFile ? "block" : "hidden"}`}>
+            <div className={`${uploadFile ? "block" : "hidden"} mt-4`}>
               <p>{uploadFile?.name}</p>
               <input
+                className="border-4 border-pink-400"
                 type="text"
                 value={fileUploadTitle}
                 placeholder="enter file diary title"
