@@ -32,7 +32,7 @@ export const uploadManualDiary = async (
   ]);
 
   return res.status(200).json({
-    message: "Profile Pic Updated",
+    message: "Manual Diary Uploaded",
     data: filepath,
   });
 };
