@@ -30,7 +30,7 @@ export const DiaryPage = () => {
   const [newTitle, setNewTitle] = useState("");
   const [changeTitle, setChangeTitle] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [fileUploadTitle, setFileUploadTitle] = useState(false);
+  const [fileUploadTitle, setFileUploadTitle] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [modal, setModal] = useState<[boolean, string]>([false, ""]);
   const [conclude, setConclude] = useState<[boolean, string]>([false, ""]);
@@ -80,8 +80,7 @@ export const DiaryPage = () => {
     if (event.target.files) {
       const file = event.target.files[0];
       if (!file) return;
-      setFileUploadTitle(true);
-      // handleUploadManualDiary(file:File)
+      setUploadFile(file);
     }
   }
 
@@ -243,6 +242,9 @@ export const DiaryPage = () => {
               ref={inputRef}
               onChange={(e) => handleFileSelection(e)}
             />
+            <div className={`${uploadFile ? "block" : "hidden"}`}>
+              <p>{uploadFile?.name}</p>
+            </div>
           </div>
         </div>
       </div>
