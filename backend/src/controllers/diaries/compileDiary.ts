@@ -97,6 +97,7 @@ export const compileDiary = async (
   }
   const htmlContent = DOM.serialize();
 
+  // ---- Use Puppeteer to convert HTML content to PDF File
   const browser = await puppeteer.launch({
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -109,6 +110,7 @@ export const compileDiary = async (
   const pdfBuffer = Buffer.from(pdfFile);
   await browser.close();
 
+  // ---- Take the PDFbuffer, which is the raw PDF file and upload it to CLoudinary
   const stream = cloudinary.uploader.upload_stream(
     {
       resource_type: "raw",
@@ -118,6 +120,7 @@ export const compileDiary = async (
     async (error, res) => {
       if (error) return console.log("Upload Stream Error: ", error);
       console.log("Upload Successful!");
+      // ---- Once Successful, grab the CLoudinary URL and save it in the DB
       const cloudinaryURL = res?.secure_url;
       await pool.query("UPDATE diaries SET pdf = $1 WHERE url = $2", [
         cloudinaryURL,
@@ -126,8 +129,10 @@ export const compileDiary = async (
     }
   );
 
+  // ---- Function to Stream Upload the Buffer
   bufferToStream(pdfBuffer).pipe(stream);
 
+  // ---- Send the PDF to all the trustees
   for (let i = 0; i < trustees.length; i++) {
     send_PDF_Email(trustees[i].email, title, author, pdfBuffer);
   }
