@@ -4,6 +4,8 @@ import { config } from "../../config";
 import { JSDOM } from "jsdom";
 import puppeteer from "puppeteer";
 import { send_PDF_Email } from "../../middleware/sendEmail";
+import { v2 as cloudinary } from "cloudinary";
+import { bufferToStream } from "./diaryPDFBuffer";
 
 const pool = new Pool(config.db);
 
@@ -102,16 +104,29 @@ export const compileDiary = async (
   const page = await browser.newPage();
   await page.setContent(htmlContent);
   const pdfFile = await page.pdf({
-    path: `${user_id}-${title}.pdf`,
     format: "A4",
   });
   const pdfBuffer = Buffer.from(pdfFile);
   await browser.close();
 
-  await pool.query("UPDATE diaries SET pdf = $1 WHERE url = $2", [
-    pdfFile,
-    diaryURL,
-  ]);
+  const stream = cloudinary.uploader.upload_stream(
+    {
+      resource_type: "raw",
+      folder: "user-digital-diaries",
+      public_id: `${user_id}-${title}.pdf`,
+    },
+    async (error, res) => {
+      if (error) return console.log("Upload Stream Error: ", error);
+      console.log("Upload Successful!");
+      const cloudinaryURL = res?.secure_url;
+      await pool.query("UPDATE diaries SET pdf = $1 WHERE url = $2", [
+        cloudinaryURL,
+        diaryURL,
+      ]);
+    }
+  );
+
+  bufferToStream(pdfBuffer).pipe(stream);
 
   for (let i = 0; i < trustees.length; i++) {
     send_PDF_Email(trustees[i].email, title, author, pdfBuffer);
