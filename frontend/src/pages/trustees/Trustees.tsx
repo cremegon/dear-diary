@@ -117,7 +117,7 @@ export const EntrusteePage = () => {
     if (!trustees && !m_trustees) return;
     const { valid, error_t, error_index, error_field } =
       verifyTrusteesList(m_trustees);
-    console.log("error from trustee entry => ", valid, error_t);
+    console.log("verification from trustee entry => ", valid, error_t);
     if (error_t) {
       setError(error_t);
       const errorField = document.getElementById(
