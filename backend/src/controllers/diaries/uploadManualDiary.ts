@@ -19,9 +19,10 @@ export const uploadManualDiary = async (
   const now = new Date();
   const formattedDateNow = now.toISOString().replace("T", " ").slice(0, 23);
 
+  console.log("title of manual upload diary => ", title);
   try {
     const query = await pool.query(
-      "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3,$4)",
+      "INSERT INTO diaries(user_id,title,pdf,completed_at) VALUES ($1,$2,$3,$4) RETURNING id",
       [userId, title, filepath, formattedDateNow]
     );
     const id = query.rows[0].id;
@@ -37,6 +38,7 @@ export const uploadManualDiary = async (
       data: filepath,
     });
   } catch (error) {
+    console.log(error);
     res
       .status(400)
       .json({ message: "Error Occured at Manual Diary Upload", data: null });

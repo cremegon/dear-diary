@@ -101,7 +101,10 @@ export const compileDiary = async (
   });
   const page = await browser.newPage();
   await page.setContent(htmlContent);
-  const pdfFile = await page.pdf({ path: "output.pdf", format: "A4" });
+  const pdfFile = await page.pdf({
+    path: `${user_id}-${title}.pdf`,
+    format: "A4",
+  });
   const pdfBuffer = Buffer.from(pdfFile);
   await browser.close();
 

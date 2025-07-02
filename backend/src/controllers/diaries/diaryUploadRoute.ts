@@ -14,6 +14,10 @@ router.use(
   })
 );
 router.use(cookieParser());
-router.post("/upload-manual-diary", upload.single("file"), uploadManualDiary);
+router.post(
+  "/upload-manual-diary/:title",
+  upload.single("file"),
+  uploadManualDiary
+);
 
 export default router;
