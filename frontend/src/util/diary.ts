@@ -1,3 +1,5 @@
+import { createClient } from "redis";
+
 export async function handleDiary(e: React.FormEvent, title: string) {
   console.log("creating new diary...");
   e.preventDefault();
@@ -87,6 +89,11 @@ export async function checkDiary() {
 
 export async function checkChapter(params: string) {
   console.log("checking chapter entries...");
+
+  const client = createClient();
+  await client.connect();
+  const chapterData = client.get(`diary:${params}:chapter`);
+  if (chapterData) return JSON.stringify(chapterData);
 
   const response = await fetch(
     `http://localhost:5000/check-chapter?key=${params}`,
