@@ -92,8 +92,8 @@ export async function checkChapter(params: string) {
 
   const client = createClient();
   await client.connect();
-  const chapterData = client.get(`diary:${params}:chapter`);
-  if (chapterData) return JSON.stringify(chapterData);
+  const chapterData = await client.get(`diary:${params}:chapter`);
+  if (chapterData) return JSON.parse(chapterData);
 
   const response = await fetch(
     `http://localhost:5000/check-chapter?key=${params}`,

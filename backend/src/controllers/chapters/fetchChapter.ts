@@ -1,15 +1,18 @@
 import { Request, response, Response } from "express";
 import { Pool } from "pg";
+import { createClient } from "redis";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../../config";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
+const client = createClient();
 
 export const fetchChapters = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  await client.connect();
   const { key } = req.query;
   console.log("Checking Chapters...");
 
@@ -23,6 +26,7 @@ export const fetchChapters = async (
   );
 
   const chapters = diaryEntry.rows;
+  client.set(`diary:${key}:chapter`, JSON.stringify(chapters));
 
   return res.status(200).json({
     message: "Diary Entries Found",
