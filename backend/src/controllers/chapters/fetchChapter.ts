@@ -15,6 +15,12 @@ export const fetchChapters = async (
   await client.connect();
   const { key } = req.query;
   console.log("Checking Chapters...");
+  await client.connect();
+  const chapterData = await client.get(`diary:${key}:chapter`);
+  if (chapterData)
+    return res
+      .status(200)
+      .json({ message: "found in redis", data: JSON.parse(chapterData) });
 
   const query = await pool.query("SELECT id FROM diaries WHERE url = $1", [
     key,
