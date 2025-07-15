@@ -19,7 +19,7 @@ export const fetchChapters = async (
   const chapterData = await client.get(`diary:${key}:chapter`);
   if (chapterData) {
     // await client.del(`diary:${key}:chapter`);
-    console.log(chapterData);
+
     return res
       .status(200)
       .json({ message: "found in redis", data: JSON.parse(chapterData) });
