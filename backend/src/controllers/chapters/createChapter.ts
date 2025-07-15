@@ -11,6 +11,7 @@ export const createChapter = async (
   res: Response
 ): Promise<any> => {
   const { fontFamily, fontSize, url } = req.body;
+
   const client = await getRedisClient();
   console.log("Creating New Chapter....", url);
 
@@ -49,12 +50,16 @@ export const createChapter = async (
   ]);
   console.log("new chapter created");
 
+  const testId = await pool.query("SELECT id FROM diaries WHERE url = $1", [
+    url,
+  ]);
+  console.log("DIARYID!!! = ", testId);
   const chapters = await pool.query(
-    "SELECT * FROM chapters WHERE diary_id = (SELECT diary_id FROM diaries WHERE url = $1) ORDER BY created_at DESC",
+    "SELECT * FROM chapters WHERE diary_id = (SELECT id FROM diaries WHERE url = $1) ORDER BY created_at DESC",
     [url]
   );
-  client.set(`diary:${url}:chapter`, JSON.stringify(chapters));
-  console.log("Redis Client Setted");
+  client.set(`diary:${url}:chapter`, JSON.stringify(chapters.rows));
+
   return res.status(200).json({
     message: "Chapter Created Successfully",
     redirect: `${encryptedURL}`,

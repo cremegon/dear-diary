@@ -5,7 +5,6 @@ import {
   deleteChapter,
   handleChapter,
 } from "../../util/diary.ts";
-import { testEmail } from "../../util/client.ts";
 
 interface ChapterEntry {
   id: number;
@@ -29,6 +28,7 @@ export const ChapterPage = () => {
   async function fetchChapterData() {
     try {
       const response = await checkChapter(params);
+      console.log(response.data);
       setEntry(response.data);
     } catch (error) {
       setError(error);
@@ -99,10 +99,6 @@ export const ChapterPage = () => {
               New Chapter
             </button>
           </form>
-
-          <button onClick={() => testEmail()} className="btn-writeUI">
-            Test Email
-          </button>
         </div>
       </div>
     </div>
