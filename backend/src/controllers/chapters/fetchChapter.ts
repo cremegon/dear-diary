@@ -3,19 +3,19 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../../config";
+import getRedisClient from "../../middleware/redis";
 
 const pool = new Pool(config.db);
 const JWT_SECRET = config.jwtSecret;
-const client = createClient();
 
 export const fetchChapters = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  await client.connect();
   const { key } = req.query;
   console.log("Checking Chapters...");
-  await client.connect();
+  const client = await getRedisClient();
+
   const chapterData = await client.get(`diary:${key}:chapter`);
   if (chapterData)
     return res

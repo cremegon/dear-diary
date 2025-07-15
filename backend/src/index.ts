@@ -48,6 +48,7 @@ import { updateBio } from "./controllers/profile/updateBio";
 import uploadRoute from "./controllers/profile/uploadRoute";
 import diaryUploadRoute from "./controllers/diaries/diaryUploadRoute";
 import { changePassword } from "./controllers/auth/changePassword";
+import createRedisClient from "./middleware/redis";
 
 const app = express();
 

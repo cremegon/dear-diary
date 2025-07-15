@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../../config";
 import { encryptUserId } from "../../utils/security";
+import getRedisClient from "../../middleware/redis";
 
 const pool = new Pool(config.db);
 
@@ -10,6 +11,7 @@ export const createChapter = async (
   res: Response
 ): Promise<any> => {
   const { fontFamily, fontSize, url } = req.body;
+  const client = await getRedisClient();
   console.log("Creating New Chapter....", url);
 
   const selectedRow = await pool.query(
@@ -46,6 +48,13 @@ export const createChapter = async (
     id,
   ]);
   console.log("new chapter created");
+
+  const chapters = await pool.query(
+    "SELECT * FROM chapters WHERE diary_id = (SELECT diary_id FROM diaries WHERE url = $1) ORDER BY created_at DESC",
+    [url]
+  );
+  client.set(`diary:${url}:chapter`, JSON.stringify(chapters));
+  console.log("Redis Client Setted");
   return res.status(200).json({
     message: "Chapter Created Successfully",
     redirect: `${encryptedURL}`,
