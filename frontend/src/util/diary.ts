@@ -159,12 +159,22 @@ export async function saveToDatabase(
   content: string,
   url: string,
   font: string,
-  fontsize: number
+  fontsize: number,
+  chapter: string,
+  diary: string
 ) {
   const response = await fetch("http://localhost:5000/save-to-db", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, content, url, font, fontsize }),
+    body: JSON.stringify({
+      title,
+      content,
+      url,
+      font,
+      fontsize,
+      chapter,
+      diary,
+    }),
     credentials: "include",
   });
 
@@ -172,11 +182,11 @@ export async function saveToDatabase(
   return data;
 }
 
-export async function loadFromDatabase(url: string) {
+export async function loadFromDatabase(chapterId: string, diaryId: string) {
   const response = await fetch("http://localhost:5000/load-from-db", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url }),
+    body: JSON.stringify({ chapterId, diaryId }),
     credentials: "include",
   });
 

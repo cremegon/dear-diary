@@ -26,6 +26,12 @@ export const Editor = () => {
     underline: false,
   });
   const params = useParams().chapterId as string;
+  const chapterId = useParams().chapterId;
+  const archiveChapterId = useParams().archiveChapterId;
+  const chapter = chapterId ? chapterId : archiveChapterId;
+  const diaryId = useParams().diaryId;
+  const archiveDiaryId = useParams().archiveDiaryId;
+  const diary = diaryId ? diaryId : archiveDiaryId;
 
   const windowHeight = window.screen.height;
   const fonts = tailwindConfig.theme?.extend?.fontFamily || {};
@@ -121,7 +127,9 @@ export const Editor = () => {
       content,
       params,
       selectedFont,
-      fontSize
+      fontSize,
+      chapter!,
+      diary!
     );
     console.log("RESPONSE", response);
   }
@@ -143,7 +151,7 @@ export const Editor = () => {
 
   useEffect(() => {
     async function loadContent() {
-      const response = await loadFromDatabase(params);
+      const response = await loadFromDatabase(chapter!, diary!);
       try {
         setLoading(false);
       } catch (error) {

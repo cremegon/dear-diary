@@ -9,38 +9,18 @@ export const saveContent = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { title, content, url, font, fontsize } = req.body;
+  const { title, content, url, font, fontsize, chapter, diary } = req.body;
   const client = await getRedisClient();
-
+  console.log(font, fontsize);
   await pool.query(
     "UPDATE chapters SET title = $1, content = $2, font_size = $3, font_family = $4 WHERE url = $5 ",
     [title, content, fontsize, font, url]
   );
+  const cacheData = await client.get(`diary:${diary}:chapter:${chapter}:data`);
 
-  const chapter = await pool.query("SELECT * FROM chapters WHERE url = $1", [
-    url,
-  ]);
-
-  const diary = await pool.query(
-    "SELECT * FROM diaries WHERE id = (SELECT diary_id FROM chapters WHERE url = $1)",
-    [url]
-  );
-
-  const chapters = await pool.query(
-    "SELECT * FROM chapters WHERE diary_id = (SELECT diary_id FROM chapters WHERE url = $1) ORDER BY created_at DESC",
-    [url]
-  );
-  const diaryId = diary.rows[0].url;
-  console.log("diary id...?", diaryId);
-  console.log("chapter...?", chapter.rows[0]);
-  try {
-    client.set(
-      `diary:${diaryId}:chapter:${url}`,
-      JSON.stringify(chapter.rows[0])
-    );
-    client.set(`diary:${diaryId}:chapter`, JSON.stringify(chapters.rows));
-  } catch (error) {
-    console.log("Error Inserting into Redis from Chapter Save", error);
+  if (cacheData) {
+    client.del(`diary:${diary}:chapter:${chapter}:data`);
+    console.log("chapter entry changed, previous cache deleted");
   }
-  return res.status(200).json({ message: "We in This" });
+  return res.status(200).json({ message: "entry updated and cache deleted" });
 };

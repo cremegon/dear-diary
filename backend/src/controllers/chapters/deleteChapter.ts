@@ -1,6 +1,7 @@
 import { Request, response, Response } from "express";
 import { Pool } from "pg";
 import { config } from "../../config";
+import getRedisClient from "../../middleware/redis";
 
 const pool = new Pool(config.db);
 
@@ -8,6 +9,7 @@ export const deleteChapter = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  const client = await getRedisClient();
   const { chapterURL } = req.params;
   console.log("Deleting Chapter...", chapterURL);
 
@@ -18,6 +20,8 @@ export const deleteChapter = async (
     chapterURL,
   ]);
   const currentId = id.rows[0];
+  console.log(currentId, "current id...");
+  const diary_id = currentId.diary_id;
   prevId = currentId.prevchapterid;
   nextId = currentId.nextchapterid;
 
@@ -52,6 +56,17 @@ export const deleteChapter = async (
 
   try {
     await pool.query("DELETE FROM chapters WHERE url = $1", [chapterURL]);
+    const diary_url = await pool.query(
+      "SELECT url FROM diaries WHERE id = $1",
+      [diary_id]
+    );
+    const diary = diary_url.rows[0].url;
+    const cacheData = await client.get(`diary:${diary}:chapter`);
+
+    if (cacheData) {
+      client.del(`diary:${diary}:chapter`);
+      console.log("chapter entry changed, previous cache deleted");
+    }
   } catch (error) {
     console.log("No Relevant Chapter Found");
     return res.status(404).send();
